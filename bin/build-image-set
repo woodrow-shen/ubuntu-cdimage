@@ -62,6 +62,10 @@ if [ -z "$DEBUG" ]; then
 	date
 	publish-daily "$DATE" "$IMAGE_TYPE"
 
+	echo "===== Purging old images ====="
+	date
+	purge-old-images "$IMAGE_TYPE"
+
 	if [ "$1" = daily ]; then
 		echo "===== Archiving debian-cd code ====="
 		date
