@@ -39,6 +39,28 @@ for arch in $ARCHES; do
 		echo "No CD for $arch!" >&2
 	fi
 done
+
+i=1
+while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
+	echo "Publishing source $i ..."
+	mkdir -p "$PUBLISH"
+	mv "$CDOUT/src/$DIST-src-$i.raw" "$PUBLISH/$DIST-src-$i.iso"
+	mv "$CDOUT/src/$DIST-src-$i.list" "$PUBLISH/$DIST-src-$i.list"
+
+	# Jigdo integration
+	if [ -e "$CDOUT/src/$DIST-src-$i.jigdo" ]; then
+		echo "Publishing source $i jigdo ..."
+		mv "$CDOUT/src/$DIST-src-$i.jigdo" \
+		   "$PUBLISH/$DIST-src-$i.jigdo"
+		mv "$CDOUT/src/$DIST-src-$i.template" \
+		   "$PUBLISH/$DIST-src-$i.template"
+	else
+		echo "No jigdo for source $i!" >&2
+	fi
+
+	i="$(($i + 1))"
+done
+
 if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
