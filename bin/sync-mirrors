@@ -9,6 +9,7 @@ if [ -d "$HOME/secret" ]; then
 fi
 
 trigger () {
+	echo "$1:"
 	ssh -i "$SECRET/auckland" archvsync@"$1" sleep 1
 }
 
