@@ -256,5 +256,6 @@ EOF
 cat <<EOF >> "$HTACCESS"
 
 HeaderName HEADER.html
+IndexIgnore HEADER.html
 IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
 EOF
