@@ -167,14 +167,15 @@ done
 # Create and publish torrents.
 if $PUBLISH_DIST; then
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST"
+	mkemptydir "$TORRENTS"
 	make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
 fi
 if $PUBLISH_FULL; then
 	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}"
+	mkemptydir "$TORRENTS"
 	make-torrents "$RELEASE_FULL" cdimage.ubuntu.com
 fi
-mkemptydir "$TORRENTS"
 for arch in $ARCHES; do
 	if $PUBLISH_DIST; then
 		basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
