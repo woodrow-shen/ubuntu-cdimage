@@ -9,10 +9,11 @@ if [ -d "$HOME/secret" ]; then
 fi
 
 trigger () {
-	echo "$1:"
-	ssh -i "$SECRET/auckland" archvsync@"$1" sleep 1
+	echo "$2:"
+	ssh -i "$SECRET/auckland" "$1@$2" sleep 1
 }
 
-trigger syncproxy.ubuntu.com
-trigger auckland
-trigger mirnyy.ubuntu.com
+trigger archvsync syncproxy.ubuntu.com
+trigger archvsync auckland
+trigger archvsync mirnyy.ubuntu.com
+trigger torrent orcadas.ubuntu.com
