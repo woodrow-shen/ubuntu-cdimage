@@ -21,4 +21,5 @@ fi
 
 diff-tasks
 
-cp "$SCRATCH"/* "$TASKS"
+mkdir -p "$TASKS/$DIST"
+cp "$SCRATCH/$DIST"/* "$TASKS/$DIST/"
