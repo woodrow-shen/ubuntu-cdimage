@@ -45,7 +45,7 @@ done
 # second-stage install.
 for arch in $ARCHES; do
 	exec >"$TASKS_OUT/$DIST/desktop.override.$arch"
-	< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
+	< "$GERMINATE_OUT/$DIST-$arch/desktop" \
 		tail -n +3 | head -n -2 | cut -d' ' -f1 | \
 		sed 's/$/  Task  ubuntu-desktop/'
 done
