@@ -38,7 +38,7 @@ date
 echo "===== Building Ubuntu daily CDs ====="
 date
 cd "$CDIMAGE_ROOT/debian-cd"
-for arch in ARCHES; do
+for arch in $ARCHES; do
 	./build.sh "$arch" || true
 done
 
