@@ -10,4 +10,4 @@ export CDIMAGE_INSTALL=1
 export CDIMAGE_LIVE=1
 export CDIMAGE_DVD=1
 
-build-image-set weekly-dvd
+build-image-set dvd
