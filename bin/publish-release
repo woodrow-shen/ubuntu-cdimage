@@ -80,8 +80,8 @@ for arch in $ARCHES; do
 	for ext in iso list; do
 		if [ "$OFFICIAL" = yes ]; then
 			cp -a "$DAILY/$baseplain.$ext" \
-			      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
-			ln -s "../.pool/$baseplain.$ext" \
+			      "$RELEASE_SIMPLE_POOL/$basestatus.$ext"
+			ln -s "../.pool/$basestatus.$ext" \
 			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
 		else
 			cp -a "$DAILY/$baseplain.$ext" \
@@ -90,26 +90,22 @@ for arch in $ARCHES; do
 	done
 
 	if [ "$TYPE" = install ]; then
-		for ext in template jigdo; do
-			# Copy, to make sure we have a canonical version of
-			# this.
-			if [ "$OFFICIAL" = yes ]; then
-				cp -a "$DAILY/$baseplain.$ext" \
-				      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
-			else
-				cp -a "$DAILY/$baseplain.$ext" \
-				      "$RELEASE_FULL/$baseplain.$ext"
-			fi
-		done
-
 		if [ "$OFFICIAL" = yes ]; then
-			ln -s "../.pool/$baseplain.template" \
-			      "$RELEASE_SIMPLE_DIST/$basestatus.template"
-
-			echo "Fixing Jigdo files for $arch ..."
+			cp -a "$DAILY/$baseplain.template" \
+				"$RELEASE_SIMPLE_POOL/$basestatus.template"
 			sed "s/=$baseplain/=$basestatus/g" \
-				< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
-				> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
+				< "$DAILY/$baseplain.jigdo" \
+				> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
+
+			for ext in template jigdo; do
+				ln -s "../.pool/$basestatus.$ext" \
+					"$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+			done
+		else
+			for ext in template jigdo; do
+				cp -a "$DAILY/$baseplain.$ext" \
+					"$RELEASE_FULL/$baseplain.$ext"
+			done
 		fi
 	fi
 
@@ -117,8 +113,8 @@ for arch in $ARCHES; do
 		# Copy, to make sure we have a canonical version of this.
 		if [ "$OFFICIAL" = yes ]; then
 			cp -a "$DAILY/$baseplain.manifest" \
-			      "$RELEASE_SIMPLE_POOL/$baseplain.manifest"
-			ln -s "../.pool/$baseplain.manifest" \
+			      "$RELEASE_SIMPLE_POOL/$basestatus.manifest"
+			ln -s "../.pool/$basestatus.manifest" \
 			      "$RELEASE_SIMPLE_DIST/$basestatus.manifest"
 		else
 			cp -a "$DAILY/$baseplain.manifest" \
