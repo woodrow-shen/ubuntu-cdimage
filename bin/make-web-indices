@@ -1,0 +1,260 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ]; then
+	echo 'Usage: make-web-indices DIR CDPREFIX' >&2
+	exit 1
+fi
+
+DIR="$1"
+CDPREFIX="$2"
+
+HEADER="$DIR/HEADER.html"
+HTACCESS="$DIR/.htaccess"
+
+count () {
+	case $1 in
+		1)	echo one ;;
+		2)	echo two ;;
+		3)	echo three ;;
+		4)	echo four ;;
+		*)
+			echo "Can't count up to $1!" >&2
+			exit 1
+			;;
+	esac
+}
+
+titlecase () {
+	perl -ne 'print "\u$_"'
+}
+
+cdtypestr () {
+	case $1 in
+		install)
+			echo 'installation'
+			;;
+		live)
+			echo 'live'
+			;;
+		*)
+			echo "Unknown CD type $1!" >&2
+			;;
+	esac
+}
+
+cdtypedesc () {
+	case $1 in
+		install)
+			cat <<EOF
+The installation CD allows you to install Ubuntu permanently on a computer.
+EOF
+			;;
+		live)
+			cat <<EOF
+The live CD allows you to try Ubuntu without changing your computer at all.
+EOF
+			;;
+		*)
+			echo "Unknown CD type $1!" >&2
+			;;
+	esac
+}
+
+archstr () {
+	case $1 in
+		amd64)
+			echo 'AMD64'
+			;;
+		i386)
+			echo 'Intel x86'
+			;;
+		ia64)
+			echo 'IA-64'
+			;;
+		powerpc)
+			echo 'PowerPC'
+			;;
+		*)
+			echo "Unknown architecture $1!" >&2
+			;;
+	esac
+}
+
+archdesc () {
+	case $1 in
+		amd64)
+			cat <<EOF
+The correct CD for computers based on the AMD64 or EM64T
+architecture (e.g., Athlon64, Opteron, EM64T Xeon). It is not necessary for all
+(even most) processors made by AMD -- only their 64 bit chips.
+EOF
+			;;
+		i386)
+			cat <<EOF
+The correct CD for almost all PCs. This includes most machines with
+Intel/AMD/etc type processors and almost all computers that run Microsoft
+Windows. Choose this if you are at all unsure.
+EOF
+			;;
+		ia64)
+			cat <<EOF
+The correct CD for Intel Itanium and Itanium 2 computers.
+EOF
+			;;
+		powerpc)
+			cat <<EOF
+The correct CD for Apple Macintosh G3, G4, and G5 computers, including
+iBooks and PowerBooks.
+EOF
+			;;
+		*)
+			echo "Unknown architecture $1!" >&2
+			;;
+	esac
+}
+
+extensionstr () {
+	case $1 in
+		iso)
+			echo 'standard download'
+			;;
+		iso.torrent)
+			echo '<a href=\"http://bittorrent.com/introduction.html\">BitTorrent</a> download'
+			;;
+		jigdo)
+			echo '<a href=\"http://atterer.net/jigdo/\">jigdo</a> download'
+			;;
+		list)
+			echo 'file listing'
+			;;
+		template)
+			echo '<a href=\"http://atterer.net/jigdo/\">jigdo</a> template'
+			;;
+		*)
+			echo "Unknown extension $1!" >&2
+			;;
+	esac
+}
+
+> "$HTACCESS"
+
+case $DIST in
+	warty)
+		distversion=4.10
+		distfullname='Warty Warthog'
+		;;
+	hoary)
+		distversion=5.04
+		distfullname='Hoary Hedgehog'
+		;;
+esac
+
+cat <<EOF > "$HEADER"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <title>Ubuntu $distversion ($distfullname)</title>
+  <!-- Main style sheets for CSS2 capable browsers -->
+  <style type="text/css" media="screen">
+  @import url(http://www.ubuntulinux.org/plone.css);
+  pre { background: none; }
+  body { margin: 2em; }
+  </style>
+ </head>
+ <body>
+
+<h1>Select a CD</h1>
+
+EOF
+
+cdtypecount=0
+for cdtype in install live; do
+	if find "$DIR/" -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
+		cdtypecount="$(($cdtypecount + 1))"
+	fi
+done
+
+if [ "$cdtypecount" -gt 1 ]; then
+	cat <<EOF >> "$HEADER"
+<p>Ubuntu is distributed on $(count "$cdtypecount") types of CDs described below.</p>
+
+EOF
+fi
+
+for cdtype in install live; do
+	if ! find "$DIR/" -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
+		continue
+	fi
+
+	cat <<EOF >> "$HEADER"
+<h2>$(cdtypestr "$cdtype" | titlecase) CD</h2>
+
+<p>$(cdtypedesc "$cdtype")
+EOF
+
+	archcount=0
+	for arch in i386 powerpc amd64 ia64; do
+		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
+			archcount="$(($archcount + 1))"
+		fi
+	done
+
+	if [ "$archcount" -eq 1 ]; then
+		cat <<EOF >> "$HEADER"
+There is one CD available:</p>
+EOF
+	else
+		cat <<EOF >> "$HEADER"
+There are $(count "$archcount") CDs available, each for a different type of computer:</p>
+EOF
+	fi
+
+	cat <<EOF >> "$HEADER"
+
+<dl>
+EOF
+
+	for arch in i386 powerpc amd64 ia64; do
+		if ! [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
+			continue
+		fi
+
+		cat <<EOF >> "$HEADER"
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype") CD</a>
+
+<dd>$(archdesc "$arch")</dd>
+
+EOF
+
+		for extension in iso iso.torrent jigdo list template; do
+			if ! [ -e "$DIR/$CDPREFIX-$cdtype-$arch.$extension" ]; then
+				continue
+			fi
+
+			echo "AddDescription \"$(cdtypestr "$cdtype" | titlecase) CD for $(archstr "$arch") computers ($(extensionstr "$extension"))\" $CDPREFIX-$cdtype-$arch.$extension" >> "$HTACCESS"
+		done
+	done
+
+	cat <<EOF >> "$HEADER"
+</dl>
+
+EOF
+done
+
+cat <<EOF >> "$HEADER"
+<p>A full list of available files, including <a
+href="http://bittorrent.com/introduction.html">BitTorrent</a> files,
+can be found below.</p>
+
+EOF
+
+cat <<EOF >> "$HTACCESS"
+
+HeaderName HEADER.html
+IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
+EOF

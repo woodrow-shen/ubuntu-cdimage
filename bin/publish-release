@@ -103,6 +103,11 @@ for arch in $ARCHES; do
 				>/dev/null
 		fi
 	fi
+
+	make-web-indices "$RELEASE_FULL" "$DIST"
+	if [ "$OFFICIAL" = yes ]; then
+		make-web-indices "$RELEASE_SIMPLE_DIST" "$DIST${STATUS:+-$STATUS}"
+	fi
 done
 
 md5sum_directory () {

@@ -80,6 +80,7 @@ if [ -d "$PUBLISH" ]; then
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
+	make-web-indices "$PUBLISH" "$DIST"
 	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
 else
 	echo "No CDs produced!" >&2
