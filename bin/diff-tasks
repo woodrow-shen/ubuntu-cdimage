@@ -2,7 +2,7 @@
 set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
-DIST=warty
+. "$CDIMAGE_ROOT/etc/config"
 
 SCRATCH="$CDIMAGE_ROOT/scratch/tasks"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks"

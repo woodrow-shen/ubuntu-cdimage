@@ -2,6 +2,8 @@
 set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
 SCRATCH="$CDIMAGE_ROOT/scratch/tasks"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"

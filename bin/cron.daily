@@ -4,9 +4,8 @@ set -e
 umask 002
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
-DIST=warty
+. "$CDIMAGE_ROOT/etc/config"
 
-ARCHES="${ARCHES:-amd64 i386 powerpc}"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 DATE="$(next-build-date)"
 

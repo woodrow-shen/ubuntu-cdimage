@@ -1,0 +1,4 @@
+#! /bin/sh
+
+DIST="${DIST:-warty}"
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
