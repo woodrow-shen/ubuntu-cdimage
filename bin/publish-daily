@@ -40,7 +40,7 @@ for arch in $ARCHES; do
 		echo "Creating $arch torrent ..."
 		btmakemetafile "$TRACKER" \
 			--comment "Ubuntu CD cdimage.ubuntu.com" \
-			"$PUBLISH/$DIST-arch.iso" >/dev/null
+			"$PUBLISH/$DIST-$arch.iso" >/dev/null
 	else
 		echo "No CD for $arch!" >&2
 	fi
