@@ -211,7 +211,7 @@ fi
 if $PUBLISH_FULL; then
 	for dir in "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"/*; do
 		[ -d "$dir" ] || continue
-		if [ "${dir#*/}" != "${STATUS:-release}" ]; then
+		if [ "${dir##*/}" != "${STATUS:-release}" ]; then
 			rm -rf "$dir"
 		fi
 	done
