@@ -20,7 +20,7 @@ TO=/srv/cdimage.no-name-yet.com/ftp
 # RSYNC_HOST is the site you have chosen from the mirrors file.
 # (http://www.debian.org/mirror/list-full)
 
-RSYNC_HOST=archive.ubuntulinux.org
+RSYNC_HOST=mirnyy.ubuntu.com
 
 # RSYNC_DIR is the directory given in the "Packages over rsync:" line of
 # the mirrors file for the site you have chosen to mirror.
