@@ -5,7 +5,7 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 if [ -z "$1" ]; then
-	echo 'Usage: auto-purge IMAGE_TYPE [DAYS]' >&2
+	echo 'Usage: purge-old-images IMAGE_TYPE [DAYS]' >&2
 	exit 1
 fi
 IMAGE_TYPE="$1"
