@@ -1,0 +1,41 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ]; then
+	echo 'Usage: auto-purge IMAGE_TYPE DAYS' >&2
+	exit 1
+fi
+
+IMAGE_TYPE="$1"
+DAYS="$2"
+
+OLDEST="$(date -d "$DAYS days ago" +%Y%m%d)"
+
+cd "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE"
+
+for dir in *; do
+	# Directory?
+	if [ ! -d "$dir" ]; then
+		continue
+	fi
+
+	# Numeric directory?
+	if ! echo "$dir" | grep -q '^[0-9]'; then
+		continue
+	fi
+
+	# Older than cut-off date?
+	if [ "$OLDEST" = "$dir" ] || [ "$OLDEST" '<' "$dir" ]; then
+		continue
+	fi
+
+	if [ "$DEBUG" ]; then
+		echo "Would purge $IMAGE_TYPE/$dir"
+	else
+		echo "Purging $IMAGE_TYPE/$dir"
+		rm -rf "$dir"
+	fi
+done
