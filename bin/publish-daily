@@ -20,6 +20,17 @@ for arch in $ARCHES; do
 		mv "$CDOUT/$arch/$DIST-$arch-1.list" \
 		   "$PUBLISH/$DIST-$arch.list"
 
+		# Jigdo integration
+		if [ -e "$CDOUT/$arch/$DIST-$arch.jigdo" ]; then
+			echo "Publishing $arch jigdo ..."
+			mv "$CDOUT/$arch/$DIST-$arch.jigdo" \
+			   "$PUBLISH/$DIST-$arch.jigdo"
+			mv "$CDOUT/$arch/$DIST-$arch.template" \
+			   "$PUBLISH/$DIST-$arch.template"
+		else
+			echo "No jigdo for $arch!" >&2
+		fi
+
 		# BitTorrent integration
 		echo "Creating $arch torrent ..."
 		btmakemetafile "$TRACKER" \
