@@ -16,7 +16,7 @@ mkemptydir () {
 
 mkemptydir "$TASKS_OUT/$DIST"
 
-for seed in base ship installer supported; do
+for seed in base ship installer casper supported; do
 	exec >"$TASKS_OUT/$DIST/$seed"
 	if [ "$seed" = supported ]; then
 		seedsource="$seed+build-depends"
@@ -31,11 +31,14 @@ for seed in base ship installer supported; do
 	done
 done
 
-# Hackily exclude kernel-image-* from the installer task. Those udebs only
-# exist to satisfy dependencies when building the debian-installer package.
-grep -v ^kernel-image- "$TASKS_OUT/$DIST/installer" \
-	> "$TASKS_OUT/$DIST/installer.new"
-mv "$TASKS_OUT/$DIST/installer.new" "$TASKS_OUT/$DIST/installer"
+# Hackily exclude kernel-image-* from the installer and casper tasks. Those
+# udebs only exist to satisfy dependencies when building the
+# debian-installer package.
+for seed in installer casper; do
+	grep -v ^kernel-image- "$TASKS_OUT/$DIST/$seed" \
+		> "$TASKS_OUT/$DIST/$seed.new"
+	mv "$TASKS_OUT/$DIST/$seed.new" "$TASKS_OUT/$DIST/$seed"
+done
 
 # Handle Desktop separately, to make sure we don't accidentally end up out
 # of sync with the archive and break the second-stage install.
