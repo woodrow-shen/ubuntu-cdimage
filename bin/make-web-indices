@@ -149,10 +149,12 @@ case $DIST in
 	warty)
 		distversion=4.10
 		distfullname='Warty Warthog'
+		distextra=
 		;;
 	hoary)
 		distversion=5.04
 		distfullname='Hoary Hedgehog'
+		distextra=' Preview'
 		;;
 esac
 
@@ -161,7 +163,7 @@ cat <<EOF > "$HEADER"
  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
  <head>
-  <title>$CAPPROJECT $distversion ($distfullname)</title>
+  <title>$CAPPROJECT $distversion ($distfullname)$distextra</title>
   <!-- Main style sheets for CSS2 capable browsers -->
   <style type="text/css" media="screen">
   @import url(http://www.ubuntulinux.org/plone.css);
@@ -171,7 +173,9 @@ cat <<EOF > "$HEADER"
  </head>
  <body>
 
-<h1>Select a CD</h1>
+<h1>$CAPPROJECT $distversion ($distfullname)$distextra</h1>
+
+<h2>Select a CD</h2>
 
 EOF
 
@@ -195,7 +199,7 @@ for cdtype in install live; do
 	fi
 
 	cat <<EOF >> "$HEADER"
-<h2>$(cdtypestr "$cdtype" | titlecase) CD</h2>
+<h3>$(cdtypestr "$cdtype" | titlecase) CD</h3>
 
 <p>$(cdtypedesc "$cdtype")
 EOF
