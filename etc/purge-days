@@ -1,4 +1,4 @@
-daily 4
-daily-live 4
+daily 3
+daily-live 3
 # Purge images older than 5 days => keep the two most recent builds.
 dvd 5
