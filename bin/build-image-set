@@ -11,6 +11,10 @@ export PROJECT CAPPROJECT DIST ARCHES
 
 if [ -z "$DEBUG" ]; then
 	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
+	# Since we now know we aren't going to be spamming the terminal,
+	# it's safe to crank up the verbosity so that the logs are most
+	# useful.
+	export VERBOSE=3
 fi
 
 echo "===== Syncing $CAPPROJECT mirror ====="
