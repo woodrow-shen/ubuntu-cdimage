@@ -62,7 +62,8 @@ done
 
 md5sum_directory () {
 	echo "MD5summing $1 ..."
-	md5sum "$2"/* > "$2"/MD5SUMS
+	rm -f "$2/MD5SUMS"
+	(cd "$2" && md5sum * > MD5SUMS)
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL/$DIST/$STATUS"
