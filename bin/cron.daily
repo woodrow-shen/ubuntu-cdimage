@@ -6,4 +6,6 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 
+export CDIMAGE_INSTALL=1
+
 build-image-set daily
