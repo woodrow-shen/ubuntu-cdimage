@@ -30,6 +30,9 @@ case $IMAGE_TYPE in
 	*-live)
 		TYPE=live
 		;;
+	dvd)
+		TYPE=dvd
+		;;
 	*)
 		TYPE=install
 		;;
