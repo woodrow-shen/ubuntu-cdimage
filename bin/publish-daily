@@ -70,29 +70,15 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 	i="$(($i + 1))"
 done
 
-sign_file () {
-	if [ ! -f "$GNUPG_DIR/secring.gpg" ] || \
-	   [ ! -f "$GNUPG_DIR/pubring.gpg" ] || \
-	   [ ! -f "$GNUPG_DIR/trustdb.gpg" ]; then
-		return
-	fi
-	gpg --no-default-keyring \
-		--secret-keyring "$GNUPG_DIR/secring.gpg" \
-		--keyring "$GNUPG_DIR/pubring.gpg" \
-		--trustdb-name "$GNUPG_DIR/trustdb.gpg" \
-		--default-key "$SIGNING_KEYID" --no-options --batch --no-tty \
-		--armour --detach-sign < "$1" > "$1.gpg"
-}
-
 if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
-	sign_file "$PUBLISH/MD5SUMS"
+	sign-cdimage "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
-		sign_file "$PUBLISH/source/MD5SUMS"
+		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
 	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
 else

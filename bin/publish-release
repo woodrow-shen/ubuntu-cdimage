@@ -105,25 +105,11 @@ for arch in $ARCHES; do
 	fi
 done
 
-sign_file () {
-	if [ ! -f "$GNUPG_DIR/secring.gpg" ] || \
-	   [ ! -f "$GNUPG_DIR/pubring.gpg" ] || \
-	   [ ! -f "$GNUPG_DIR/trustdb.gpg" ]; then
-		return
-	fi
-	gpg --no-default-keyring \
-		--secret-keyring "$GNUPG_DIR/secring.gpg" \
-		--keyring "$GNUPG_DIR/pubring.gpg" \
-		--trustdb-name "$GNUPG_DIR/trustdb.gpg" \
-		--default-key "$SIGNING_KEYID" --no-options --batch --no-tty \
-		--armour --detach-sign < "$1" > "$1.gpg"
-}
-
 md5sum_directory () {
 	echo "MD5summing $1 ..."
 	rm -f "$2/MD5SUMS"
 	(cd "$2" && md5sum *.iso > MD5SUMS)
-	sign_file "$2/MD5SUMS"
+	sign-cdimage "$2/MD5SUMS"
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL"
