@@ -1,0 +1,13 @@
+#! /bin/sh
+
+PATH="/srv/cdimage.no-name-yet.com/bin:${PATH:+:$PATH}"
+DEB_MIRROR="${DEB_MIRROR:-mirror.positive-internet.co.uk}"
+
+debmirror /srv/cdimage.no-name-yet.com/from-debian -h "$DEB_MIRROR" \
+	--dist=sarge,sid \
+	--passive --section=main,main/debian-installer \
+	--arch=powerpc --getcontents \
+	--ignore=^installer- "$@"
+ln -nsf sarge /srv/cdimage.no-name-yet.com/from-debian/dists/testing
+ln -nsf sid /srv/cdimage.no-name-yet.com/from-debian/dists/unstable
+ln -nsf sid /srv/cdimage.no-name-yet.com/from-debian/dists/warty # ewww

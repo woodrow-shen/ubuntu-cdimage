@@ -1,0 +1,75 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+DIST=warty
+
+ARCHES='i386 powerpc'
+PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
+DATE="$(date +%Y%m%d)"
+PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
+
+CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
+
+if [ -z "$DEBUG" ]; then
+	exec >"$CDIMAGE_ROOT/log/daily-$DATE.log" 2>&1
+fi
+
+echo "===== Syncing Ubuntu mirror ====="
+date
+anonftpsync
+
+# temporary, until powerpc buildds for warty are ready
+echo "===== Syncing temporary Debian powerpc mirror ====="
+date
+debmirror-powerpc
+
+echo "===== Updating archive of local packages ====="
+date
+update-local-indices
+
+echo "===== Updating debian-installer task list ====="
+date
+(cd "$CDIMAGE_ROOT/debian-cd"
+ . CONF.sh
+ cd tasks
+ ../tools/generate_di_list)
+
+echo "===== Building Ubuntu daily CDs ====="
+date
+cd "$CDIMAGE_ROOT/debian-cd"
+for arch in ARCHES; do
+	./build.sh "$arch"
+done
+
+if [ -z "$DEBUG" ]; then
+	echo "===== Publishing ====="
+	date
+	mkdir -p "$PUBLISH"
+	cd "$PUBLISH"
+	for arch in $ARCHES; do
+		if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
+			mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
+			   "$DIST-$arch-1.iso"
+			mv "$CDOUT/$arch/$DIST-$arch-1.list" \
+			   "$DIST-$arch-1.list"
+		else
+			echo "No CD for $arch!" >&2
+		fi
+	done
+	md5sum "$DIST"-* > MD5SUMS
+	cd ..
+	ln -nsf "$DATE" current
+
+	echo "===== Archiving debian-cd code ====="
+	date
+	cd "$CDIMAGE_ROOT"
+	tar cjvf www/code/debian-cd.tar.bz2 debian-cd
+
+	echo "===== Triggering mirrors ====="
+	date
+	sync-auckland
+fi
+
+echo "===== Finished ====="
+date

@@ -1,0 +1,2 @@
+#! /bin/sh
+ssh -i /srv/cdimage.no-name-yet.com/secret/auckland archvsync@auckland sleep 1
