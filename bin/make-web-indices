@@ -35,13 +35,13 @@ titlecase () {
 cdtypestr () {
 	case $1 in
 		install)
-			echo 'installation CD'
+			echo 'install CD'
 			;;
 		live)
 			echo 'live CD'
 			;;
 		dvd)
-			echo 'DVD'
+			echo 'install/live DVD'
 			;;
 		*)
 			echo "Unknown CD type $1!" >&2
@@ -53,7 +53,7 @@ cdtypedesc () {
 	case $1 in
 		install)
 			cat <<EOF
-The installation CD allows you to install $CAPPROJECT permanently on a computer.
+The install CD allows you to install $CAPPROJECT permanently on a computer.
 EOF
 			;;
 		live)
@@ -63,9 +63,9 @@ EOF
 			;;
 		dvd)
 			cat <<EOF
-The DVD allows you either to install $CAPPROJECT permanently on a computer, or
-(by entering 'live' at the boot prompt) to try $CAPPROJECT without changing
-your computer at all.
+The combined install/live DVD allows you either to install $CAPPROJECT
+permanently on a computer, or (by entering 'live' at the boot prompt) to try
+$CAPPROJECT without changing your computer at all.
 EOF
 			;;
 		*)
