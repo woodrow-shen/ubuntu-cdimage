@@ -3,13 +3,7 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 STAMP="$CDIMAGE_ROOT/etc/.next-build-suffix"
-
-if [ -z "$1" ]; then
-	echo 'Usage: next-build-suffix DATE' >&2
-	exit 1
-fi
-
-DATE="$1"
+DATE="${DATE:-$(date +%Y%m%d)}"
 
 # TODO: race condition, need locking in cron.daily
 
@@ -22,7 +16,8 @@ fi
 
 if [ "$SUFFIX" ]; then
 	echo "$DATE:$(($SUFFIX + 1))" > "$STAMP"
-	echo ".$SUFFIX"
+	echo "$DATE.$SUFFIX"
 else
 	echo "$DATE:1" > "$STAMP"
+	echo "$DATE"
 fi
