@@ -183,16 +183,18 @@ done
 # so if we're publishing there then we can now safely clean up previous
 # images for that release.
 if $PUBLISH_DIST; then
-	for file in "$RELEASE_SIMPLE_POOL/$DIST"-*; do
-		base="${file##*/}"
-		base="${base%-*}" # remove architecture
-		base="${base%-*}" # remove type
-		if [ "$base" = "$DIST${STATUS:+-$STATUS}" ]; then
-			# Don't delete what we just published.
-			continue
-		fi
-		echo "Purging $file"
-		rm -f "$file"
+	for dir in "$RELEASE_SIMPLE_DIST" "$RELEASE_SIMPLE_POOL"; do
+		for file in "$dir/$DIST"-*; do
+			base="${file##*/}"
+			base="${base%-*}" # remove architecture
+			base="${base%-*}" # remove type
+			if [ "$base" = "$DIST${STATUS:+-$STATUS}" ]; then
+				# Don't delete what we just published.
+				continue
+			fi
+			echo "Purging $file"
+			rm -f "$file"
+		done
 	done
 fi
 
