@@ -21,7 +21,7 @@ TRACKER=http://torrent.ubuntu.com:6969/announce
 DIST="${DIST:-warty}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
 
-if [ -z "$1" ]; then
+if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: publish-release DAILY-DATE TYPE [STATUS]' >&2
 	exit 1
 fi
