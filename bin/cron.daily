@@ -50,6 +50,9 @@ for arch in $ARCHES; do
 	./build.sh "$arch" || true
 done
 
+# Kludge to work around permission-handling problems elsewhere.
+chmod -R g+w "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
+
 echo "===== Producing installability report ====="
 date
 check-installable
