@@ -4,7 +4,7 @@ set -e
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 DIST=warty
 
-ARCHES='amd64 i386 powerpc'
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 DATE="$(date +%Y%m%d)${DATE_SUFFIX:+.$DATE_SUFFIX}"
 PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
