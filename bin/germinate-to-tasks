@@ -40,7 +40,7 @@ done
 # accidentally end up out of sync with the archive and break the
 # second-stage install.
 exec >"$TASKS_OUT/$DIST/override.$arch"
-for seed in desktop ship; do
+for seed in base desktop ship; do
 	for arch in $ARCHES; do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
