@@ -3,7 +3,7 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
-ARCHES='amd64 i386 powerpc' # temporary override
+export ARCHES='amd64 i386 powerpc' # temporary override
 
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 
