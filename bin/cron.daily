@@ -54,7 +54,7 @@ if [ -z "$DEBUG" ]; then
 	echo "===== Archiving debian-cd code ====="
 	date
 	cd "$CDIMAGE_ROOT"
-	tar cjvf www/code/debian-cd.tar.bz2 debian-cd
+	tar cjvf www/full/code/debian-cd.tar.bz2 debian-cd
 
 	echo "===== Triggering mirrors ====="
 	date
