@@ -40,7 +40,7 @@ for arch in $ARCHES; do
 done
 
 mkdir -p "$RELEASE_FULL/$DIST/$STATUS"
-mkdir -p "$RELEASE_SIMPLE/pool"
+mkdir -p "$RELEASE_SIMPLE/.pool"
 mkdir -p "$RELEASE_SIMPLE/$DIST"
 find "$RELEASE_SIMPLE/$DIST/" -type l -print0 | xargs -0r rm -f
 
@@ -55,8 +55,8 @@ for arch in $ARCHES; do
 		cp -a "$file" "$RELEASE_FULL/$DIST/$STATUS/$base"
 
 		ln -f "$RELEASE_FULL/$DIST/$STATUS/$base" \
-		      "$RELEASE_SIMPLE/pool/$base"
-		ln -s "../pool/$base" "$RELEASE_SIMPLE/$DIST/$basestatus"
+		      "$RELEASE_SIMPLE/.pool/$base"
+		ln -s "../.pool/$base" "$RELEASE_SIMPLE/$DIST/$basestatus"
 	done
 done
 
@@ -66,7 +66,7 @@ md5sum_directory () {
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL/$DIST/$STATUS"
-md5sum_directory 'simple tree pool' "$RELEASE_SIMPLE/pool"
-md5sum_directory "simple tree $DIST" "$RELEASE_SIMPLE/$DIST"
+md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE/.pool"
+md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE/$DIST"
 
 echo "Done! Remember to sync-auckland after checking that everything is OK."
