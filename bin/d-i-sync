@@ -1,8 +1,0 @@
-#! /bin/sh
-set -e
-
-cd /srv/cdimage.no-name-yet.com/from-debian
-
-for arch in i386 powerpc; do
-	rsync -aqz "ftp.uk.debian.org::debian/dists/sid/main/installer-$arch/" "installer-$arch/"
-done
