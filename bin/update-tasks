@@ -16,7 +16,7 @@ DATE="$1"
 
 TASK_MAIL="$(cat "$CDIMAGE_ROOT/etc/task-mail" 2>/dev/null || true)"
 if [ "$TASK_MAIL" ]; then
-	diff-tasks | mail -e -s "Task changes for $PROJECT $DIST on $DATE" \
+	diff-tasks | mail -e -s "Task changes for $CAPPROJECT $DIST on $DATE" \
 		$TASK_MAIL
 fi
 
