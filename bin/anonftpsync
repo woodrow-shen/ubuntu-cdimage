@@ -12,10 +12,12 @@ set -e
 # Don't forget:
 # chmod 744 anonftpsync
 
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+
 # TO is the destination for the base of the Debian mirror directory
 # (the dir that holds dists/ and ls-lR).
 
-TO=/srv/cdimage.no-name-yet.com/ftp
+TO="$CDIMAGE_ROOT/ftp"
 
 # RSYNC_HOST is the site you have chosen from the mirrors file.
 # (http://www.debian.org/mirror/list-full)
@@ -26,6 +28,10 @@ RSYNC_HOST=mirnyy.ubuntu.com
 # the mirrors file for the site you have chosen to mirror.
 
 RSYNC_DIR=ftp
+
+# This file may override with private rsync locations to avoid access
+# limits.
+. "$CDIMAGE_ROOT/etc/anonftpsync" || true
 
 # EXCLUDE is a list of parameters listing patterns that rsync will exclude.
 # The following example would exclude mostly everything:
@@ -69,7 +75,7 @@ LOCK="${TO}/Archive-Update-in-Progress-${HOSTNAME}"
 
 # Get in the right directory and set the umask to be group writable
 # 
-cd /srv/cdimage.no-name-yet.com/log
+cd "$CDIMAGE_ROOT/log"
 umask 002
 
 # Check to see if another sync is in progress
