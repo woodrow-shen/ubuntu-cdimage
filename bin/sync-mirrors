@@ -9,5 +9,6 @@ trigger () {
 	ssh -i "$SECRET/auckland" archvsync@"$1" sleep 1
 }
 
+trigger syowa.ubuntu.com
 trigger auckland
 trigger mirnyy.ubuntu.com
