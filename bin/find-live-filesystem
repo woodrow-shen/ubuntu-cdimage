@@ -41,7 +41,7 @@ case $ITEM in
 		case $PROJECT in
 			ubuntu)
 				case $ARCH in
-					amd64|i386)
+					i386)
 						: ;;
 					*)	exit 1 ;;
 				esac
