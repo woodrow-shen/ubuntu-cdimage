@@ -19,8 +19,8 @@ for arch in $ARCHES; do
 done
 
 # TheOpenCD goes on the amd64/i386 live CDs.
-if [ "$PROJECT" = ubuntu ] && [ "$DIST" = hoary ]; then
-	wget -nv http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz \
-		-O "$LIVE_OUT/i386.winfoss.tgz" || true
-	cp -a "$LIVE_OUT/i386.winfoss.tgz" "$LIVE_OUT/amd64.winfoss.tgz"
-fi
+for arch in $ARCHES; do
+	if winfoss="$(find-live-filesystem "$arch" winfoss)"; then
+		wget -nv "$winfoss" -O "$LIVE_OUT/$arch.winfoss.tgz"
+	fi
+done

@@ -37,8 +37,16 @@ case $ITEM in
 	manifest)
 		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
 		;;
+	winfoss)
+		[ "$PROJECT" = ubuntu ] || exit 1
+		[ "$DIST" = hoary ] || exit 1
+		[ "$ARCH" = amd64 ] || [ "$ARCH" = i386 ] || exit 1
+		echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+		;;
 	*)
 		echo "Unknown live filesystem item '$ITEM'" >&2
 		exit 1
 		;;
 esac
+
+exit 0
