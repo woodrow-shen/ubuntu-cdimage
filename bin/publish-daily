@@ -3,6 +3,7 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
+BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report"
 
 DIST="${DIST:-warty}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
@@ -22,6 +23,9 @@ for arch in $ARCHES; do
 	fi
 done
 if [ -d "$PUBLISH" ]; then
+	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
+		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
+	fi
 	cd "$PUBLISH"
 	md5sum "$DIST"-* > MD5SUMS
 	cd ..

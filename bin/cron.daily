@@ -40,6 +40,10 @@ for arch in $ARCHES; do
 	./build.sh "$arch" || true
 done
 
+echo "===== Producing installability report ====="
+date
+check-installable
+
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date

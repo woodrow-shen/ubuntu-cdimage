@@ -1,0 +1,29 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+BRITNEY="$CDIMAGE_ROOT/britney"
+
+DIST="${DIST:-warty}"
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
+
+IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/tmp}"
+
+mkemptydir () {
+	rm -rf "$1"
+	mkdir -p "$1"
+}
+
+mkemptydir "$BRITNEY/data/$DIST"
+for arch in $ARCHES; do
+	packages="$IMAGETOP/$DIST-$arch/CD1/dists/$DIST/main/binary-$arch/Packages.gz"
+	if [ -e "$packages" ]; then
+		zcat "$packages" > "$BRITNEY/data/$DIST/Packages_$arch"
+	else
+		echo "No Packages.gz for $DIST/$arch; not checking" >&2
+	fi
+done
+> "$BRITNEY/data/$DIST/Sources"
+
+mkemptydir "$BRITNEY/report"
+"$BRITNEY/rptprobs.sh" "$BRITNEY/data/$DIST" "$BRITNEY/report/${DIST}_probs.html" "$DIST"
