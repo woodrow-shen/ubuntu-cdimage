@@ -10,6 +10,11 @@ MIRROR="$CDIMAGE_ROOT/ftp"
 
 for seed in base ship supported; do
 	exec >"$seed-$DIST"
+	if [ "$seed" = supported ]; then
+		seedsource="$seed+build-depends"
+	else
+		seedsource="$seed"
+	fi
 	for arch in $ARCHES; do
 		echo "#ifdef ARCH_$arch"
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
