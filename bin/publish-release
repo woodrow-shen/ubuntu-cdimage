@@ -73,7 +73,7 @@ for arch in $ARCHES; do
 	fi
 
 	if [ "$TYPE" = install ]; then
-		for ext in list template jigdo iso.torrent; do
+		for ext in list template jigdo; do
 			# Copy, to make sure we have a canonical version of
 			# this.
 			cp -a "$DAILY/$baseplain.$ext" \
