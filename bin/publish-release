@@ -38,15 +38,28 @@ case $PROJECT in
 		SIMPLE_TREE=simple
 		FULL_TREE=full
 		TORRENT_TREE=torrent
-		CDPREFIX="$DIST"
 		;;
 	*)
 		SIMPLE_TREE="simple/$PROJECT"
 		FULL_TREE="full/$PROJECT"
 		TORRENT_TREE="torrent/$PROJECT"
-		CDPREFIX="$PROJECT-$DIST"
 		;;
 esac
+
+case $DIST in
+	warty)
+		VERSION=4.10
+		;;
+	hoary)
+		VERSION=5.04
+		;;
+	*)
+		echo "Unknown distribution: $DIST" >&2
+		exit 1
+		;;
+esac
+
+CDPREFIX="$PROJECT-$VERSION"
 
 case $OFFICIAL in
 	yes)
