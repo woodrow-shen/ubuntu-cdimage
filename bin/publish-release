@@ -119,23 +119,38 @@ for arch in $ARCHES; do
 	done
 
 	if [ "$TYPE" = install ]; then
-		if $PUBLISH_POOL; then
-			cp -a "$DAILY/$baseplain.template" \
-				"$RELEASE_SIMPLE_POOL/$basestatus.template"
-			sed "s/=$baseplain/=$basestatus/g" \
-				< "$DAILY/$baseplain.jigdo" \
-				> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
-		fi
-		if $PUBLISH_DIST; then
-			for ext in template jigdo; do
-				ln -s "../.pool/$basestatus.$ext" \
-					"$RELEASE_SIMPLE_DIST/$basestatus.$ext"
-			done
-		fi
-		if $PUBLISH_FULL; then
-			for ext in template jigdo; do
-				cp -a "$DAILY/$baseplain.$ext" \
-					"$RELEASE_FULL/$baseplain.$ext"
+		if [ -e "$DAILY/$baseplain.jigdo" ] && \
+		   [ -e "$DAILY/$baseplain.template" ]; then
+			if $PUBLISH_POOL; then
+				cp -a "$DAILY/$baseplain.template" \
+					"$RELEASE_SIMPLE_POOL/$basestatus.template"
+				sed "s/=$baseplain/=$basestatus/g" \
+					< "$DAILY/$baseplain.jigdo" \
+					> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
+			fi
+			if $PUBLISH_DIST; then
+				for ext in template jigdo; do
+					ln -s "../.pool/$basestatus.$ext" \
+						"$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+				done
+			fi
+			if $PUBLISH_FULL; then
+				for ext in template jigdo; do
+					cp -a "$DAILY/$baseplain.$ext" \
+						"$RELEASE_FULL/$baseplain.$ext"
+				done
+			fi
+		else
+			for ext in jigdo template; do
+				if $PUBLISH_POOL; then
+					rm -f "$RELEASE_SIMPLE_POOL/$basestatus.$ext"
+				fi
+				if $PUBLISH_DIST; then
+					rm -f "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+				fi
+				if $PUBLISH_FULL; then
+					rm -f "$RELEASE_FULL/$baseplain.$ext"
+				fi
 			done
 		fi
 	fi
