@@ -1,7 +1,9 @@
+PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
+
 # CD image cron jobs, run out of cjwatson's crontab.
-21 8 * * *	/srv/cdimage.no-name-yet.com/bin/cron.daily
-1 8 * * *	/srv/cdimage.no-name-yet.com/bin/cron.daily-live
-17 12 * * 2,6	/srv/cdimage.no-name-yet.com/bin/cron.dvd
-14 5 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily
-26 6 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily-live
-47 20 * * 1,5	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-dvd
+21 8 * * *	cron.daily
+1 8 * * *	cron.daily-live
+17 12 * * 2,6	cron.dvd
+14 5 * * *	cron.kubuntu-daily
+26 6 * * *	cron.kubuntu-daily-live
+47 20 * * 1,5	cron.kubuntu-dvd
