@@ -17,9 +17,6 @@ set -e
 
 TO=/srv/cdimage.no-name-yet.com/ftp
 
-RSYNC_USER=sounder
-export RSYNC_PASSWORD=oink
-
 # RSYNC_HOST is the site you have chosen from the mirrors file.
 # (http://www.debian.org/mirror/list-full)
 
@@ -89,7 +86,7 @@ rsync --recursive --links --hard-links --times --verbose --compress \
      --exclude "Archive-Update-in-Progress-${HOSTNAME}" \
      --exclude "project/trace/${HOSTNAME}" \
      $EXCLUDE \
-     $RSYNC_USER@$RSYNC_HOST::$RSYNC_DIR $TO > rsync.log 2>&1
+     $RSYNC_HOST::$RSYNC_DIR $TO > rsync.log 2>&1
 date -u > "${TO}/project/trace/${HOSTNAME}"
 
 # Note: if you don't have savelog, use any other log rotation facility, or
