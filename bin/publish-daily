@@ -54,6 +54,13 @@ for arch in $ARCHES; do
 		else
 			echo "No jigdo for $arch!" >&2
 		fi
+
+		# Live filesystem manifests
+		if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest" ]; then
+			echo "Publishing $arch live manifest ..."
+			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest" \
+			   "$PUBLISH/$DIST-$TYPE-$arch.manifest"
+		fi
 	else
 		echo "No CD for $arch!" >&2
 	fi

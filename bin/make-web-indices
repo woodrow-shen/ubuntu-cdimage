@@ -131,6 +131,9 @@ extensionstr () {
 		list)
 			echo 'file listing'
 			;;
+		manifest)
+			echo 'contents of live filesystem'
+			;;
 		template)
 			echo '<a href=\"http://atterer.net/jigdo/\">jigdo</a> template'
 			;;
@@ -231,7 +234,7 @@ EOF
 
 EOF
 
-		for extension in iso.torrent iso jigdo list template; do
+		for extension in iso.torrent iso jigdo list manifest template; do
 			if ! [ -e "$DIR/$CDPREFIX-$cdtype-$arch.$extension" ]; then
 				continue
 			fi
