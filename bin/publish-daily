@@ -15,9 +15,9 @@ for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
 		mkdir -p "$PUBLISH"
 		mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
-		   "$PUBLISH/$DIST-$arch-1.iso"
+		   "$PUBLISH/$DIST-$arch.iso"
 		mv "$CDOUT/$arch/$DIST-$arch-1.list" \
-		   "$PUBLISH/$DIST-$arch-1.list"
+		   "$PUBLISH/$DIST-$arch.list"
 	else
 		echo "No CD for $arch!" >&2
 	fi
