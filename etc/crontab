@@ -3,4 +3,4 @@
 1 8 * * *	/srv/cdimage.no-name-yet.com/bin/cron.daily-live
 17 12 * * 6	/srv/cdimage.no-name-yet.com/bin/cron.weekly-dvd
 14 5 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily
-1 6 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily-live
+26 6 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily-live
