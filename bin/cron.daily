@@ -6,7 +6,7 @@ DIST=warty
 
 ARCHES='amd64 i386 powerpc'
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
-DATE="$(date +%Y%m%d)"
+DATE="$(date +%Y%m%d)${DATE_SUFFIX:+.$DATE_SUFFIX}"
 PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
 
 CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
