@@ -31,16 +31,17 @@ echo "===== Germinating ====="
 date
 run-germinate
 
+echo "===== Generating new task lists ====="
+date
+germinate-to-tasks
+
 echo "===== Updating debian-installer task list ====="
 date
 update-udeb-list
 
 echo "===== Checking for other task changes ====="
-TASK_MAIL="$(cat "$CDIMAGE_ROOT/etc/task-mail" 2>/dev/null || true)"
-if [ "$TASK_MAIL" ]; then
-	diff-tasks | mail -e -s "Task changes for $DIST on $DATE" $TASK_MAIL
-fi
-update-tasks
+date
+update-tasks "$DATE"
 
 echo "===== Building Ubuntu daily CDs ====="
 date

@@ -7,15 +7,6 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 SCRATCH="$CDIMAGE_ROOT/scratch/tasks"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks"
 
-mkemptydir () {
-	rm -rf "$1"
-	mkdir -p "$1"
-}
-
-mkemptydir "$SCRATCH"
-cd "$SCRATCH"
-germinate-to-tasks
-
 for seed in base desktop ship supported; do
 	diff -u "$TASKS/$seed-$DIST" "$SCRATCH/$seed-$DIST" || true
 done

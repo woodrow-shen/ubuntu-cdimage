@@ -1,15 +1,23 @@
 #! /bin/sh
 
-# Outputs debian-cd task lists to the current directory.
+# Outputs debian-cd task lists to $CDIMAGE_ROOT/scratch/tasks/.
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 GERMINATE_OUT="$CDIMAGE_ROOT/scratch/germinate"
+TASKS_OUT="$CDIMAGE_ROOT/scratch/tasks"
 MIRROR="$CDIMAGE_ROOT/ftp"
 
+mkemptydir () {
+	rm -rf "$1"
+	mkdir -p "$1"
+}
+
+mkemptydir "$TASKS_OUT"
+
 for seed in base ship supported; do
-	exec >"$seed-$DIST"
+	exec >"$TASKS_OUT/$seed-$DIST"
 	if [ "$seed" = supported ]; then
 		seedsource="$seed+build-depends"
 	else
@@ -25,7 +33,7 @@ done
 
 # Handle Desktop separately, to make sure we don't accidentally end up out
 # of sync with the archive and break the second-stage install.
-exec >"desktop-$DIST"
+exec >"$TASKS_OUT/desktop-$DIST"
 for arch in $ARCHES; do
 	echo "#ifdef ARCH_$arch"
 	(zcat "$MIRROR/dists/$DIST/main/binary-$arch/Packages.gz";
