@@ -164,7 +164,7 @@ case $DIST in
 	hoary)
 		distversion=5.04
 		distfullname='Hoary Hedgehog'
-		distextra=' Preview'
+		distextra=' Release Candidate'
 		;;
 esac
 
