@@ -65,7 +65,7 @@ if [ -d "$PUBLISH" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
-	(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
+	(if cd "$PUBLISH/source"; then md5sum "$DIST"-*.iso > MD5SUMS; fi)
 	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/daily/current"
 else
 	echo "No CDs produced!" >&2
