@@ -3,13 +3,9 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
-
-mkemptydir () {
-	rm -rf "$1"
-	mkdir -p "$1"
-}
 
 case $DIST in
 	warty)

@@ -3,15 +3,11 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 BRITNEY="$CDIMAGE_ROOT/britney"
 
 IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/$PROJECT/tmp}"
-
-mkemptydir () {
-	rm -rf "$1"
-	mkdir -p "$1"
-}
 
 mkemptydir "$BRITNEY/data/$PROJECT/$DIST"
 for arch in $ARCHES; do

@@ -3,14 +3,10 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 DEBOOTSTRAP_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/debootstrap"
 MIRROR="$CDIMAGE_ROOT/ftp"
-
-mkemptydir () {
-	rm -rf "$1"
-	mkdir -p "$1"
-}
 
 mkemptydir "$DEBOOTSTRAP_OUT"
 for arch in $ARCHES; do

@@ -4,15 +4,11 @@
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
 TASKS_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
 MIRROR="$CDIMAGE_ROOT/ftp"
-
-mkemptydir () {
-	rm -rf "$1"
-	mkdir -p "$1"
-}
 
 mkemptydir "$TASKS_OUT/$DIST"
 
