@@ -17,7 +17,7 @@ for seed in base ship supported; do
 	fi
 	for arch in $ARCHES; do
 		echo "#ifdef ARCH_$arch"
-		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
+		< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1
 		echo "#endif /* ARCH_$arch */"
 	done
