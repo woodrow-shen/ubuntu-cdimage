@@ -197,19 +197,23 @@ done
 
 md5sum_directory () {
 	echo "MD5summing $1 ..."
-	rm -f "$2/MD5SUMS"
-	(cd "$2" && md5sum *.iso > MD5SUMS)
+	(cd "$2"
+	 if [ -f MD5SUMS ]; then grep -v "  $3-" MD5SUMS || true; fi
+	 md5sum "$3"-*.iso) | sort -k2 > "$2/MD5SUMS.new"
+	mv "$2/MD5SUMS.new" "$2/MD5SUMS"
 	sign-cdimage "$2/MD5SUMS"
 }
 
 if $PUBLISH_POOL; then
-	md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL"
+	md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL" \
+		"$DIST-${STATUS:+$STATUS-}$TYPE"
 fi
 if $PUBLISH_DIST; then
-	md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST"
+	md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST" \
+		"$DIST-${STATUS:+$STATUS-}$TYPE"
 fi
 if $PUBLISH_FULL; then
-	md5sum_directory 'full tree' "$RELEASE_FULL"
+	md5sum_directory 'full tree' "$RELEASE_FULL" "$DIST-$TYPE"
 fi
 
 echo "Done! Remember to sync-mirrors after checking that everything is OK."
