@@ -18,12 +18,12 @@ DATE="$1"
 PUBLISH="$CDIMAGE_ROOT/www/full/daily/$DATE"
 
 for arch in $ARCHES; do
-	if [ -e "$CDOUT/$arch/$DIST-install-$arch-1.raw" ]; then
+	if [ -e "$CDOUT/$arch/$DIST-install-$arch.raw" ]; then
 		echo "Publishing $arch ..."
 		mkdir -p "$PUBLISH"
-		mv "$CDOUT/$arch/$DIST-install-$arch-1.raw" \
+		mv "$CDOUT/$arch/$DIST-install-$arch.raw" \
 		   "$PUBLISH/$DIST-install-$arch.iso"
-		mv "$CDOUT/$arch/$DIST-install-$arch-1.list" \
+		mv "$CDOUT/$arch/$DIST-install-$arch.list" \
 		   "$PUBLISH/$DIST-install-$arch.list"
 
 		# Jigdo integration
