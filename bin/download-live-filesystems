@@ -1,0 +1,16 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
+
+LIVE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/live"
+
+mkemptydir "$LIVE_OUT"
+for arch in $ARCHES; do
+	wget -nv "$(find-live-filesystem "$arch" cloop)" \
+		-O "$LIVE_OUT/$ARCH.cloop"
+	wget -nv "$(find-live-filesystem "$arch" manifest)" \
+		-O "$LIVE_OUT/$ARCH.manifest" || true
+done
