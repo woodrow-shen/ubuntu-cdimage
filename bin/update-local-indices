@@ -1,7 +1,7 @@
 #! /bin/sh
 
 cd /srv/cdimage.no-name-yet.com/local/packages
-for arch in i386 powerpc; do
+for arch in amd64 i386 powerpc; do
 	find pool/local -name "*_$arch.deb" -o -name '*_all.deb' > "../database/dists/warty_local_binary-$arch.list"
 	find pool/local -name "*_$arch.udeb" -o -name '*_all.udeb' > "../database/dists/warty_local_debian-installer_binary-$arch.list"
 done
