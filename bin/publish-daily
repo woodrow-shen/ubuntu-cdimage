@@ -18,20 +18,20 @@ DATE="$1"
 PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
 
 for arch in $ARCHES; do
-	if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
+	if [ -e "$CDOUT/$arch/$DIST-install-$arch-1.raw" ]; then
 		mkdir -p "$PUBLISH"
-		mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
-		   "$PUBLISH/$DIST-$arch.iso"
-		mv "$CDOUT/$arch/$DIST-$arch-1.list" \
-		   "$PUBLISH/$DIST-$arch.list"
+		mv "$CDOUT/$arch/$DIST-install-$arch-1.raw" \
+		   "$PUBLISH/$DIST-install-$arch.iso"
+		mv "$CDOUT/$arch/$DIST-install-$arch-1.list" \
+		   "$PUBLISH/$DIST-install-$arch.list"
 
 		# Jigdo integration
-		if [ -e "$CDOUT/$arch/$DIST-$arch.jigdo" ]; then
+		if [ -e "$CDOUT/$arch/$DIST-install-$arch.jigdo" ]; then
 			echo "Publishing $arch jigdo ..."
-			mv "$CDOUT/$arch/$DIST-$arch.jigdo" \
-			   "$PUBLISH/$DIST-$arch.jigdo"
-			mv "$CDOUT/$arch/$DIST-$arch.template" \
-			   "$PUBLISH/$DIST-$arch.template"
+			mv "$CDOUT/$arch/$DIST-install-$arch.jigdo" \
+			   "$PUBLISH/$DIST-install-$arch.jigdo"
+			mv "$CDOUT/$arch/$DIST-install-$arch.template" \
+			   "$PUBLISH/$DIST-install-$arch.template"
 		else
 			echo "No jigdo for $arch!" >&2
 		fi
@@ -40,7 +40,7 @@ for arch in $ARCHES; do
 		echo "Creating $arch torrent ..."
 		btmakemetafile "$TRACKER" \
 			--comment "Ubuntu CD cdimage.ubuntu.com" \
-			"$PUBLISH/$DIST-$arch.iso" >/dev/null
+			"$PUBLISH/$DIST-install-$arch.iso" >/dev/null
 	else
 		echo "No CD for $arch!" >&2
 	fi
