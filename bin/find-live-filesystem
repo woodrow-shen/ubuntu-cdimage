@@ -38,9 +38,24 @@ case $ITEM in
 		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
 		;;
 	winfoss)
-		[ "$PROJECT" = ubuntu ] || exit 1
+		case $PROJECT in
+			ubuntu)
+				case $ARCH in
+					amd64|i386)
+						: ;;
+					*)	exit 1 ;;
+				esac
+				;;
+			kubuntu)
+				case $ARCH in
+					i386)
+						: ;;
+					*)	exit 1
+				esac
+				;;
+			*)	exit 1 ;;
+		esac
 		[ "$DIST" = hoary ] || exit 1
-		[ "$ARCH" = amd64 ] || [ "$ARCH" = i386 ] || exit 1
 		echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
 		;;
 	*)
