@@ -33,10 +33,7 @@ run-germinate
 
 echo "===== Updating debian-installer task list ====="
 date
-(cd "$CDIMAGE_ROOT/debian-cd"
- . CONF.sh
- cd tasks
- ../tools/generate_di_list)
+update-udeb-list
 
 echo "===== Checking for other task changes ====="
 TASK_MAIL="$(cat "$CDIMAGE_ROOT/etc/task-mail" 2>/dev/null || true)"
