@@ -16,6 +16,7 @@ set -e
 # number.
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+TRACKER=http://torrent.ubuntu.com:6969/announce
 
 DIST="${DIST:-warty}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
@@ -49,24 +50,47 @@ find "$RELEASE_SIMPLE_DIST/" -type l -print0 | xargs -0r rm -f
 echo "Constructing release trees ..."
 
 for arch in $ARCHES; do
+	echo "Copying CDs for $arch ..."
 	for cdtype in install live; do
-		if [ ! -e "$DAILY/$DIST-$cdtype-$arch.iso" ]; then
+		baseplain="$DIST-$cdtype-$arch"
+		basestatus="$DIST-$STATUS-$cdtype-$arch"
+
+		if [ ! -e "$DAILY/$baseplain.iso" ]; then
 			continue
 		fi
-		for ext in iso list template; do
-			baseplain="$DIST-$cdtype-$arch.$ext"
-			basestatus="$DIST-$STATUS-$cdtype-$arch.$ext"
 
-			# Copy, to make sure we have a canonical version of
-			# this.
-			cp -a "$DAILY/$baseplain" "$RELEASE_FULL/$baseplain"
-
-			ln -f "$RELEASE_FULL/$baseplain" \
-			      "$RELEASE_SIMPLE_POOL/$baseplain"
-			ln -s "../.pool/$baseplain" \
-			      "$RELEASE_SIMPLE_DIST/$basestatus"
-		done
+		# Copy, to make sure we have a canonical version of this.
+		cp -a "$DAILY/$baseplain.iso" "$RELEASE_FULL/$baseplain.iso"
+		ln -f "$RELEASE_FULL/$baseplain.iso" \
+		      "$RELEASE_SIMPLE_POOL/$baseplain.iso"
+		ln -s "../.pool/$baseplain.iso" \
+		      "$RELEASE_SIMPLE_DIST/$basestatus.iso"
 	done
+
+	baseplain="$DIST-install-$arch"
+	basestatus="$DIST-$STATUS-install-$arch"
+
+	for ext in list template jigdo iso.torrent; do
+		# Copy, to make sure we have a canonical version of this.
+		cp -a "$DAILY/$baseplain.$ext" "$RELEASE_FULL/$baseplain.$ext"
+		ln -f "$RELEASE_FULL/$baseplain.$ext" \
+		      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
+	done
+
+	for ext in list template; do
+		ln -s "../.pool/$baseplain.$ext" \
+		      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+	done
+
+	echo "Fixing Jigdo files for $arch ..."
+	sed "s/=$baseplain/=$basestatus/g" \
+		< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
+		> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
+
+	echo "Creating torrents for $arch ..."
+	btmakemetafile "$TRACKER" \
+		--comment "Ubuntu CD releases.ubuntu.com" \
+		"$RELEASE_SIMPLE_DIST/$basestatus.iso" >/dev/null
 done
 
 md5sum_directory () {
