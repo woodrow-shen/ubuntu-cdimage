@@ -1,6 +1,8 @@
 #! /bin/sh
 set -e
 
+umask 002
+
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 DIST=warty
 
