@@ -96,7 +96,7 @@ done
 md5sum_directory () {
 	echo "MD5summing $1 ..."
 	rm -f "$2/MD5SUMS"
-	(cd "$2" && md5sum * > MD5SUMS)
+	(cd "$2" && md5sum *.iso > MD5SUMS)
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL"
