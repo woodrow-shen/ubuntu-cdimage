@@ -10,7 +10,7 @@ DATE="$(next-build-date "$IMAGE_TYPE")"
 export PROJECT CAPPROJECT DIST ARCHES
 
 if [ -z "$DEBUG" ]; then
-	exec >"$CDIMAGE_ROOT/log/$IMAGE_TYPE-$DATE.log" 2>&1
+	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
 fi
 
 echo "===== Syncing $CAPPROJECT mirror ====="

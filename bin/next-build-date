@@ -5,7 +5,7 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 IMAGE_TYPE="${1:-daily}"
-STAMP="$CDIMAGE_ROOT/etc/.next-build-suffix-$IMAGE_TYPE"
+STAMP="$CDIMAGE_ROOT/etc/.next-build-suffix-$PROJECT-$IMAGE_TYPE"
 DATE="${DATE:-$(date +%Y%m%d)}"
 
 # TODO: race condition, need locking in cron.daily
