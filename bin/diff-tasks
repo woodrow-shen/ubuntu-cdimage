@@ -14,8 +14,7 @@ mkemptydir () {
 
 mkemptydir "$SCRATCH"
 cd "$SCRATCH"
-CF="$CDIMAGE_ROOT/debian-cd/CONF.sh" \
-	"$CDIMAGE_ROOT/debian-cd/tools/warty-update"
+germinate-to-tasks
 
 for seed in base desktop ship supported; do
 	diff -u "$TASKS/$seed-$DIST" "$SCRATCH/$seed-$DIST" || true

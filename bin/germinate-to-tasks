@@ -1,0 +1,30 @@
+#! /bin/sh
+
+# Outputs debian-cd task lists to the current directory.
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+GERMINATE_OUT="$CDIMAGE_ROOT/scratch/germinate"
+MIRROR="$CDIMAGE_ROOT/ftp"
+
+for seed in base ship supported; do
+	exec >"$seed-$DIST"
+	for arch in $ARCHES; do
+		echo "#ifdef ARCH_$arch"
+		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
+			tail -n +3 | head -n -2 | cut -d' ' -f1
+		echo "#endif /* ARCH_$arch */"
+	done
+done
+
+# Handle Desktop separately, to make sure we don't accidentally end up out
+# of sync with the archive and break the second-stage install.
+exec >"desktop-$DIST"
+for arch in $ARCHES; do
+	echo "#ifdef ARCH_$arch"
+	(zcat "$MIRROR/dists/$DIST/main/binary-$arch/Packages.gz";
+	 zcat "$MIRROR/dists/$DIST/restricted/binary-$arch/Packages.gz") |
+		grep-dctrl -nsPackage -FTask ubuntu-desktop | sort
+	echo "#endif /* ARCH_$arch */"
+done
