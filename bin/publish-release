@@ -206,7 +206,8 @@ fi
 if $PUBLISH_DIST; then
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST/$TYPE"
 	mkemptydir "$TORRENTS"
-	make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
+	make-torrents "$RELEASE_SIMPLE_DIST" \
+		"$CDPREFIX-${STATUS:+$STATUS-}$TYPE" releases.ubuntu.com
 fi
 if $PUBLISH_FULL; then
 	for dir in "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"/*; do
@@ -217,7 +218,7 @@ if $PUBLISH_FULL; then
 	done
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}/$TYPE"
 	mkemptydir "$TORRENTS"
-	make-torrents "$RELEASE_FULL" cdimage.ubuntu.com
+	make-torrents "$RELEASE_FULL" "$CDPREFIX-$TYPE" cdimage.ubuntu.com
 fi
 for arch in $ARCHES; do
 	if $PUBLISH_DIST; then

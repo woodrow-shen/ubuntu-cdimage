@@ -7,19 +7,21 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 TRACKER=http://torrent.ubuntu.com:6969/announce
 
 if [ -z "$1" ]; then
-	echo 'Usage: make-torrents DIRECTORY [TARGET_HOSTNAME]' >&2
+	echo 'Usage: make-torrents DIRECTORY CDPREFIX [TARGET_HOSTNAME]' >&2
 	echo 'TARGET_HOSTNAME is used in the metafile comment; it defaults' >&2
 	echo 'to cdimage.ubuntu.com.' >&2
 	exit 1
 fi
 DIRECTORY="$1"
-if [ "$2" ]; then
-	TARGET_HOSTNAME="$2"
+# $2 may be empty
+CDPREFIX="${2:+$2-}"
+if [ "$3" ]; then
+	TARGET_HOSTNAME="$3"
 else
 	TARGET_HOSTNAME=cdimage.ubuntu.com
 fi
 
-for image in "$DIRECTORY"/*.iso; do
+for image in "$DIRECTORY/$CDPREFIX"*.iso; do
 	[ -f "$image" ] || continue
 	echo "Creating torrent for $image ..."
 	btmakemetafile "$TRACKER" --comment "$CAPPROJECT CD $TARGET_HOSTNAME" \
