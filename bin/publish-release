@@ -1,0 +1,72 @@
+#! /bin/sh
+set -e
+
+# Publishing a release is a bit more complicated than publishing a daily. We
+# have two trees: simple and full. The simple tree is intended for smaller
+# mirrors and for ease of use by naïve end users. It contains a pool of
+# images (hardlinks into the full tree) and a tree per release of symlinks
+# into that pool with filenames that include the status of the image (e.g.
+# preview, sounder9, release).
+#
+# The full tree contains everything, and has a more complicated structure
+# that ordinary users ultimately shouldn't have to pay too much attention
+# to.
+#
+# Releases are always published based on a daily build. Nominate the version
+# number.
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+DAILY="$CDIMAGE_ROOT/www/full/daily"
+RELEASE_FULL="$CDIMAGE_ROOT/www/full/releases"
+RELEASE_SIMPLE="$CDIMAGE_ROOT/www/simple"
+
+DIST="${DIST:-warty}"
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+	echo 'Usage: publish-release DAILY-DATE STATUS' >&2
+	exit 1
+fi
+
+DATE="$1"
+STATUS="$2"
+
+# Sanity-check. There may be a live CD as well, but it's not yet required.
+for arch in $ARCHES; do
+	if [ ! -e "$DAILY/$DATE/$DIST-install-$arch.iso" ]; then
+		echo "No daily for $DIST $arch on $DATE!" >&2
+		exit 1
+	fi
+done
+
+mkdir -p "$RELEASE_FULL/$DIST/$STATUS"
+mkdir -p "$RELEASE_SIMPLE/pool"
+mkdir -p "$RELEASE_SIMPLE/$DIST"
+find "$RELEASE_SIMPLE/$DIST/" -type l -print0 | xargs -0r rm -f
+
+echo "Constructing release trees ..."
+
+for arch in $ARCHES; do
+	for file in "$DAILY/$DATE/$DIST"-*-"$arch".*; do
+		base="$(basename "$file")"
+		basestatus="$DIST-$STATUS-${base#$DIST-}"
+
+		# Copy, to make sure we have a canonical version of this.
+		cp -a "$file" "$RELEASE_FULL/$DIST/$STATUS/$base"
+
+		ln -f "$RELEASE_FULL/$DIST/$STATUS/$base" \
+		      "$RELEASE_SIMPLE/pool/$base"
+		ln -s "../pool/$base" "$RELEASE_SIMPLE/$DIST/$basestatus"
+	done
+done
+
+md5sum_directory () {
+	echo "MD5summing $1 ..."
+	md5sum "$2"/* > "$2"/MD5SUMS
+}
+
+md5sum_directory 'full tree' "$RELEASE_FULL/$DIST/$STATUS"
+md5sum_directory 'simple tree pool' "$RELEASE_SIMPLE/pool"
+md5sum_directory "simple tree $DIST" "$RELEASE_SIMPLE/$DIST"
+
+echo "Done! Remember to sync-auckland after checking that everything is OK."
