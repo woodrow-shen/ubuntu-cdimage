@@ -6,7 +6,6 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
 BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report"
-TRACKER=http://torrent.ubuntu.com:6969/announce
 
 if [ -z "$1" ]; then
 	echo 'Usage: publish-daily DATE' >&2
