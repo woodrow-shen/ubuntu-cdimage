@@ -1,0 +1,44 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+	echo 'Usage: find-live-filesystem ARCH cloop|manifest' >&2
+	exit 1
+fi
+ARCH="$1"
+ITEM="$2"
+
+case $ARCH in
+	amd64)
+		BUILDD=king.buildd
+		;;
+	i386)
+		BUILDD=terranova.buildd
+		;;
+	ia64)
+		BUILDD=weddell.buildd
+		;;
+	powerpc)
+		BUILDD=adare.buildd
+		;;
+	*)
+		echo "No live filesystem source known for $ARCH" >&2
+		exit 1
+		;;
+esac
+
+case $ITEM in
+	cloop)
+		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.cloop"
+		;;
+	manifest)
+		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
+		;;
+	*)
+		echo "Unknown live filesystem item '$ITEM'" >&2
+		exit 1
+		;;
+esac
