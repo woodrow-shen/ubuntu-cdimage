@@ -1,4 +1,4 @@
 #! /bin/sh
 
 DIST="${DIST:-hoary}"
-ARCHES="${ARCHES:-amd64 i386 powerpc}"
+ARCHES="${ARCHES:-amd64 i386 ia64 powerpc}"
