@@ -15,10 +15,13 @@ mkemptydir () {
 
 mkemptydir "$BRITNEY/data/$DIST"
 for arch in $ARCHES; do
-	packages="$IMAGETOP/$DIST-$arch/CD1/dists/$DIST/main/binary-$arch/Packages.gz"
-	if [ -e "$packages" ]; then
-		zcat "$packages" > "$BRITNEY/data/$DIST/Packages_$arch"
-	else
+	for component in main restricted; do
+		packages="$IMAGETOP/$DIST-$arch/CD1/dists/$DIST/$component/binary-$arch/Packages.gz"
+		if [ -e "$packages" ]; then
+			zcat "$packages" >> "$BRITNEY/data/$DIST/Packages_$arch"
+		fi
+	done
+	if [ ! -e "$BRITNEY/data/$DIST/Packages_$arch" ]; then
 		echo "No Packages.gz for $DIST/$arch; not checking" >&2
 	fi
 done
