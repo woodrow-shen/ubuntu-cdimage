@@ -18,6 +18,7 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: publish-release DAILY-SOURCE DAILY-DATE TYPE OFFICIAL [STATUS]' >&2

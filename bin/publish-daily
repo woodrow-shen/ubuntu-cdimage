@@ -3,6 +3,7 @@ set -e
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
 
 CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/debian-cd"
 BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT"
