@@ -198,7 +198,11 @@ if $PUBLISH_DIST; then
 			fi
 			echo "Purging $file"
 			rm -f "$file"
+			grep -v "  ${file##*/}\$" "$dir/MD5SUMS" \
+				> "$dir/MD5SUMS.new"
+			mv "$dir/MD5SUMS.new" "$dir/MD5SUMS"
 		done
+		sign-cdimage "$dir/MD5SUMS"
 	done
 fi
 
