@@ -16,4 +16,5 @@ trigger () {
 trigger archvsync syncproxy.ubuntu.com
 trigger archvsync auckland
 trigger archvsync mirnyy.ubuntu.com
+trigger archvsync frei.ubuntu.com
 trigger torrent orcadas.ubuntu.com
