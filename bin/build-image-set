@@ -48,7 +48,7 @@ cd "$CDIMAGE_ROOT/debian-cd"
 chmod -R g+w "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
 
 # temporarily turned off for live builds
-if [ -z "$LIVE" ]; then
+if [ -z "$CDIMAGE_LIVE" ]; then
 	echo "===== Producing installability report ====="
 	date
 	check-installable
