@@ -159,12 +159,22 @@ case $DIST in
 	warty)
 		distversion=4.10
 		distfullname='Warty Warthog'
-		distextra=
 		;;
 	hoary)
 		distversion=5.04
 		distfullname='Hoary Hedgehog'
+		;;
+esac
+
+case $CDPREFIX in
+	*-preview)
+		distextra=' Preview'
+		;;
+	*-rc)
 		distextra=' Release Candidate'
+		;;
+	*)
+		distextra=
 		;;
 esac
 
