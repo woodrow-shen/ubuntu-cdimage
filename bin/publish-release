@@ -22,21 +22,22 @@ DIST="${DIST:-warty}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
 
 if [ -z "$1" ]; then
-	echo 'Usage: publish-release DAILY-DATE [STATUS]' >&2
+	echo 'Usage: publish-release DAILY-DATE TYPE [STATUS]' >&2
 	exit 1
 fi
 
 DATE="$1"
-STATUS="$2"
+TYPE="$2"
+STATUS="$3"
 
 DAILY="$CDIMAGE_ROOT/www/full/daily/$DATE"
 RELEASE_FULL="$CDIMAGE_ROOT/www/full/releases/$DIST/${STATUS:-release}"
 RELEASE_SIMPLE_POOL="$CDIMAGE_ROOT/www/simple/.pool"
 RELEASE_SIMPLE_DIST="$CDIMAGE_ROOT/www/simple/$DIST"
 
-# Sanity-check. There may be a live CD as well, but it's not yet required.
+# Sanity-check.
 for arch in $ARCHES; do
-	if [ ! -e "$DAILY/$DIST-install-$arch.iso" ]; then
+	if [ ! -e "$DAILY/$DIST-$TYPE-$arch.iso" ]; then
 		echo "No daily for $DIST $arch on $DATE!" >&2
 		exit 1
 	fi
@@ -45,52 +46,51 @@ done
 mkdir -p "$RELEASE_FULL"
 mkdir -p "$RELEASE_SIMPLE_POOL"
 mkdir -p "$RELEASE_SIMPLE_DIST"
-find "$RELEASE_SIMPLE_DIST/" -type l -print0 | xargs -0r rm -f
+find "$RELEASE_SIMPLE_DIST/" -name "$DIST-$TYPE-*" -type l -print0 | xargs -0r rm -f
 
 echo "Constructing release trees ..."
 
 for arch in $ARCHES; do
-	echo "Copying CDs for $arch ..."
-	for cdtype in install live; do
-		baseplain="$DIST-$cdtype-$arch"
-		basestatus="$DIST-${STATUS:+$STATUS-}$cdtype-$arch"
+	echo "Copying $TYPE CDs for $arch ..."
 
-		if [ ! -e "$DAILY/$baseplain.iso" ]; then
-			continue
-		fi
+	baseplain="$DIST-$TYPE-$arch"
+	basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
 
-		# Copy, to make sure we have a canonical version of this.
-		cp -a "$DAILY/$baseplain.iso" "$RELEASE_FULL/$baseplain.iso"
-		ln -f "$RELEASE_FULL/$baseplain.iso" \
-		      "$RELEASE_SIMPLE_POOL/$baseplain.iso"
-		ln -s "../.pool/$baseplain.iso" \
-		      "$RELEASE_SIMPLE_DIST/$basestatus.iso"
-	done
+	if [ ! -e "$DAILY/$baseplain.iso" ]; then
+		continue
+	fi
 
-	baseplain="$DIST-install-$arch"
-	basestatus="$DIST-${STATUS:+$STATUS-}install-$arch"
+	# Copy, to make sure we have a canonical version of this.
+	cp -a "$DAILY/$baseplain.iso" "$RELEASE_FULL/$baseplain.iso"
+	ln -f "$RELEASE_FULL/$baseplain.iso" \
+	      "$RELEASE_SIMPLE_POOL/$baseplain.iso"
+	ln -s "../.pool/$baseplain.iso" \
+	      "$RELEASE_SIMPLE_DIST/$basestatus.iso"
 
-	for ext in list template jigdo iso.torrent; do
-		# Copy, to make sure we have a canonical version of this.
-		cp -a "$DAILY/$baseplain.$ext" "$RELEASE_FULL/$baseplain.$ext"
-		ln -f "$RELEASE_FULL/$baseplain.$ext" \
-		      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
-	done
+	if [ "$TYPE" = install ]; then
+		for ext in list template jigdo iso.torrent; do
+			# Copy, to make sure we have a canonical version of this.
+			cp -a "$DAILY/$baseplain.$ext" \
+			      "$RELEASE_FULL/$baseplain.$ext"
+			ln -f "$RELEASE_FULL/$baseplain.$ext" \
+			      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
+		done
 
-	for ext in list template; do
-		ln -s "../.pool/$baseplain.$ext" \
-		      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
-	done
+		for ext in list template; do
+			ln -s "../.pool/$baseplain.$ext" \
+			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+		done
 
-	echo "Fixing Jigdo files for $arch ..."
-	sed "s/=$baseplain/=$basestatus/g" \
-		< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
-		> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
+		echo "Fixing Jigdo files for $arch ..."
+		sed "s/=$baseplain/=$basestatus/g" \
+			< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
+			> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
 
-	echo "Creating torrents for $arch ..."
-	btmakemetafile "$TRACKER" \
-		--comment "Ubuntu CD releases.ubuntu.com" \
-		"$RELEASE_SIMPLE_DIST/$basestatus.iso" >/dev/null
+		echo "Creating torrents for $arch ..."
+		btmakemetafile "$TRACKER" \
+			--comment "Ubuntu CD releases.ubuntu.com" \
+			"$RELEASE_SIMPLE_DIST/$basestatus.iso" >/dev/null
+	fi
 done
 
 md5sum_directory () {
