@@ -51,8 +51,6 @@ for arch in $ARCHES; do
 			   "$PUBLISH/$DIST-$TYPE-$arch.jigdo"
 			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.template" \
 			   "$PUBLISH/$DIST-$TYPE-$arch.template"
-		else
-			echo "No jigdo for $arch!" >&2
 		fi
 
 		# Live filesystem manifests
