@@ -22,7 +22,8 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: publish-release DAILY-SOURCE DAILY-DATE TYPE OFFICIAL [STATUS]' >&2
-	echo 'OFFICIAL=yes to publish to releases.ubuntu.com, otherwise no.' >&2
+	echo 'OFFICIAL=yes to publish to releases.ubuntu.com, poolonly to pre-publish,' >&2
+	echo 'otherwise no.' >&2
 	exit 1
 fi
 
@@ -43,6 +44,28 @@ case $PROJECT in
 		;;
 esac
 
+case $OFFICIAL in
+	yes)
+		PUBLISH_DIST=:
+		PUBLISH_POOL=:
+		PUBLISH_FULL=false
+		;;
+	poolonly)
+		PUBLISH_DIST=false
+		PUBLISH_POOL=:
+		PUBLISH_FULL=false
+		;;
+	no)
+		PUBLISH_DIST=false
+		PUBLISH_POOL=false
+		PUBLISH_FULL=:
+		;;
+esac
+# Just to make sure ...
+if $PUBLISH_DIST; then
+	PUBLISH_POOL=:
+fi
+
 DAILY="$CDIMAGE_ROOT/www/$FULL_TREE/$SOURCE/$DATE"
 RELEASE_FULL="$CDIMAGE_ROOT/www/$FULL_TREE/releases/$DIST/${STATUS:-release}"
 RELEASE_SIMPLE_POOL="$CDIMAGE_ROOT/www/simple/.pool"
@@ -56,11 +79,14 @@ for arch in $ARCHES; do
 	fi
 done
 
-if [ "$OFFICIAL" = yes ]; then
+if $PUBLISH_POOL; then
 	mkdir -p "$RELEASE_SIMPLE_POOL"
+fi
+if $PUBLISH_DIST; then
 	mkdir -p "$RELEASE_SIMPLE_DIST"
 	find "$RELEASE_SIMPLE_DIST/" -name "$DIST-$TYPE-*" -type l -print0 | xargs -0r rm -f
-else
+fi
+if $PUBLISH_FULL; then
 	mkdir -p "$RELEASE_FULL"
 fi
 
@@ -78,30 +104,35 @@ for arch in $ARCHES; do
 
 	# Copy, to make sure we have a canonical version of this.
 	for ext in iso list; do
-		if [ "$OFFICIAL" = yes ]; then
+		if $PUBLISH_POOL; then
 			cp -a "$DAILY/$baseplain.$ext" \
 			      "$RELEASE_SIMPLE_POOL/$basestatus.$ext"
+		fi
+		if $PUBLISH_DIST; then
 			ln -s "../.pool/$basestatus.$ext" \
 			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
-		else
+		fi
+		if $PUBLISH_FULL; then
 			cp -a "$DAILY/$baseplain.$ext" \
 			      "$RELEASE_FULL/$baseplain.$ext"
 		fi
 	done
 
 	if [ "$TYPE" = install ]; then
-		if [ "$OFFICIAL" = yes ]; then
+		if $PUBLISH_POOL; then
 			cp -a "$DAILY/$baseplain.template" \
 				"$RELEASE_SIMPLE_POOL/$basestatus.template"
 			sed "s/=$baseplain/=$basestatus/g" \
 				< "$DAILY/$baseplain.jigdo" \
 				> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
-
+		fi
+		if $PUBLISH_DIST; then
 			for ext in template jigdo; do
 				ln -s "../.pool/$basestatus.$ext" \
 					"$RELEASE_SIMPLE_DIST/$basestatus.$ext"
 			done
-		else
+		fi
+		if $PUBLISH_FULL; then
 			for ext in template jigdo; do
 				cp -a "$DAILY/$baseplain.$ext" \
 					"$RELEASE_FULL/$baseplain.$ext"
@@ -111,43 +142,49 @@ for arch in $ARCHES; do
 
 	if [ "$TYPE" = live ] || [ "$TYPE" = dvd ]; then
 		# Copy, to make sure we have a canonical version of this.
-		if [ "$OFFICIAL" = yes ]; then
+		if $PUBLISH_POOL; then
 			cp -a "$DAILY/$baseplain.manifest" \
 			      "$RELEASE_SIMPLE_POOL/$basestatus.manifest"
+		fi
+		if $PUBLISH_DIST; then
 			ln -s "../.pool/$basestatus.manifest" \
 			      "$RELEASE_SIMPLE_DIST/$basestatus.manifest"
-		else
+		fi
+		if $PUBLISH_FULL; then
 			cp -a "$DAILY/$baseplain.manifest" \
 			      "$RELEASE_FULL/$baseplain.manifest"
 		fi
 	fi
 
-	if [ "$OFFICIAL" = yes ]; then
+	if $PUBLISH_DIST; then
 		make-web-indices "$RELEASE_SIMPLE_DIST" "$DIST${STATUS:+-$STATUS}"
-	else
+	fi
+	if $PUBLISH_FULL; then
 		make-web-indices "$RELEASE_FULL" "$DIST"
 	fi
 done
 
 # Create and publish torrents.
-if [ "$OFFICIAL" = yes ]; then
+if $PUBLISH_DIST; then
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST"
 	make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
-else
+fi
+if $PUBLISH_FULL; then
 	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}"
 	make-torrents "$RELEASE_FULL" cdimage.ubuntu.com
 fi
 mkemptydir "$TORRENTS"
 for arch in $ARCHES; do
-	if [ "$OFFICIAL" = yes ]; then
+	if $PUBLISH_DIST; then
 		basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
 		[ -e "$RELEASE_SIMPLE_DIST/$basestatus.iso" ] || continue
 		ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso" \
 		      "$TORRENTS/$basestatus.iso"
 		ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso.torrent" \
 		      "$TORRENTS/$basestatus.iso.torrent"
-	else
+	fi
+	if $PUBLISH_FULL; then
 		baseplain="$DIST-$TYPE-$arch"
 		[ -e "$RELEASE_FULL/$baseplain.iso" ] || continue
 		ln -f "$RELEASE_FULL/$baseplain.iso" \
@@ -164,10 +201,13 @@ md5sum_directory () {
 	sign-cdimage "$2/MD5SUMS"
 }
 
-if [ "$OFFICIAL" = yes ]; then
+if $PUBLISH_POOL; then
 	md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL"
+fi
+if $PUBLISH_DIST; then
 	md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST"
-else
+fi
+if $PUBLISH_FULL; then
 	md5sum_directory 'full tree' "$RELEASE_FULL"
 fi
 
