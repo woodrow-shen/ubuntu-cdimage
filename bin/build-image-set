@@ -15,10 +15,6 @@ if [ -z "$DEBUG" ]; then
 	exec >"$CDIMAGE_ROOT/log/$IMAGE_TYPE-$DATE.log" 2>&1
 fi
 
-if [ "$IMAGE_TYPE" = weekly-dvd ]; then
-	export DVD=1
-fi
-
 echo "===== Syncing Ubuntu mirror ====="
 date
 anonftpsync
