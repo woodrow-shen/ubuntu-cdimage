@@ -35,10 +35,13 @@ titlecase () {
 cdtypestr () {
 	case $1 in
 		install)
-			echo 'installation'
+			echo 'installation CD'
 			;;
 		live)
-			echo 'live'
+			echo 'live CD'
+			;;
+		dvd)
+			echo 'DVD'
 			;;
 		*)
 			echo "Unknown CD type $1!" >&2
@@ -56,6 +59,13 @@ EOF
 		live)
 			cat <<EOF
 The live CD allows you to try $CAPPROJECT without changing your computer at all.
+EOF
+			;;
+		dvd)
+			cat <<EOF
+The DVD allows you either to install $CAPPROJECT permanently on a computer, or
+(by entering 'live' at the boot prompt) to try $CAPPROJECT without changing
+your computer at all.
 EOF
 			;;
 		*)
@@ -175,12 +185,12 @@ cat <<EOF > "$HEADER"
 
 <h1>$CAPPROJECT $distversion ($distfullname)$distextra</h1>
 
-<h2>Select a CD</h2>
+<h2>Select an image</h2>
 
 EOF
 
 cdtypecount=0
-for cdtype in install live; do
+for cdtype in install live dvd; do
 	if find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
 		cdtypecount="$(($cdtypecount + 1))"
 	fi
@@ -188,18 +198,18 @@ done
 
 if [ "$cdtypecount" -gt 1 ]; then
 	cat <<EOF >> "$HEADER"
-<p>$CAPPROJECT is distributed on $(count "$cdtypecount") types of CDs described below.</p>
+<p>$CAPPROJECT is distributed on $(count "$cdtypecount") types of images described below.</p>
 
 EOF
 fi
 
-for cdtype in install live; do
+for cdtype in install live dvd; do
 	if ! find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
 		continue
 	fi
 
 	cat <<EOF >> "$HEADER"
-<h3>$(cdtypestr "$cdtype" | titlecase) CD</h3>
+<h3>$(cdtypestr "$cdtype" | titlecase)</h3>
 
 <p>$(cdtypedesc "$cdtype")
 EOF
@@ -213,11 +223,11 @@ EOF
 
 	if [ "$archcount" -eq 1 ]; then
 		cat <<EOF >> "$HEADER"
-There is one CD available:</p>
+There is one image available:</p>
 EOF
 	else
 		cat <<EOF >> "$HEADER"
-There are $(count "$archcount") CDs available, each for a different type of computer:</p>
+There are $(count "$archcount") images available, each for a different type of computer:</p>
 EOF
 	fi
 
@@ -232,7 +242,7 @@ EOF
 		fi
 
 		cat <<EOF >> "$HEADER"
-<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype") CD</a>
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype")</a>
 
 <dd>$(archdesc "$arch")</dd>
 
@@ -243,7 +253,7 @@ EOF
 				continue
 			fi
 
-			echo "AddDescription \"$(cdtypestr "$cdtype" | titlecase) CD for $(archstr "$arch") computers ($(extensionstr "$extension"))\" $CDPREFIX-$cdtype-$arch.$extension" >> "$HTACCESS"
+			echo "AddDescription \"$(cdtypestr "$cdtype" | titlecase) for $(archstr "$arch") computers ($(extensionstr "$extension"))\" $CDPREFIX-$cdtype-$arch.$extension" >> "$HTACCESS"
 		done
 	done
 
