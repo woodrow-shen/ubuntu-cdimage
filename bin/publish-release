@@ -98,7 +98,7 @@ for arch in $ARCHES; do
 
 			echo "Creating torrents for $arch ..."
 			btmakemetafile "$TRACKER" \
-				--comment "Ubuntu CD releases.ubuntu.com" \
+				--comment "$CAPPROJECT CD releases.ubuntu.com" \
 				"$RELEASE_SIMPLE_DIST/$basestatus.iso" \
 				>/dev/null
 		fi

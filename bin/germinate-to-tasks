@@ -1,12 +1,12 @@
 #! /bin/sh
 
-# Outputs debian-cd task lists to $CDIMAGE_ROOT/scratch/tasks/.
+# Outputs debian-cd task lists to $CDIMAGE_ROOT/scratch/$PROJECT/tasks/.
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-GERMINATE_OUT="$CDIMAGE_ROOT/scratch/germinate"
-TASKS_OUT="$CDIMAGE_ROOT/scratch/tasks"
+GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
+TASKS_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
 MIRROR="$CDIMAGE_ROOT/ftp"
 
 mkemptydir () {

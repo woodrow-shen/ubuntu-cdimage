@@ -1,5 +1,7 @@
 #! /bin/sh
 
+PROJECT="${PROJECT:-ubuntu}"
+CAPPROJECT="${CAPPROJECT:-Ubuntu}"
 DIST="${DIST:-hoary}"
 ARCHES="${ARCHES:-amd64 i386 ia64 powerpc}"
 

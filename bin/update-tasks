@@ -4,8 +4,8 @@ set -e
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-SCRATCH="$CDIMAGE_ROOT/scratch/tasks"
-TASKS="$CDIMAGE_ROOT/debian-cd/tasks"
+SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
+TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
 if [ -z "$1" ]; then
 	echo 'Usage: update-tasks DATE' >&2

@@ -7,13 +7,13 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 IMAGE_TYPE="${1:-daily}"
 DATE="$(next-build-date "$IMAGE_TYPE")"
 
-export DIST ARCHES
+export PROJECT CAPPROJECT DIST ARCHES
 
 if [ -z "$DEBUG" ]; then
 	exec >"$CDIMAGE_ROOT/log/$IMAGE_TYPE-$DATE.log" 2>&1
 fi
 
-echo "===== Syncing Ubuntu mirror ====="
+echo "===== Syncing $CAPPROJECT mirror ====="
 date
 anonftpsync
 
@@ -37,7 +37,7 @@ echo "===== Checking for other task changes ====="
 date
 update-tasks "$DATE"
 
-echo "===== Building Ubuntu daily CDs ====="
+echo "===== Building $CAPPROJECT daily CDs ====="
 date
 cd "$CDIMAGE_ROOT/debian-cd"
 ./build_all.sh || true

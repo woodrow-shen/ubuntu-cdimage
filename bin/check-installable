@@ -6,26 +6,26 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 BRITNEY="$CDIMAGE_ROOT/britney"
 
-IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/tmp}"
+IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/$PROJECT/tmp}"
 
 mkemptydir () {
 	rm -rf "$1"
 	mkdir -p "$1"
 }
 
-mkemptydir "$BRITNEY/data/$DIST"
+mkemptydir "$BRITNEY/data/$PROJECT/$DIST"
 for arch in $ARCHES; do
 	for component in main restricted; do
 		packages="$IMAGETOP/$DIST-$arch/CD1/dists/$DIST/$component/binary-$arch/Packages.gz"
 		if [ -e "$packages" ]; then
-			zcat "$packages" >> "$BRITNEY/data/$DIST/Packages_$arch"
+			zcat "$packages" >> "$BRITNEY/data/$PROJECT/$DIST/Packages_$arch"
 		fi
 	done
-	if [ ! -e "$BRITNEY/data/$DIST/Packages_$arch" ]; then
+	if [ ! -e "$BRITNEY/data/$PROJECT/$DIST/Packages_$arch" ]; then
 		echo "No Packages.gz for $DIST/$arch; not checking" >&2
 	fi
 done
-> "$BRITNEY/data/$DIST/Sources"
+> "$BRITNEY/data/$PROJECT/$DIST/Sources"
 
-mkemptydir "$BRITNEY/report"
-"$BRITNEY/rptprobs.sh" "$BRITNEY/data/$DIST" "$BRITNEY/report/${DIST}_probs.html" "$DIST"
+mkemptydir "$BRITNEY/report/$PROJECT"
+"$BRITNEY/rptprobs.sh" "$BRITNEY/data/$PROJECT/$DIST" "$BRITNEY/report/$PROJECT/${DIST}_probs.html" "$CAPPROJECT $DIST"

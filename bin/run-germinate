@@ -4,7 +4,7 @@ set -e
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-GERMINATE_OUT="$CDIMAGE_ROOT/scratch/germinate"
+GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
 
 mkemptydir () {
 	rm -rf "$1"
@@ -20,6 +20,16 @@ case $DIST in
 		;;
 esac
 
+case $PROJECT in
+	ubuntu)
+		# for legacy purposes
+		GERMINATE_SEED_DIST="$DIST"
+		;;
+	*)
+		GERMINATE_SEED_DIST="$PROJECT-$DIST"
+		;;
+esac
+
 for arch in $ARCHES; do
 	echo "Germinating for $DIST/$arch ..."
 	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
@@ -27,5 +37,5 @@ for arch in $ARCHES; do
 	if [ "$GERMINATE_HINTS" ] && [ -f "$GERMINATE_HINTS" ]; then
 		cp -a "$GERMINATE_HINTS" hints
 	fi
-	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$CDIMAGE_ROOT/ftp/" --seed-dist "$DIST" --dist "$GERMINATE_DISTS" --components main,restricted --arch "$arch" --no-rdepends
+	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$CDIMAGE_ROOT/ftp/" --seed-dist "$GERMINATE_SEED_DIST" --dist "$GERMINATE_DISTS" --components main,restricted --arch "$arch" --no-rdepends
 done
