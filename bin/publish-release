@@ -34,9 +34,11 @@ STATUS="$5"
 case $PROJECT in
 	ubuntu)
 		FULL_TREE=full
+		TORRENT_TREE=torrent
 		;;
 	*)
 		FULL_TREE="full/$PROJECT"
+		TORRENT_TREE="torrent/$PROJECT"
 		;;
 esac
 
@@ -130,7 +132,33 @@ for arch in $ARCHES; do
 	fi
 done
 
-make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
+# Create and publish torrents.
+if [ "$OFFICIAL" = yes ]; then
+	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST"
+	make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
+else
+	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"
+	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}"
+	make-torrents "$RELEASE_FULL" cdimage.ubuntu.com
+fi
+mkemptydir "$TORRENTS"
+for arch in $ARCHES; do
+	if [ "$OFFICIAL" = yes ]; then
+		basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
+		[ -e "$RELEASE_SIMPLE_DIST/$basestatus.iso" ] || continue
+		ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso" \
+		      "$TORRENTS/$basestatus.iso"
+		ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso.torrent" \
+		      "$TORRENTS/$basestatus.iso.torrent"
+	else
+		baseplain="$DIST-$TYPE-$arch"
+		[ -e "$RELEASE_FULL/$baseplain.iso" ] || continue
+		ln -f "$RELEASE_FULL/$baseplain.iso" \
+		      "$TORRENTS/$baseplain.iso"
+		ln -f "$RELEASE_FULL/$baseplain.iso.torrent" \
+		      "$TORRENTS/$baseplain.iso.torrent"
+	fi
+done
 
 md5sum_directory () {
 	echo "MD5summing $1 ..."

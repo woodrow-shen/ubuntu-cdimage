@@ -18,9 +18,11 @@ IMAGE_TYPE="${2:-daily}"
 case $PROJECT in
 	ubuntu)
 		FULL_TREE=full
+		TORRENT_TREE=torrent
 		;;
 	*)
 		FULL_TREE="full/$PROJECT"
+		TORRENT_TREE="torrent/$PROJECT"
 		;;
 esac
 
@@ -89,6 +91,20 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 done
 
 if [ -d "$PUBLISH" ]; then
+	# Create and publish torrents.
+	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE"
+	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE/$DATE"
+	mkemptydir "$TORRENTS"
+	make-torrents "$PUBLISH" cdimage.ubuntu.com
+	for arch in $ARCHES; do
+		if [ -e "$PUBLISH/$DIST-$TYPE-$arch.iso" ]; then
+			ln -f "$PUBLISH/$DIST-$TYPE-$arch.iso" \
+				"$TORRENTS/$DIST-$TYPE-$arch.iso"
+			ln -f "$PUBLISH/$DIST-$TYPE-$arch.iso.torrent" \
+				"$TORRENTS/$DIST-$TYPE-$arch.iso.torrent"
+		fi
+	done
+
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
