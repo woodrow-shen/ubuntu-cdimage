@@ -1,2 +1,7 @@
 #! /bin/sh
-ssh -i /srv/cdimage.no-name-yet.com/secret/auckland archvsync@auckland sleep 1
+
+SECRET=/srv/cdimage.no-name-yet.com/secret
+if [ -d "$HOME/secret" ]; then
+    SECRET="$HOME/secret"
+fi
+ssh -i "$SECRET/auckland" archvsync@auckland sleep 1
