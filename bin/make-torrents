@@ -20,8 +20,8 @@ else
 fi
 
 for image in "$DIRECTORY"/*.iso; do
-	[ -f "$IMAGE" ] || continue
+	[ -f "$image" ] || continue
 	echo "Creating torrent for $image ..."
 	btmakemetafile "$TRACKER" --comment "$CAPPROJECT CD $TARGET_HOSTNAME" \
-		"$IMAGE" >/dev/null
+		"$image" >/dev/null
 done
