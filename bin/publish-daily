@@ -69,7 +69,7 @@ if [ -d "$PUBLISH" ]; then
 	if [ -d "$PUBLISH/source" ]; then
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
 	fi
-	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/daily/current"
+	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
 else
 	echo "No CDs produced!" >&2
 fi
