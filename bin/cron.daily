@@ -7,9 +7,8 @@ DIST=warty
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 DATE="$(date +%Y%m%d)${DATE_SUFFIX:+.$DATE_SUFFIX}"
-PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
 
-CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
+export DIST ARCHES
 
 if [ -z "$DEBUG" ]; then
 	exec >"$CDIMAGE_ROOT/log/daily-$DATE.log" 2>&1
@@ -44,25 +43,7 @@ done
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date
-	for arch in $ARCHES; do
-		if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
-			mkdir -p "$PUBLISH"
-			mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
-			   "$PUBLISH/$DIST-$arch-1.iso"
-			mv "$CDOUT/$arch/$DIST-$arch-1.list" \
-			   "$PUBLISH/$DIST-$arch-1.list"
-		else
-			echo "No CD for $arch!" >&2
-		fi
-	done
-	if [ -d "$PUBLISH" ]; then
-		cd "$PUBLISH"
-		md5sum "$DIST"-* > MD5SUMS
-		cd ..
-		ln -nsf "$DATE" current
-	else
-		echo "No CDs produced!" >&2
-	fi
+	publish-daily "$DATE"
 
 	echo "===== Archiving debian-cd code ====="
 	date

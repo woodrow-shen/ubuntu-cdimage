@@ -1,0 +1,31 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
+
+DIST="${DIST:-warty}"
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
+
+DATE="$1"
+PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
+
+for arch in $ARCHES; do
+	if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
+		mkdir -p "$PUBLISH"
+		mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
+		   "$PUBLISH/$DIST-$arch-1.iso"
+		mv "$CDOUT/$arch/$DIST-$arch-1.list" \
+		   "$PUBLISH/$DIST-$arch-1.list"
+	else
+		echo "No CD for $arch!" >&2
+	fi
+done
+if [ -d "$PUBLISH" ]; then
+	cd "$PUBLISH"
+	md5sum "$DIST"-* > MD5SUMS
+	cd ..
+	ln -nsf "$DATE" current
+else
+	echo "No CDs produced!" >&2
+fi
