@@ -21,13 +21,15 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 TRACKER=http://torrent.ubuntu.com:6969/announce
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-	echo 'Usage: publish-release DAILY-DATE TYPE [STATUS]' >&2
+	echo 'Usage: publish-release DAILY-DATE TYPE OFFICIAL [STATUS]' >&2
+	echo 'OFFICIAL=yes to publish to releases.ubuntu.com, otherwise no.' >&2
 	exit 1
 fi
 
 DATE="$1"
 TYPE="$2"
-STATUS="$3"
+OFFICIAL="$3"
+STATUS="$4"
 
 DAILY="$CDIMAGE_ROOT/www/full/daily/$DATE"
 RELEASE_FULL="$CDIMAGE_ROOT/www/full/releases/$DIST/${STATUS:-release}"
@@ -43,9 +45,11 @@ for arch in $ARCHES; do
 done
 
 mkdir -p "$RELEASE_FULL"
-mkdir -p "$RELEASE_SIMPLE_POOL"
-mkdir -p "$RELEASE_SIMPLE_DIST"
-find "$RELEASE_SIMPLE_DIST/" -name "$DIST-$TYPE-*" -type l -print0 | xargs -0r rm -f
+if [ "$OFFICIAL" = yes ]; then
+	mkdir -p "$RELEASE_SIMPLE_POOL"
+	mkdir -p "$RELEASE_SIMPLE_DIST"
+	find "$RELEASE_SIMPLE_DIST/" -name "$DIST-$TYPE-*" -type l -print0 | xargs -0r rm -f
+fi
 
 echo "Constructing release trees ..."
 
@@ -61,34 +65,42 @@ for arch in $ARCHES; do
 
 	# Copy, to make sure we have a canonical version of this.
 	cp -a "$DAILY/$baseplain.iso" "$RELEASE_FULL/$baseplain.iso"
-	ln -f "$RELEASE_FULL/$baseplain.iso" \
-	      "$RELEASE_SIMPLE_POOL/$baseplain.iso"
-	ln -s "../.pool/$baseplain.iso" \
-	      "$RELEASE_SIMPLE_DIST/$basestatus.iso"
+	if [ "$OFFICIAL" = yes ]; then
+		ln -f "$RELEASE_FULL/$baseplain.iso" \
+		      "$RELEASE_SIMPLE_POOL/$baseplain.iso"
+		ln -s "../.pool/$baseplain.iso" \
+		      "$RELEASE_SIMPLE_DIST/$basestatus.iso"
+	fi
 
 	if [ "$TYPE" = install ]; then
 		for ext in list template jigdo iso.torrent; do
-			# Copy, to make sure we have a canonical version of this.
+			# Copy, to make sure we have a canonical version of
+			# this.
 			cp -a "$DAILY/$baseplain.$ext" \
 			      "$RELEASE_FULL/$baseplain.$ext"
-			ln -f "$RELEASE_FULL/$baseplain.$ext" \
-			      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
+			if [ "$OFFICIAL" = yes ]; then
+				ln -f "$RELEASE_FULL/$baseplain.$ext" \
+				      "$RELEASE_SIMPLE_POOL/$baseplain.$ext"
+			fi
 		done
 
-		for ext in list template; do
-			ln -s "../.pool/$baseplain.$ext" \
-			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
-		done
+		if [ "$OFFICIAL" = yes ]; then
+			for ext in list template; do
+				ln -s "../.pool/$baseplain.$ext" \
+				      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+			done
 
-		echo "Fixing Jigdo files for $arch ..."
-		sed "s/=$baseplain/=$basestatus/g" \
-			< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
-			> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
+			echo "Fixing Jigdo files for $arch ..."
+			sed "s/=$baseplain/=$basestatus/g" \
+				< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
+				> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
 
-		echo "Creating torrents for $arch ..."
-		btmakemetafile "$TRACKER" \
-			--comment "Ubuntu CD releases.ubuntu.com" \
-			"$RELEASE_SIMPLE_DIST/$basestatus.iso" >/dev/null
+			echo "Creating torrents for $arch ..."
+			btmakemetafile "$TRACKER" \
+				--comment "Ubuntu CD releases.ubuntu.com" \
+				"$RELEASE_SIMPLE_DIST/$basestatus.iso" \
+				>/dev/null
+		fi
 	fi
 done
 
@@ -99,7 +111,9 @@ md5sum_directory () {
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL"
-md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL"
-md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST"
+if [ "$OFFICIAL" = yes ]; then
+	md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL"
+	md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST"
+fi
 
 echo "Done! Remember to sync-mirrors after checking that everything is OK."
