@@ -1,0 +1,31 @@
+#! /bin/sh
+set -e
+
+# Execute a subsidiary command in the context of a given project.
+
+case $1 in
+	ubuntu)
+		export PROJECT=ubuntu
+		export CAPPROJECT=Ubuntu
+		;;
+	kubuntu)
+		export PROJECT=kubuntu
+		export CAPPROJECT=Kubuntu
+		;;
+	*)
+		cat <<EOF >&2
+Usage: for-project PROJECT [COMMAND ARGS...]
+Recognised projects:
+  ubuntu
+  kubuntu
+EOF
+		exit 1
+		;;
+esac
+shift
+
+if [ $# -eq 0 ]; then
+	exec "${SHELL:-/bin/sh}" -i
+else
+	exec "$@"
+fi
