@@ -5,3 +5,5 @@ ARCHES="${ARCHES:-amd64 i386 ia64 powerpc}"
 
 GNUPG_DIR="$CDIMAGE_ROOT/secret/dot-gnupg"
 SIGNING_KEYID=FBB75451
+
+umask 002
