@@ -18,9 +18,13 @@ elif grep -qs "^$DATE:" "$STAMP"; then
 fi
 
 if [ "$SUFFIX" ]; then
-	echo "$DATE:$(($SUFFIX + 1))" > "$STAMP"
+	if [ -z "$DEBUG" ]; then
+		echo "$DATE:$(($SUFFIX + 1))" > "$STAMP"
+	fi
 	echo "$DATE.$SUFFIX"
 else
-	echo "$DATE:1" > "$STAMP"
+	if [ -z "$DEBUG" ]; then
+		echo "$DATE:1" > "$STAMP"
+	fi
 	echo "$DATE"
 fi
