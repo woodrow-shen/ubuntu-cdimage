@@ -38,11 +38,13 @@ case $PROJECT in
 		SIMPLE_TREE=simple
 		FULL_TREE=full
 		TORRENT_TREE=torrent
+		CDPREFIX="$DIST"
 		;;
 	*)
 		SIMPLE_TREE="simple/$PROJECT"
 		FULL_TREE="full/$PROJECT"
 		TORRENT_TREE="torrent/$PROJECT"
+		CDPREFIX="$PROJECT-$DIST"
 		;;
 esac
 
@@ -86,7 +88,7 @@ if $PUBLISH_POOL; then
 fi
 if $PUBLISH_DIST; then
 	mkdir -p "$RELEASE_SIMPLE_DIST"
-	find "$RELEASE_SIMPLE_DIST/" -name "$DIST-$TYPE-*" -type l -print0 | xargs -0r rm -f
+	find "$RELEASE_SIMPLE_DIST/" -name "$CDPREFIX-$TYPE-*" -type l -print0 | xargs -0r rm -f
 fi
 if $PUBLISH_FULL; then
 	mkdir -p "$RELEASE_FULL"
@@ -97,17 +99,17 @@ echo "Constructing release trees ..."
 for arch in $ARCHES; do
 	echo "Copying $TYPE CDs for $arch ..."
 
-	baseplain="$DIST-$TYPE-$arch"
-	basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
+	baseplain="$CDPREFIX-$TYPE-$arch"
+	basestatus="$CDPREFIX-${STATUS:+$STATUS-}$TYPE-$arch"
 
-	if [ ! -e "$DAILY/$baseplain.iso" ]; then
+	if [ ! -e "$DAILY/$DIST-$TYPE-$arch.iso" ]; then
 		continue
 	fi
 
 	# Copy, to make sure we have a canonical version of this.
 	for ext in iso list; do
 		if $PUBLISH_POOL; then
-			cp -a "$DAILY/$baseplain.$ext" \
+			cp -a "$DAILY/$DIST-$TYPE-$arch.$ext" \
 			      "$RELEASE_SIMPLE_POOL/$basestatus.$ext"
 		fi
 		if $PUBLISH_DIST; then
@@ -115,19 +117,19 @@ for arch in $ARCHES; do
 			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
 		fi
 		if $PUBLISH_FULL; then
-			cp -a "$DAILY/$baseplain.$ext" \
+			cp -a "$DAILY/$DIST-$TYPE-$arch.$ext" \
 			      "$RELEASE_FULL/$baseplain.$ext"
 		fi
 	done
 
 	if [ "$TYPE" = install ]; then
-		if [ -e "$DAILY/$baseplain.jigdo" ] && \
-		   [ -e "$DAILY/$baseplain.template" ]; then
+		if [ -e "$DAILY/$DIST-$TYPE-$arch.jigdo" ] && \
+		   [ -e "$DAILY/$DIST-$TYPE-$arch.template" ]; then
 			if $PUBLISH_POOL; then
-				cp -a "$DAILY/$baseplain.template" \
+				cp -a "$DAILY/$DIST-$TYPE-$arch.template" \
 					"$RELEASE_SIMPLE_POOL/$basestatus.template"
 				sed "s/=$baseplain/=$basestatus/g" \
-					< "$DAILY/$baseplain.jigdo" \
+					< "$DAILY/$DIST-$TYPE-$arch.jigdo" \
 					> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
 			fi
 			if $PUBLISH_DIST; then
@@ -138,7 +140,7 @@ for arch in $ARCHES; do
 			fi
 			if $PUBLISH_FULL; then
 				for ext in template jigdo; do
-					cp -a "$DAILY/$baseplain.$ext" \
+					cp -a "$DAILY/$DIST-$TYPE-$arch.$ext" \
 						"$RELEASE_FULL/$baseplain.$ext"
 				done
 			fi
@@ -160,7 +162,7 @@ for arch in $ARCHES; do
 	if [ "$TYPE" = live ] || [ "$TYPE" = dvd ]; then
 		# Copy, to make sure we have a canonical version of this.
 		if $PUBLISH_POOL; then
-			cp -a "$DAILY/$baseplain.manifest" \
+			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest" \
 			      "$RELEASE_SIMPLE_POOL/$basestatus.manifest"
 		fi
 		if $PUBLISH_DIST; then
@@ -168,16 +170,16 @@ for arch in $ARCHES; do
 			      "$RELEASE_SIMPLE_DIST/$basestatus.manifest"
 		fi
 		if $PUBLISH_FULL; then
-			cp -a "$DAILY/$baseplain.manifest" \
+			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest" \
 			      "$RELEASE_FULL/$baseplain.manifest"
 		fi
 	fi
 
 	if $PUBLISH_DIST; then
-		make-web-indices "$RELEASE_SIMPLE_DIST" "$DIST${STATUS:+-$STATUS}"
+		make-web-indices "$RELEASE_SIMPLE_DIST" "$CDPREFIX${STATUS:+-$STATUS}"
 	fi
 	if $PUBLISH_FULL; then
-		make-web-indices "$RELEASE_FULL" "$DIST"
+		make-web-indices "$RELEASE_FULL" "$CDPREFIX"
 	fi
 done
 
@@ -186,11 +188,11 @@ done
 # images for that release.
 if $PUBLISH_DIST; then
 	for dir in "$RELEASE_SIMPLE_DIST" "$RELEASE_SIMPLE_POOL"; do
-		for file in "$dir/$DIST"-*; do
+		for file in "$dir/$CDPREFIX"-*; do
 			base="${file##*/}"
 			base="${base%-*}" # remove architecture
 			base="${base%-*}" # remove type
-			if [ "$base" = "$DIST${STATUS:+-$STATUS}" ]; then
+			if [ "$base" = "$CDPREFIX${STATUS:+-$STATUS}" ]; then
 				# Don't delete what we just published.
 				continue
 			fi
@@ -214,7 +216,7 @@ if $PUBLISH_FULL; then
 fi
 for arch in $ARCHES; do
 	if $PUBLISH_DIST; then
-		basestatus="$DIST-${STATUS:+$STATUS-}$TYPE-$arch"
+		basestatus="$CDPREFIX-${STATUS:+$STATUS-}$TYPE-$arch"
 		[ -e "$RELEASE_SIMPLE_POOL/$basestatus.iso" ] || continue
 		ln -f "$RELEASE_SIMPLE_POOL/$basestatus.iso" \
 		      "$TORRENTS/$basestatus.iso"
@@ -222,7 +224,7 @@ for arch in $ARCHES; do
 		      "$TORRENTS/$basestatus.iso.torrent"
 	fi
 	if $PUBLISH_FULL; then
-		baseplain="$DIST-$TYPE-$arch"
+		baseplain="$CDPREFIX-$TYPE-$arch"
 		[ -e "$RELEASE_FULL/$baseplain.iso" ] || continue
 		ln -f "$RELEASE_FULL/$baseplain.iso" \
 		      "$TORRENTS/$baseplain.iso"
@@ -242,14 +244,14 @@ md5sum_directory () {
 
 if $PUBLISH_POOL; then
 	md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL" \
-		"$DIST-${STATUS:+$STATUS-}$TYPE"
+		"$CDPREFIX-${STATUS:+$STATUS-}$TYPE"
 fi
 if $PUBLISH_DIST; then
 	md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST" \
-		"$DIST-${STATUS:+$STATUS-}$TYPE"
+		"$CDPREFIX-${STATUS:+$STATUS-}$TYPE"
 fi
 if $PUBLISH_FULL; then
-	md5sum_directory 'full tree' "$RELEASE_FULL" "$DIST-$TYPE"
+	md5sum_directory 'full tree' "$RELEASE_FULL" "$CDPREFIX-$TYPE"
 fi
 
 echo "Done! Remember to sync-mirrors after checking that everything is OK."
