@@ -13,6 +13,7 @@ set -e
 # chmod 744 anonftpsync
 
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
 
 # TO is the destination for the base of the Debian mirror directory
 # (the dir that holds dists/ and ls-lR).
