@@ -73,13 +73,6 @@ if [ -z "$DEBUG" ]; then
 	date
 	purge-old-images "$IMAGE_TYPE"
 
-	if [ "$1" = daily ]; then
-		echo "===== Archiving debian-cd code ====="
-		date
-		cd "$CDIMAGE_ROOT"
-		tar cjvf www/full/code/debian-cd.tar.bz2 debian-cd
-	fi
-
 	echo "===== Triggering mirrors ====="
 	date
 	sync-mirrors
