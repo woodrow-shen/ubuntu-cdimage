@@ -1,6 +1,6 @@
 # CD image cron jobs, run out of cjwatson's crontab.
 21 8 * * *	/srv/cdimage.no-name-yet.com/bin/cron.daily
 1 8 * * *	/srv/cdimage.no-name-yet.com/bin/cron.daily-live
-17 12 * * 3,6	/srv/cdimage.no-name-yet.com/bin/cron.weekly-dvd
+17 12 * * 2,6	/srv/cdimage.no-name-yet.com/bin/cron.weekly-dvd
 14 5 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily
 26 6 * * *	/srv/cdimage.no-name-yet.com/bin/cron.kubuntu-daily-live
