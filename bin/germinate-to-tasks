@@ -16,7 +16,7 @@ mkemptydir () {
 
 mkemptydir "$TASKS_OUT/$DIST"
 
-for seed in base ship supported; do
+for seed in base ship installer supported; do
 	exec >"$TASKS_OUT/$DIST/$seed"
 	if [ "$seed" = supported ]; then
 		seedsource="$seed+build-depends"
