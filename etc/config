@@ -1,4 +1,4 @@
 #! /bin/sh
 
-DIST="${DIST:-warty}"
+DIST="${DIST:-hoary}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
