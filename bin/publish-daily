@@ -16,22 +16,31 @@ DATE="$1"
 IMAGE_TYPE="${2:-daily}"
 PUBLISH="$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/$DATE"
 
+case $IMAGE_TYPE in
+	*-live)
+		TYPE=live
+		;;
+	*)
+		TYPE=install
+		;;
+esac
+
 for arch in $ARCHES; do
-	if [ -e "$CDOUT/$arch/$DIST-install-$arch.raw" ]; then
+	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
 		echo "Publishing $arch ..."
 		mkdir -p "$PUBLISH"
-		mv "$CDOUT/$arch/$DIST-install-$arch.raw" \
-		   "$PUBLISH/$DIST-install-$arch.iso"
-		mv "$CDOUT/$arch/$DIST-install-$arch.list" \
-		   "$PUBLISH/$DIST-install-$arch.list"
+		mv "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" \
+		   "$PUBLISH/$DIST-$TYPE-$arch.iso"
+		mv "$CDOUT/$arch/$DIST-$TYPE-$arch.list" \
+		   "$PUBLISH/$DIST-$TYPE-$arch.list"
 
 		# Jigdo integration
-		if [ -e "$CDOUT/$arch/$DIST-install-$arch.jigdo" ]; then
+		if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.jigdo" ]; then
 			echo "Publishing $arch jigdo ..."
-			mv "$CDOUT/$arch/$DIST-install-$arch.jigdo" \
-			   "$PUBLISH/$DIST-install-$arch.jigdo"
-			mv "$CDOUT/$arch/$DIST-install-$arch.template" \
-			   "$PUBLISH/$DIST-install-$arch.template"
+			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.jigdo" \
+			   "$PUBLISH/$DIST-$TYPE-$arch.jigdo"
+			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.template" \
+			   "$PUBLISH/$DIST-$TYPE-$arch.template"
 		else
 			echo "No jigdo for $arch!" >&2
 		fi
