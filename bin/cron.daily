@@ -40,21 +40,25 @@ done
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date
-	mkdir -p "$PUBLISH"
-	cd "$PUBLISH"
 	for arch in $ARCHES; do
 		if [ -e "$CDOUT/$arch/$DIST-$arch-1.raw" ]; then
+			mkdir -p "$PUBLISH"
 			mv "$CDOUT/$arch/$DIST-$arch-1.raw" \
-			   "$DIST-$arch-1.iso"
+			   "$PUBLISH/$DIST-$arch-1.iso"
 			mv "$CDOUT/$arch/$DIST-$arch-1.list" \
-			   "$DIST-$arch-1.list"
+			   "$PUBLISH/$DIST-$arch-1.list"
 		else
 			echo "No CD for $arch!" >&2
 		fi
 	done
-	md5sum "$DIST"-* > MD5SUMS
-	cd ..
-	ln -nsf "$DATE" current
+	if [ -d "$PUBLISH" ]; then
+		cd "$PUBLISH"
+		md5sum "$DIST"-* > MD5SUMS
+		cd ..
+		ln -nsf "$DATE" current
+	else
+		echo "No CDs produced!" >&2
+	fi
 
 	echo "===== Archiving debian-cd code ====="
 	date
