@@ -1,8 +1,11 @@
 #! /bin/sh
 
-SECRET=/srv/cdimage.no-name-yet.com/secret
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+SECRET="$CDIMAGE_ROOT/secret"
 if [ -d "$HOME/secret" ]; then
-    SECRET="$HOME/secret"
+	SECRET="$HOME/secret"
 fi
 
 trigger () {
