@@ -32,7 +32,16 @@ echo "Purging $IMAGE_TYPE images older than $DAYS days ..."
 
 OLDEST="$(date -d "$DAYS days ago" +%Y%m%d)"
 
-cd "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE"
+case $PROJECT in
+	ubuntu)
+		FULL_TREE=full
+		;;
+	*)
+		FULL_TREE="full/$PROJECT"
+		;;
+esac
+
+cd "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE"
 
 for dir in *; do
 	# Directory?
