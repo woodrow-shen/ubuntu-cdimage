@@ -19,15 +19,15 @@ for arch in $ARCHES; do
 		   "$PUBLISH/$DIST-$arch.iso"
 		mv "$CDOUT/$arch/$DIST-$arch-1.list" \
 		   "$PUBLISH/$DIST-$arch.list"
+
+		# BitTorrent integration
+		echo "Creating $arch torrent ..."
+		btmakemetafile "$TRACKER" \
+			--comment "Ubuntu CD cdimage.ubuntu.com" \
+			"$PUBLISH/$DIST-arch.iso" >/dev/null
 	else
 		echo "No CD for $arch!" >&2
 	fi
-
-	# BitTorrent integration
-	echo "Creating $arch torrent ..."
-	btmakemetafile "$TRACKER" \
-		--comment "Ubuntu CD cdimage.ubuntu.com" \
-		"$PUBLISH/$DIST-arch.iso" >/dev/null
 done
 if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
