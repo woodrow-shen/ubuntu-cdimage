@@ -1,4 +1,4 @@
-daily 7
-daily-live 7
+daily 4
+daily-live 4
 # Purge images older than 8 days => keep the two most recent weekly builds.
 weekly-dvd 8
