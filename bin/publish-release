@@ -103,4 +103,4 @@ md5sum_directory 'full tree' "$RELEASE_FULL"
 md5sum_directory 'simple tree (pool)' "$RELEASE_SIMPLE_POOL"
 md5sum_directory "simple tree ($DIST)" "$RELEASE_SIMPLE_DIST"
 
-echo "Done! Remember to sync-auckland after checking that everything is OK."
+echo "Done! Remember to sync-mirrors after checking that everything is OK."

@@ -59,7 +59,7 @@ if [ -z "$DEBUG" ]; then
 
 	echo "===== Triggering mirrors ====="
 	date
-	sync-auckland
+	sync-mirrors
 fi
 
 echo "===== Finished ====="
