@@ -46,6 +46,6 @@ done
 for arch in $ARCHES; do
 	exec >"$TASKS_OUT/$DIST/desktop.override.$arch"
 	< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
-		tail -n +3 | head -n -2 | cut -d' ' -f1 \
+		tail -n +3 | head -n -2 | cut -d' ' -f1 | \
 		sed 's/$/  Task  ubuntu-desktop/'
 done
