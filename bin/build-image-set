@@ -1,0 +1,73 @@
+#! /bin/sh
+set -e
+
+umask 002
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
+DATE="$(next-build-date)"
+
+export DIST ARCHES
+
+if [ -z "$DEBUG" ]; then
+	exec >"$CDIMAGE_ROOT/log/daily-$DATE.log" 2>&1
+fi
+
+echo "===== Syncing Ubuntu mirror ====="
+date
+anonftpsync
+
+echo "===== Updating archive of local packages ====="
+date
+update-local-indices
+
+echo "===== Extracting debootstrap scripts ====="
+date
+extract-debootstrap
+
+echo "===== Germinating ====="
+date
+run-germinate
+
+echo "===== Updating debian-installer task list ====="
+date
+update-udeb-list
+
+echo "===== Checking for other task changes ====="
+TASK_MAIL="$(cat "$CDIMAGE_ROOT/etc/task-mail" 2>/dev/null || true)"
+if [ "$TASK_MAIL" ]; then
+	diff-tasks | mail -e -s "Task changes for $DIST on $DATE" $TASK_MAIL
+fi
+update-tasks
+
+echo "===== Building Ubuntu daily CDs ====="
+date
+cd "$CDIMAGE_ROOT/debian-cd"
+./build_all.sh || true
+
+# Kludge to work around permission-handling problems elsewhere.
+chmod -R g+w "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
+
+echo "===== Producing installability report ====="
+date
+check-installable
+
+if [ -z "$DEBUG" ]; then
+	echo "===== Publishing ====="
+	date
+	publish-daily "$DATE"
+
+	echo "===== Archiving debian-cd code ====="
+	date
+	cd "$CDIMAGE_ROOT"
+	tar cjvf www/full/code/debian-cd.tar.bz2 debian-cd
+
+	echo "===== Triggering mirrors ====="
+	date
+	sync-mirrors
+fi
+
+echo "===== Finished ====="
+date
