@@ -1,0 +1,25 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+DEBOOTSTRAP_OUT="$CDIMAGE_ROOT/scratch/debootstrap"
+MIRROR="$CDIMAGE_ROOT/ftp"
+
+mkemptydir () {
+	rm -rf "$1"
+	mkdir -p "$1"
+}
+
+mkemptydir "$DEBOOTSTRAP_OUT"
+for arch in $ARCHES; do
+	udeb="$(zcat "$MIRROR/dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" | grep-dctrl -nsFilename -PX debootstrap-udeb)"
+	if [ -f "$MIRROR/$udeb" ]; then
+		dpkg --fsys-tarfile "$MIRROR/$udeb" | \
+			tar -xOf - "./usr/lib/debootstrap/scripts/$DIST" \
+			> "$DEBOOTSTRAP_OUT/$DIST-$arch"
+	else
+		echo "No debootstrap-udeb for $DIST/$arch!" >&2
+	fi
+done
