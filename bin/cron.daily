@@ -8,7 +8,7 @@ DIST=warty
 
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
-DATE="$(next-build-suffix)"
+DATE="$(next-build-date)"
 
 export DIST ARCHES
 
