@@ -4,4 +4,10 @@ SECRET=/srv/cdimage.no-name-yet.com/secret
 if [ -d "$HOME/secret" ]; then
     SECRET="$HOME/secret"
 fi
-ssh -i "$SECRET/auckland" archvsync@auckland sleep 1
+
+trigger () {
+	ssh -i "$SECRET/auckland" archvsync@"$1" sleep 1
+}
+
+trigger auckland
+trigger mirnyy.ubuntu.com
