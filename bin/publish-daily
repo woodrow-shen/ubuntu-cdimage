@@ -19,6 +19,7 @@ PUBLISH="$CDIMAGE_ROOT/www/daily/$DATE"
 
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-install-$arch-1.raw" ]; then
+		echo "Publishing $arch ..."
 		mkdir -p "$PUBLISH"
 		mv "$CDOUT/$arch/$DIST-install-$arch-1.raw" \
 		   "$PUBLISH/$DIST-install-$arch.iso"
