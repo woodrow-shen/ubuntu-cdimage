@@ -4,6 +4,7 @@ set -e
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 CDOUT="$CDIMAGE_ROOT/scratch/debian-cd"
 BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report"
+TRACKER=http://torrent.ubuntu.com:6969/announce
 
 DIST="${DIST:-warty}"
 ARCHES="${ARCHES:-amd64 i386 powerpc}"
@@ -21,6 +22,12 @@ for arch in $ARCHES; do
 	else
 		echo "No CD for $arch!" >&2
 	fi
+
+	# BitTorrent integration
+	echo "Creating $arch torrent ..."
+	btmakemetafile "$TRACKER" \
+		--comment "Ubuntu CD cdimage.ubuntu.com" \
+		"$PUBLISH/$DIST-arch.iso" >/dev/null
 done
 if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
