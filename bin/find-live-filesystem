@@ -22,7 +22,7 @@ case $ARCH in
 		BUILDD=weddell.buildd
 		;;
 	powerpc)
-		BUILDD=adare.buildd
+		BUILDD=royal.buildd
 		;;
 	*)
 		echo "No live filesystem source known for $ARCH" >&2
