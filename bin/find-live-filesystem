@@ -38,25 +38,29 @@ case $ITEM in
 		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
 		;;
 	winfoss)
+		[ "$DIST" = hoary ] || exit 1
 		case $PROJECT in
 			ubuntu)
 				case $ARCH in
 					i386)
-						: ;;
+						echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+						;;
+					amd64)
+						echo http://maitri.ubuntu.com/theopencd/ubuntu/amd64/latest/Hoary-WinFOSS-amd64.tgz
+						;;
 					*)	exit 1 ;;
 				esac
 				;;
 			kubuntu)
 				case $ARCH in
 					i386)
-						: ;;
+						echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+						;;
 					*)	exit 1
 				esac
 				;;
 			*)	exit 1 ;;
 		esac
-		[ "$DIST" = hoary ] || exit 1
-		echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
 		;;
 	*)
 		echo "Unknown live filesystem item '$ITEM'" >&2
