@@ -26,7 +26,7 @@ for arch in $ARCHES; do
 	echo "Germinating for $DIST/$arch ..."
 	mkindex "dists/$DIST/main/binary-$arch/Packages.gz" "dists/$DIST/restricted/binary-$arch/Packages.gz"
 	mkindex "dists/$DIST/main/source/Sources.gz" "dists/$DIST/restricted/source/Sources.gz"
-	mkindex "dists/$DIST/main/debian-installer/binary-$arch/Packages.gz"
+	mkindex "dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" "dists/$DIST/restricted/debian-installer/binary-$arch/Packages.gz"
 	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
 	cd "$GERMINATE_OUT/$DIST-$arch"
 	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$GERMINATE_OUT/" --dist "$DIST" --arch "$arch" --no-rdepends
