@@ -10,7 +10,7 @@ LIVE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/live"
 mkemptydir "$LIVE_OUT"
 for arch in $ARCHES; do
 	wget -nv "$(find-live-filesystem "$arch" cloop)" \
-		-O "$LIVE_OUT/$ARCH.cloop"
+		-O "$LIVE_OUT/$arch.cloop"
 	wget -nv "$(find-live-filesystem "$arch" manifest)" \
-		-O "$LIVE_OUT/$ARCH.manifest" || true
+		-O "$LIVE_OUT/$arch.manifest" || true
 done
