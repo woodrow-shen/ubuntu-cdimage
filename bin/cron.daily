@@ -23,6 +23,10 @@ echo "===== Updating archive of local packages ====="
 date
 update-local-indices
 
+echo "===== Germinating ====="
+date
+run-germinate
+
 echo "===== Updating debian-installer task list ====="
 date
 (cd "$CDIMAGE_ROOT/debian-cd"

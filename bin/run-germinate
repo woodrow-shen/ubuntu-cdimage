@@ -1,0 +1,31 @@
+#! /bin/sh
+set -e
+
+CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+GERMINATE_OUT="$CDIMAGE_ROOT/scratch/germinate"
+
+DIST="${DIST:-warty}"
+ARCHES="${ARCHES:-amd64 i386 powerpc}"
+
+mkemptydir () {
+	rm -rf "$1"
+	mkdir -p "$1"
+}
+
+copydists () {
+	subdir="$1"
+	file="$2"
+
+	mkemptydir "$GERMINATE_OUT/$subdir"
+	cp -a "$CDIMAGE_ROOT/ftp/$subdir/$file" "$GERMINATE_OUT/$subdir/$file"
+}
+
+for arch in $ARCHES; do
+	echo "Germinating for $DIST/$arch ..."
+	copydists "dists/$DIST/main/binary-$arch" Packages.gz
+	copydists "dists/$DIST/main/source" Sources.gz
+	copydists "dists/$DIST/main/debian-installer/binary-$arch" Packages.gz
+	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
+	cd "$GERMINATE_OUT/$DIST-$arch"
+	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$GERMINATE_OUT/" --dist "$DIST" --arch "$arch" --no-rdepends
+done
