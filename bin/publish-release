@@ -179,6 +179,22 @@ for arch in $ARCHES; do
 	fi
 done
 
+# There can only be one set of images per release in the per-release tree,
+# so if we're publishing there then we can now safely clean up previous
+# images for that release in the pool.
+if $PUBLISH_DIST; then
+	for file in "$RELEASE_SIMPLE_POOL/$DIST"-*; do
+		base="${file##*/}"
+		base="${base%-*}"
+		if [ "$base" = "$DIST-${STATUS:+$STATUS-}$TYPE" ]; then
+			# Don't delete what we just published.
+			continue
+		fi
+		echo "Purging $file"
+		rm -f "$file"
+	done
+fi
+
 # Create and publish torrents.
 if $PUBLISH_DIST; then
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST"
