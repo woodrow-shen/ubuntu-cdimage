@@ -12,19 +12,21 @@ mkemptydir () {
 	mkdir -p "$1"
 }
 
-copydists () {
-	subdir="$1"
-	file="$2"
+mkindex () {
+	target="$1"
+	subdir="${target%/*}"
 
 	mkemptydir "$GERMINATE_OUT/$subdir"
-	cp -a "$CDIMAGE_ROOT/ftp/$subdir/$file" "$GERMINATE_OUT/$subdir/$file"
+	for file in "$@"; do
+		zcat "$CDIMAGE_ROOT/ftp/$file"
+	done | gzip -c > "$GERMINATE_OUT/$target"
 }
 
 for arch in $ARCHES; do
 	echo "Germinating for $DIST/$arch ..."
-	copydists "dists/$DIST/main/binary-$arch" Packages.gz
-	copydists "dists/$DIST/main/source" Sources.gz
-	copydists "dists/$DIST/main/debian-installer/binary-$arch" Packages.gz
+	mkindex "dists/$DIST/main/binary-$arch/Packages.gz" "dists/$DIST/restricted/binary-$arch/Packages.gz"
+	mkindex "dists/$DIST/main/source/Sources.gz" "dists/$DIST/restricted/source/Sources.gz"
+	mkindex "dists/$DIST/main/debian-installer/binary-$arch/Packages.gz"
 	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
 	cd "$GERMINATE_OUT/$DIST-$arch"
 	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$GERMINATE_OUT/" --dist "$DIST" --arch "$arch" --no-rdepends
