@@ -7,7 +7,7 @@ CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 IMAGE_TYPE="${1:-daily}"
-DATE="$(next-build-date)"
+DATE="$(next-build-date "$IMAGE_TYPE")"
 
 export DIST ARCHES
 
