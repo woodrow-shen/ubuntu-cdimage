@@ -19,11 +19,6 @@ echo "===== Syncing Ubuntu mirror ====="
 date
 anonftpsync
 
-# temporary, until powerpc buildds for warty are ready
-echo "===== Syncing temporary Debian powerpc mirror ====="
-date
-debmirror-powerpc
-
 echo "===== Updating archive of local packages ====="
 date
 update-local-indices
