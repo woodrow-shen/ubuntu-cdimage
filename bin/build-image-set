@@ -35,10 +35,6 @@ echo "===== Generating new task lists ====="
 date
 germinate-to-tasks
 
-echo "===== Updating debian-installer task list ====="
-date
-update-udeb-list
-
 echo "===== Checking for other task changes ====="
 date
 update-tasks "$DATE"
