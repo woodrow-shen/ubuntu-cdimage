@@ -18,8 +18,6 @@ set -e
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-TRACKER=http://torrent.ubuntu.com:6969/announce
-
 if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: publish-release DAILY-SOURCE DAILY-DATE TYPE OFFICIAL [STATUS]' >&2
 	echo 'OFFICIAL=yes to publish to releases.ubuntu.com, otherwise no.' >&2
@@ -104,12 +102,6 @@ for arch in $ARCHES; do
 			sed "s/=$baseplain/=$basestatus/g" \
 				< "$RELEASE_SIMPLE_POOL/$baseplain.jigdo" \
 				> "$RELEASE_SIMPLE_DIST/$basestatus.jigdo"
-
-			echo "Creating torrents for $arch ..."
-			btmakemetafile "$TRACKER" \
-				--comment "$CAPPROJECT CD releases.ubuntu.com" \
-				"$RELEASE_SIMPLE_DIST/$basestatus.iso" \
-				>/dev/null
 		fi
 	fi
 
@@ -130,6 +122,8 @@ for arch in $ARCHES; do
 		make-web-indices "$RELEASE_SIMPLE_DIST" "$DIST${STATUS:+-$STATUS}"
 	fi
 done
+
+make-torrents "$RELEASE_SIMPLE_DIST" releases.ubuntu.com
 
 md5sum_directory () {
 	echo "MD5summing $1 ..."
