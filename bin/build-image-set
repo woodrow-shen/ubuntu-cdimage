@@ -50,9 +50,12 @@ cd "$CDIMAGE_ROOT/debian-cd"
 # Kludge to work around permission-handling problems elsewhere.
 chmod -R g+w "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
 
-echo "===== Producing installability report ====="
-date
-check-installable
+# temporarily turned off for live builds
+if [ -z "$LIVE" ]; then
+	echo "===== Producing installability report ====="
+	date
+	check-installable
+fi
 
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
