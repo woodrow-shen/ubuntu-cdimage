@@ -39,9 +39,11 @@ done
 # Help debian-cd to regenerate Task headers, to make sure that we don't
 # accidentally end up out of sync with the archive and break the
 # second-stage install.
-for arch in $ARCHES; do
-	exec >"$TASKS_OUT/$DIST/desktop.override.$arch"
-	< "$GERMINATE_OUT/$DIST-$arch/desktop" \
-		tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-		sed "s/\$/  Task  $PROJECT-desktop/"
+exec >"$TASKS_OUT/$DIST/override.$arch"
+for seed in desktop ship; do
+	for arch in $ARCHES; do
+		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
+			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
+			sed "s/\$/  Task  $PROJECT-$seed/"
+	done
 done
