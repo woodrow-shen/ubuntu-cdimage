@@ -25,7 +25,7 @@ RSYNC_HOST=mirnyy.ubuntu.com
 # RSYNC_DIR is the directory given in the "Packages over rsync:" line of
 # the mirrors file for the site you have chosen to mirror.
 
-RSYNC_DIR=ftp/
+RSYNC_DIR=ftp
 
 # EXCLUDE is a list of parameters listing patterns that rsync will exclude.
 # The following example would exclude mostly everything:
@@ -82,12 +82,26 @@ fi
 trap "rm -f $LOCK > /dev/null 2>&1" exit
 
 set +e
-rsync --recursive --copy-links --hard-links --times --verbose --compress \
+
+rsync --recursive --links --hard-links --times --verbose --stats \
+     --compress \
      --delete-after \
      --exclude "Archive-Update-in-Progress-${HOSTNAME}" \
      --exclude "project/trace/${HOSTNAME}" \
      $EXCLUDE \
-     $RSYNC_HOST::$RSYNC_DIR $TO > rsync.log 2>&1
+     $RSYNC_HOST::$RSYNC_DIR/ $TO/ > rsync.log 2>&1
+
+# Re-mirror pool with --copy-links to cope with files moving between
+# components. Don't delete on this pass, to avoid losing files referred to
+# by the indices we just downloaded.
+rsync --recursive --copy-links --hard-links --times --verbose --stats \
+     --compress \
+     $EXCLUDE \
+     $RSYNC_HOST::$RSYNC_DIR/pool/ $TO/pool/ >> rsync.log 2>&1
+
+# Delete dangling symlinks.
+find $TO/ -type l -xtype l | xargs -r rm 
+
 date -u > "${TO}/project/trace/${HOSTNAME}"
 
 # Note: if you don't have savelog, use any other log rotation facility, or
