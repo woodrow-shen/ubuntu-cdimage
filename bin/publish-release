@@ -106,10 +106,15 @@ for arch in $ARCHES; do
 done
 
 sign_file () {
-	if [ ! -f "$SECRET_KEYRING" ] || [ ! -f "$PUBLIC_KEYRING" ]; then
+	if [ ! -f "$GNUPG_DIR/secring.gpg" ] || \
+	   [ ! -f "$GNUPG_DIR/pubring.gpg" ] || \
+	   [ ! -f "$GNUPG_DIR/trustdb.gpg" ]; then
 		return
 	fi
-	gpg --secret-keyring "$SECRET_KEYRING" --keyring "$PUBLIC_KEYRING" \
+	gpg --no-default-keyring \
+		--secret-keyring "$GNUPG_DIR/secring.gpg" \
+		--keyring "$GNUPG_DIR/pubring.gpg" \
+		--trustdb-name "$GNUPG_DIR/trustdb.gpg" \
 		--default-key "$SIGNING_KEYID" --no-options --batch --no-tty \
 		--armour --detach-sign < "$1" > "$1.gpg"
 }
