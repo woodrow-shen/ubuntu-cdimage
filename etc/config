@@ -2,3 +2,7 @@
 
 DIST="${DIST:-hoary}"
 ARCHES="${ARCHES:-amd64 i386 ia64 powerpc}"
+
+SECRET_KEYRING="$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg"
+PUBLIC_KEYRING="$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg"
+SIGNING_KEYID=FBB75451
