@@ -43,6 +43,12 @@ if [ "$CDIMAGE_LIVE" ]; then
 	download-live-filesystems
 fi
 
+if [ -e "$CDIMAGE_ROOT/debian-cd/data/$DIST/$PROJECT.rle" ]; then
+	export SPLASHRLE="$CDIMAGE_ROOT/debian-cd/data/$DIST/$PROJECT.rle"
+else
+	export SPLASHRLE="$CDIMAGE_ROOT/debian-cd/data/$DIST/splash.rle"
+fi
+
 echo "===== Building $CAPPROJECT daily CDs ====="
 date
 cd "$CDIMAGE_ROOT/debian-cd"
