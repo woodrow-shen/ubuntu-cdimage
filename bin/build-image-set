@@ -6,13 +6,18 @@ umask 002
 CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+IMAGE_TYPE="${1:-daily}"
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 DATE="$(next-build-date)"
 
 export DIST ARCHES
 
 if [ -z "$DEBUG" ]; then
-	exec >"$CDIMAGE_ROOT/log/daily-$DATE.log" 2>&1
+	exec >"$CDIMAGE_ROOT/log/$IMAGE_TYPE-$DATE.log" 2>&1
+fi
+
+if [ "$IMAGE_TYPE" = weekly-dvd ]; then
+	export DVD=1
 fi
 
 echo "===== Syncing Ubuntu mirror ====="
@@ -57,12 +62,14 @@ check-installable
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date
-	publish-daily "$DATE"
+	publish-daily "$DATE" "$IMAGE_TYPE"
 
-	echo "===== Archiving debian-cd code ====="
-	date
-	cd "$CDIMAGE_ROOT"
-	tar cjvf www/full/code/debian-cd.tar.bz2 debian-cd
+	if [ "$1" = daily ]; then
+		echo "===== Archiving debian-cd code ====="
+		date
+		cd "$CDIMAGE_ROOT"
+		tar cjvf www/full/code/debian-cd.tar.bz2 debian-cd
+	fi
 
 	echo "===== Triggering mirrors ====="
 	date
