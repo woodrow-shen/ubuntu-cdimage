@@ -181,12 +181,13 @@ done
 
 # There can only be one set of images per release in the per-release tree,
 # so if we're publishing there then we can now safely clean up previous
-# images for that release in the pool.
+# images for that release.
 if $PUBLISH_DIST; then
 	for file in "$RELEASE_SIMPLE_POOL/$DIST"-*; do
 		base="${file##*/}"
-		base="${base%-*}"
-		if [ "$base" = "$DIST-${STATUS:+$STATUS-}$TYPE" ]; then
+		base="${base%-*}" # remove architecture
+		base="${base%-*}" # remove type
+		if [ "$base" = "$DIST${STATUS:+-$STATUS}" ]; then
 			# Don't delete what we just published.
 			continue
 		fi
