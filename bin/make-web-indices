@@ -88,27 +88,27 @@ archdesc () {
 	case $1 in
 		amd64)
 			cat <<EOF
-The correct CD for computers based on the AMD64 or EM64T
-architecture (e.g., Athlon64, Opteron, EM64T Xeon). It is not necessary for all
-(even most) processors made by AMD -- only their 64 bit chips.
+For computers based on the AMD64 or EM64T architecture (e.g., Athlon64,
+Opteron, EM64T Xeon). It is not necessary for all (even most) processors
+made by AMD -- only their 64 bit chips.
 EOF
 			;;
 		i386)
 			cat <<EOF
-The correct CD for almost all PCs. This includes most machines with
-Intel/AMD/etc type processors and almost all computers that run Microsoft
-Windows. Choose this if you are at all unsure.
+For almost all PCs. This includes most machines with Intel/AMD/etc type
+processors and almost all computers that run Microsoft Windows. Choose this
+if you are at all unsure.
 EOF
 			;;
 		ia64)
 			cat <<EOF
-The correct CD for Intel Itanium and Itanium 2 computers.
+For Intel Itanium and Itanium 2 computers.
 EOF
 			;;
 		powerpc)
 			cat <<EOF
-The correct CD for Apple Macintosh G3, G4, and G5 computers, including
-iBooks and PowerBooks.
+For Apple Macintosh G3, G4, and G5 computers, including iBooks and
+PowerBooks.
 EOF
 			;;
 		*)
