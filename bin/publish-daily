@@ -14,7 +14,17 @@ fi
 
 DATE="$1"
 IMAGE_TYPE="${2:-daily}"
-PUBLISH="$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/$DATE"
+
+case $PROJECT in
+	ubuntu)
+		FULL_TREE=full
+		;;
+	*)
+		FULL_TREE="full/$PROJECT"
+		;;
+esac
+
+PUBLISH="$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE/$DATE"
 
 case $IMAGE_TYPE in
 	*-live)
@@ -81,7 +91,7 @@ if [ -d "$PUBLISH" ]; then
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
 	make-web-indices "$PUBLISH" "$DIST"
-	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
+	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE/current"
 else
 	echo "No CDs produced!" >&2
 fi
