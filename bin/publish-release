@@ -104,10 +104,20 @@ for arch in $ARCHES; do
 	fi
 done
 
+sign_file () {
+	if [ ! -f "$SECRET_KEYRING" ] || [ ! -f "$PUBLIC_KEYRING" ]; then
+		return
+	fi
+	gpg --secret-keyring "$SECRET_KEYRING" --keyring "$PUBLIC_KEYRING" \
+		--default-key "$SIGNING_KEYID" --no-options --batch --no-tty \
+		--armour --detach-sign < "$1" > "$1.gpg"
+}
+
 md5sum_directory () {
 	echo "MD5summing $1 ..."
 	rm -f "$2/MD5SUMS"
 	(cd "$2" && md5sum *.iso > MD5SUMS)
+	sign_file "$2/MD5SUMS"
 }
 
 md5sum_directory 'full tree' "$RELEASE_FULL"

@@ -70,13 +70,24 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 	i="$(($i + 1))"
 done
 
+sign_file () {
+	if [ ! -f "$SECRET_KEYRING" ] || [ ! -f "$PUBLIC_KEYRING" ]; then
+		return
+	fi
+	gpg --secret-keyring "$SECRET_KEYRING" --keyring "$PUBLIC_KEYRING" \
+		--default-key "$SIGNING_KEYID" --no-options --batch --no-tty \
+		--armour --detach-sign < "$1" > "$1.gpg"
+}
+
 if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
+	sign_file "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
+		sign_file "$PUBLISH/source/MD5SUMS"
 	fi
 	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
 else
