@@ -174,7 +174,7 @@ EOF
 
 cdtypecount=0
 for cdtype in install live; do
-	if find "$DIR/" -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
+	if find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
 		cdtypecount="$(($cdtypecount + 1))"
 	fi
 done
@@ -187,7 +187,7 @@ EOF
 fi
 
 for cdtype in install live; do
-	if ! find "$DIR/" -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
+	if ! find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
 		continue
 	fi
 
