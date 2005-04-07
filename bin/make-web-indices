@@ -186,7 +186,7 @@ cat <<EOF > "$HEADER"
   <title>$CAPPROJECT $distversion ($distfullname)$distextra</title>
   <!-- Main style sheets for CSS2 capable browsers -->
   <style type="text/css" media="screen">
-  @import url(http://www.ubuntulinux.org/plone.css);
+  @import url(http://www.ubuntulinux.org/ubuntu.css);
   pre { background: none; }
   body { margin: 2em; }
   </style>
