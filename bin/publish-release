@@ -53,6 +53,9 @@ case $DIST in
 	hoary)
 		VERSION=5.04
 		;;
+	breezy)
+		VERSION=5.10
+		;;
 	*)
 		echo "Unknown distribution: $DIST" >&2
 		exit 1
