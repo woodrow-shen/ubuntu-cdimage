@@ -215,7 +215,9 @@ if $PUBLISH_DIST; then
 				> "$dir/MD5SUMS.new"
 			mv "$dir/MD5SUMS.new" "$dir/MD5SUMS"
 		done
-		sign-cdimage "$dir/MD5SUMS"
+		if [ -e "$dir/MD5SUMS" ]; then
+			sign-cdimage "$dir/MD5SUMS"
+		fi
 	done
 fi
 
