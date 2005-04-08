@@ -141,7 +141,7 @@ for arch in $ARCHES; do
 			if $PUBLISH_POOL; then
 				cp -a "$DAILY/$DIST-$TYPE-$arch.template" \
 					"$RELEASE_SIMPLE_POOL/$basestatus.template"
-				sed "s/=$baseplain/=$basestatus/g" \
+				sed "s/=$DIST-$TYPE-$arch/=$basestatus/g" \
 					< "$DAILY/$DIST-$TYPE-$arch.jigdo" \
 					> "$RELEASE_SIMPLE_POOL/$basestatus.jigdo"
 			fi
