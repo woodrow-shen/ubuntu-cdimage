@@ -13,6 +13,7 @@ DIR="$1"
 CDPREFIX="$2"
 
 HEADER="$DIR/HEADER.html"
+FOOTER="$DIR/FOOTER.html"
 HTACCESS="$DIR/.htaccess"
 
 count () {
@@ -186,12 +187,13 @@ cat <<EOF > "$HEADER"
   <title>$CAPPROJECT $distversion ($distfullname)$distextra</title>
   <!-- Main style sheets for CSS2 capable browsers -->
   <style type="text/css" media="screen">
+  @import url(http://www.ubuntulinux.org/plone.css);
   @import url(http://www.ubuntulinux.org/ubuntu.css);
   pre { background: none; }
   body { margin: 2em; }
   </style>
  </head>
- <body>
+ <body><div id="pageWrapper">
 
 <h1>$CAPPROJECT $distversion ($distfullname)$distextra</h1>
 
@@ -280,9 +282,14 @@ can be found below.</p>
 
 EOF
 
+cat <<EOF > "$FOOTER"
+</div></body></html>
+EOF
+
 cat <<EOF >> "$HTACCESS"
 
 HeaderName HEADER.html
-IndexIgnore HEADER.html
+ReadmeName FOOTER.html
+IndexIgnore HEADER.html FOOTER.html
 IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
 EOF
