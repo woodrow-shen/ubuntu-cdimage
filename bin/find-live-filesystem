@@ -56,7 +56,7 @@ case $ITEM in
 			kubuntu)
 				case $ARCH in
 					i386)
-						echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+						echo http://maitri.ubuntu.com/theopencd/kubuntu/winfoss/latest/Kubuntu-WinFOSS-i386.tgz
 						;;
 					*)	exit 1
 				esac
