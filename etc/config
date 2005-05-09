@@ -4,11 +4,8 @@ PROJECT="${PROJECT:-ubuntu}"
 CAPPROJECT="${CAPPROJECT:-Ubuntu}"
 DIST="${DIST:-breezy}"
 case $DIST in
-	warty|hoary)
+	warty|hoary|breezy)
 		ARCHES="${ARCHES:-amd64 i386 powerpc}"
-		;;
-	*)
-		ARCHES="${ARCHES:-amd64 i386 ia64 powerpc}"
 		;;
 esac
 
