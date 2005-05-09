@@ -7,6 +7,6 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
-for seed in base desktop ship installer casper supported; do
+for seed in $(list-seeds all); do
 	diff -u "$TASKS/$DIST/$seed" "$SCRATCH/$DIST/$seed" || true
 done

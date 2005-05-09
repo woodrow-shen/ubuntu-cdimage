@@ -12,7 +12,7 @@ MIRROR="$CDIMAGE_ROOT/ftp"
 
 mkemptydir "$TASKS_OUT/$DIST"
 
-for seed in base desktop ship installer casper supported; do
+for seed in $(list-seeds all); do
 	exec >"$TASKS_OUT/$DIST/$seed"
 	if [ "$seed" = supported ]; then
 		seedsource="$seed+build-depends"
@@ -30,7 +30,7 @@ done
 # Hackily exclude kernel-image-* from the installer and casper tasks. Those
 # udebs only exist to satisfy dependencies when building the
 # debian-installer package.
-for seed in installer casper; do
+for seed in $(list-seeds installer); do
 	grep -v ^kernel-image- "$TASKS_OUT/$DIST/$seed" \
 		> "$TASKS_OUT/$DIST/$seed.new"
 	mv "$TASKS_OUT/$DIST/$seed.new" "$TASKS_OUT/$DIST/$seed"
@@ -41,7 +41,7 @@ done
 # second-stage install.
 for arch in $ARCHES; do
 	exec >"$TASKS_OUT/$DIST/override.$arch"
-	for seed in base desktop ship; do
+	for seed in $(list-seeds tasks); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
 			sed "s/\$/  Task  $PROJECT-$seed/"

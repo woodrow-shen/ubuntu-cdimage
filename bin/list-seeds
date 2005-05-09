@@ -1,0 +1,48 @@
+#! /bin/sh
+set -e
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ]; then
+	echo 'Usage: list-seeds all|tasks|installer' >&2
+	exit 1
+fi
+
+case $1 in
+	all)
+		case $DIST in
+			warty)
+				echo 'base desktop ship installer supported'
+				;;
+			hoary)
+				echo 'base desktop ship installer casper supported'
+				;;
+			breezy)
+				echo 'minimal standard desktop ship installer casper supported'
+				;;
+		esac
+		;;
+	tasks)
+		case $DIST in
+			warty|hoary)
+				echo 'base desktop ship'
+				;;
+			breezy)
+				echo 'minimal standard desktop ship'
+				;;
+		esac
+		;;
+	installer)
+		case $DIST in
+			warty)
+				echo 'installer'
+				;;
+			hoary|breezy)
+				echo 'installer casper'
+				;;
+		esac
+		;;
+esac
+
+exit 0
