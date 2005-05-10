@@ -178,6 +178,9 @@ case $CDPREFIX in
 	*-rc)
 		distextra=' Release Candidate'
 		;;
+	$DIST)
+		distextra=' Daily Build'
+		;;
 	*)
 		distextra=
 		;;
