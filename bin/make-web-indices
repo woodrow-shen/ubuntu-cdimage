@@ -210,7 +210,7 @@ EOF
 
 cdtypecount=0
 for cdtype in install live dvd; do
-	if find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" | grep . >/dev/null; then
+	if find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.list" | grep . >/dev/null; then
 		cdtypecount="$(($cdtypecount + 1))"
 	fi
 done
@@ -235,7 +235,7 @@ EOF
 
 	archcount=0
 	for arch in i386 powerpc amd64 ia64; do
-		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
+		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.list" ]; then
 			archcount="$(($archcount + 1))"
 		fi
 	done
@@ -256,12 +256,19 @@ EOF
 EOF
 
 	for arch in i386 powerpc amd64 ia64; do
-		if ! [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
+		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
+			cat <<EOF >> "$HEADER"
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype")</a>
+EOF
+		elif [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso.torrent" ]; then
+			cat <<EOF >> "$HEADER"
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso.torrent">$(archstr "$arch") $(cdtypestr "$cdtype") (<a href="http://bittorrent.com/introduction.html">BitTorrent</a> only)</a>
+EOF
+		else
 			continue
 		fi
 
 		cat <<EOF >> "$HEADER"
-<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype")</a>
 
 <dd>$(archdesc "$arch")</dd>
 
