@@ -134,10 +134,10 @@ extensionstr () {
 			echo 'standard download'
 			;;
 		iso.torrent)
-			echo '<a href="http://bittorrent.com/introduction.html">BitTorrent</a> download'
+			echo '<a href=\"http://bittorrent.com/introduction.html\">BitTorrent</a> download'
 			;;
 		jigdo)
-			echo '<a href="http://atterer.net/jigdo/">jigdo</a> download'
+			echo '<a href=\"http://atterer.net/jigdo/\">jigdo</a> download'
 			;;
 		list)
 			echo 'file listing'
@@ -146,7 +146,7 @@ extensionstr () {
 			echo 'contents of live filesystem'
 			;;
 		template)
-			echo '<a href="http://atterer.net/jigdo/">jigdo</a> template'
+			echo '<a href=\"http://atterer.net/jigdo/\">jigdo</a> template'
 			;;
 		*)
 			echo "Unknown extension $1!" >&2
