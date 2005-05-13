@@ -26,12 +26,38 @@ case $PROJECT in
 		;;
 esac
 
+mkindex () {
+	target="$1"
+	subdir="${target%/*}"
+
+	mkemptydir "$GERMINATE_OUT/$subdir"
+	for file in "$@"; do
+		if [ "${file#/}" = "$file" ]; then
+			absfile="$CDIMAGE_ROOT/ftp/$file"
+		else
+			absfile="$file"
+		fi
+		if [ -f "$absfile" ]; then
+			zcat "$absfile"
+		fi
+	done | gzip -c > "$GERMINATE_OUT/$target"
+}
+
 for arch in $ARCHES; do
 	echo "Germinating for $DIST/$arch ..."
+	mkindex "dists/$DIST/main/binary-$arch/Packages.gz" \
+		"dists/$DIST/restricted/binary-$arch/Packages.gz" \
+		${LOCAL:+$LOCALDEBS/dists/$DIST/local/binary-$arch/Packages.gz}
+	mkindex "dists/$DIST/main/source/Sources.gz" \
+		"dists/$DIST/restricted/source/Sources.gz" \
+		${LOCAL:+$LOCALDEBS/dists/$DIST/local/binary-$arch/Sources.gz}
+	mkindex "dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" \
+		"dists/$DIST/restricted/debian-installer/binary-$arch/Packages.gz" \
+		${LOCAL:+$LOCALDEBS/dists/$DIST/local/debian-installer/binary-$arch/Packages.gz}
 	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
 	cd "$GERMINATE_OUT/$DIST-$arch"
 	if [ "$GERMINATE_HINTS" ] && [ -f "$GERMINATE_HINTS" ]; then
 		cp -a "$GERMINATE_HINTS" hints
 	fi
-	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$CDIMAGE_ROOT/ftp/" --seed-dist "$GERMINATE_SEED_DIST" --dist "$GERMINATE_DISTS" --components main,restricted --arch "$arch" --no-rdepends
+	"$CDIMAGE_ROOT/germinate/germinate.py" --mirror "file://$GERMINATE_OUT/" --seed-dist "$GERMINATE_SEED_DIST" --dist "$GERMINATE_DISTS" --arch "$arch" --no-rdepends
 done
