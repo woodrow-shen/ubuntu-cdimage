@@ -23,7 +23,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: publish-release DAILY-SOURCE DAILY-DATE TYPE OFFICIAL [STATUS]' >&2
 	echo 'OFFICIAL=yes to publish to releases.ubuntu.com, poolonly to pre-publish,' >&2
-	echo 'otherwise no.' >&2
+	echo 'named to publish to cdimage.ubuntu.com as $PROJECT-$VERSION-*, otherwise no.' >&2
 	exit 1
 fi
 
@@ -69,16 +69,25 @@ case $OFFICIAL in
 		PUBLISH_DIST=:
 		PUBLISH_POOL=:
 		PUBLISH_FULL=false
+		CDPREFIX="$PROJECT-$VERSION"
 		;;
 	poolonly)
 		PUBLISH_DIST=false
 		PUBLISH_POOL=:
 		PUBLISH_FULL=false
+		CDPREFIX="$PROJECT-$VERSION"
+		;;
+	named)
+		PUBLISH_DIST=false
+		PUBLISH_POOL=false
+		PUBLISH_FULL=:
+		CDPREFIX="$PROJECT-$VERSION"
 		;;
 	no)
 		PUBLISH_DIST=false
 		PUBLISH_POOL=false
 		PUBLISH_FULL=:
+		CDPREFIX="$DIST"
 		;;
 esac
 # Just to make sure ...
