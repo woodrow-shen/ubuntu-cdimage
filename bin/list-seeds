@@ -43,6 +43,16 @@ case $1 in
 				;;
 		esac
 		;;
+	debootstrap)
+		case $DIST in
+			warty|hoary)
+				echo 'base'
+				;;
+			breezy)
+				echo 'minimal'
+				;;
+		esac
+		;;
 esac
 
 exit 0

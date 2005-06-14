@@ -47,3 +47,14 @@ for arch in $ARCHES; do
 			sed "s/\$/  Task  $PROJECT-$seed/"
 	done
 done
+
+# Help debian-cd to get priorities in sync with the current base system,
+# so that debootstrap >= 0.3.1 can work out the correct set of packages
+# to install.
+for arch in $ARCHES; do
+	exec >"$TASKS_OUT/$DIST/important.$arch"
+	for seed in $(list-seeds debootstrap); do
+		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
+			tail -n +3 | head -n -2 | cut -d' ' -f1
+	done
+done
