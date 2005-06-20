@@ -20,19 +20,23 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 TO="$CDIMAGE_ROOT/ftp"
 
+# This file may override with private rsync locations to avoid access
+# limits.
+. "$CDIMAGE_ROOT/etc/anonftpsync" || true
+
 # RSYNC_HOST is the site you have chosen from the mirrors file.
 # (http://www.debian.org/mirror/list-full)
 
-RSYNC_HOST=mirnyy.ubuntu.com
+if [ -z "$RSYNC_HOST" ]; then
+    RSYNC_HOST=mirnyy.ubuntu.com
+fi
 
 # RSYNC_DIR is the directory given in the "Packages over rsync:" line of
 # the mirrors file for the site you have chosen to mirror.
 
-RSYNC_DIR=ftp
-
-# This file may override with private rsync locations to avoid access
-# limits.
-. "$CDIMAGE_ROOT/etc/anonftpsync" || true
+if [ -z "$RSYNC_DIR" ]; then
+    RSYNC_DIR=ftp
+fi
 
 # EXCLUDE is a list of parameters listing patterns that rsync will exclude.
 # The following example would exclude mostly everything:
