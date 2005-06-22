@@ -55,6 +55,7 @@ for arch in $ARCHES; do
 	exec >"$TASKS_OUT/$DIST/important.$arch"
 	for seed in $(list-seeds debootstrap); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
-			tail -n +3 | head -n -2 | cut -d' ' -f1
+			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
+			egrep -v '^(linux-.*|nvidia-kernel-common|grub|yaboot|efibootmgr|elilo|silo)$'
 	done
 done
