@@ -18,13 +18,11 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 # TO is the destination for the base of the Debian mirror directory
 # (the dir that holds dists/ and ls-lR).
 
-if [ -z "$TO" ]; then
-    TO="$CDIMAGE_ROOT/ftp"
-fi
+TO="$CDIMAGE_ROOT/ftp"
 
 # This file may override with private rsync locations to avoid access
 # limits.
-. "$CDIMAGE_ROOT/etc/anonftpsync" || true
+. "${ANONFTPSYNC_CONF:-$CDIMAGE_ROOT/etc/anonftpsync}" || true
 
 # RSYNC_HOST is the site you have chosen from the mirrors file.
 # (http://www.debian.org/mirror/list-full)
