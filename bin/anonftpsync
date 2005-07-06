@@ -18,7 +18,9 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 # TO is the destination for the base of the Debian mirror directory
 # (the dir that holds dists/ and ls-lR).
 
-TO="$CDIMAGE_ROOT/ftp"
+if [ -z "$TO" ]; then
+    TO="$CDIMAGE_ROOT/ftp"
+fi
 
 # This file may override with private rsync locations to avoid access
 # limits.
