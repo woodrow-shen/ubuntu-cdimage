@@ -78,6 +78,8 @@ HOSTNAME=`hostname -f`
 
 LOCK="${TO}/Archive-Update-in-Progress-${HOSTNAME}"
 
+mkdir -p "$TO"
+
 # Get in the right directory
 cd "$CDIMAGE_ROOT/log"
 
