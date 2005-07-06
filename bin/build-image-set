@@ -19,7 +19,17 @@ fi
 
 echo "===== Syncing $CAPPROJECT mirror ====="
 date
-anonftpsync
+ARCHES_COLONS="$(echo "$ARCHES" | sed 's/ /:/g')"
+case :$ARCHES: in
+	*:amd64:*|*:i386:*|*:powerpc:*)
+		anonftpsync
+		;;
+esac
+case :$ARCHES: in
+	*:hppa:*|*:ia64:*|*:sparc:*)
+		ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
+		;;
+esac
 
 echo "===== Updating archive of local packages ====="
 date

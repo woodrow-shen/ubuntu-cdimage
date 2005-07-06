@@ -1,0 +1,2 @@
+RSYNC_HOST=ports.ubuntu.com
+RSYNC_DIR=ubuntu-ports
