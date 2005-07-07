@@ -7,3 +7,4 @@ PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
 14 5 * * *	cron.kubuntu-daily
 26 6 * * *	cron.kubuntu-daily-live
 47 20 * * 1,5	cron.kubuntu-dvd
+32 2 * * *	cron.ports_daily
