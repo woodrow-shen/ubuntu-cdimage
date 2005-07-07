@@ -12,36 +12,49 @@ fi
 case $1 in
 	all)
 		case $DIST in
-			warty)
-				echo 'base desktop ship installer supported'
-				;;
-			hoary)
-				echo 'base desktop ship installer casper supported'
+			warty|hoary)
+				echo 'base desktop'
 				;;
 			breezy)
-				echo 'minimal standard desktop ship installer casper supported'
+				echo 'minimal standard desktop'
 				;;
 		esac
+		if [ "$CDIMAGE_INSTALL" ]; then
+			echo 'ship installer'
+		fi
+		if [ "$CDIMAGE_LIVE" ]; then
+			case $DIST in
+				hoary|breezy)
+					echo 'casper'
+					;;
+			esac
+		fi
+		echo 'supported'
 		;;
 	tasks)
 		case $DIST in
 			warty|hoary)
-				echo 'base desktop ship'
+				echo 'base desktop'
 				;;
 			breezy)
-				echo 'minimal standard desktop ship'
+				echo 'minimal standard desktop'
 				;;
 		esac
+		if [ "$CDIMAGE_INSTALL" ]; then
+			echo 'ship'
+		fi
 		;;
 	installer)
-		case $DIST in
-			warty)
-				echo 'installer'
-				;;
-			hoary|breezy)
-				echo 'installer casper'
-				;;
-		esac
+		if [ "$CDIMAGE_INSTALL" ]; then
+			echo 'installer'
+		fi
+		if [ "$CDIMAGE_LIVE" ]; then
+			case $DIST in
+				hoary|breezy)
+					echo 'casper'
+					;;
+			esac
+		fi
 		;;
 	debootstrap)
 		case $DIST in
