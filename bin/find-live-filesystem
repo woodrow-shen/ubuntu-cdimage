@@ -61,6 +61,12 @@ case $ITEM in
 					*)	exit 1 ;;
 				esac
 				;;
+			tocd3)
+				case $ARCH in
+					i386)
+						echo http://maitri.ubuntu.com/theopencd/tocd3/latest/TOCD3.tgz
+						;;
+					*)	exit 1 ;;
 			*)	exit 1 ;;
 		esac
 		;;
