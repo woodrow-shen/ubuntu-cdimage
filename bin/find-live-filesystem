@@ -67,6 +67,7 @@ case $ITEM in
 						echo http://maitri.ubuntu.com/theopencd/tocd3/latest/TOCD3.tgz
 						;;
 					*)	exit 1 ;;
+				esac
 			*)	exit 1 ;;
 		esac
 		;;
