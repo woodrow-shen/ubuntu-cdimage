@@ -33,7 +33,7 @@ mkindex () {
 	mkemptydir "$GERMINATE_OUT/$subdir"
 	for file in "$@"; do
 		if [ "${file#/}" = "$file" ]; then
-			absfile="$CDIMAGE_ROOT/ftp/$file"
+			absfile="$(find-mirror "$arch")/$file"
 		else
 			absfile="$file"
 		fi
