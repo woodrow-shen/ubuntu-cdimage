@@ -1,0 +1,12 @@
+#! /bin/sh
+set -e
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
+
+export ARCHES=ia64
+export CDIMAGE_INSTALL=1
+
+build-image-set ports_daily
