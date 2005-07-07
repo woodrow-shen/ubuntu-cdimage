@@ -94,8 +94,8 @@ done
 
 if [ -d "$PUBLISH" ]; then
 	# Create and publish torrents.
-	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE"
-	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE/$DATE"
+	mkemptydir "$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE_DIR"
+	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE_DIR/$DATE"
 	mkemptydir "$TORRENTS"
 	make-torrents "$PUBLISH" "$DIST-$TYPE" cdimage.ubuntu.com
 	make-torrents "$PUBLISH" "$DIST-src" cdimage.ubuntu.com
@@ -118,7 +118,7 @@ if [ -d "$PUBLISH" ]; then
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
 	make-web-indices "$PUBLISH" "$DIST"
-	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE/current"
+	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current"
 else
 	echo "No CDs produced!" >&2
 fi
