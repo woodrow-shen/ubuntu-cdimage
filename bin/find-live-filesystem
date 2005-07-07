@@ -58,7 +58,7 @@ case $ITEM in
 					i386)
 						echo http://maitri.ubuntu.com/theopencd/kubuntu/winfoss/latest/Kubuntu-WinFOSS-i386.tgz
 						;;
-					*)	exit 1
+					*)	exit 1 ;;
 				esac
 				;;
 			*)	exit 1 ;;
