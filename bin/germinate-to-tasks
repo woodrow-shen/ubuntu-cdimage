@@ -55,6 +55,6 @@ for arch in $ARCHES; do
 	for seed in $(list-seeds debootstrap); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-			egrep -v '^(linux-(image|restricted|amd64|386|686|k7|power|itanium|mckinley|sparc|hppa).*|nvidia-kernel-common|grub|yaboot|efibootmgr|elilo|silo|palo)$'
+			egrep -v '^(linux-(image|restricted|amd64|386|686|k7|power|itanium|mckinley|sparc|hppa).*|nvidia-kernel-common|grub|yaboot|efibootmgr|elilo|silo|palo)$' || true
 	done
 done
