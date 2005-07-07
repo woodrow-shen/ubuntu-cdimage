@@ -15,6 +15,7 @@ fi
 
 DATE="$1"
 IMAGE_TYPE="${2:-daily}"
+IMAGE_TYPE_DIR="$(echo "$IMAGE_TYPE" | sed 's,_,/,g')"
 
 case $PROJECT in
 	ubuntu)
@@ -27,13 +28,13 @@ case $PROJECT in
 		;;
 esac
 
-PUBLISH="$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE/$DATE"
+PUBLISH="$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/$DATE"
 
 case $IMAGE_TYPE in
 	*-live)
 		TYPE=live
 		;;
-	dvd)
+	*_dvd|dvd)
 		TYPE=dvd
 		;;
 	*)

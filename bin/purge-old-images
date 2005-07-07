@@ -9,6 +9,7 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 IMAGE_TYPE="$1"
+IMAGE_TYPE_DIR="$(echo "$IMAGE_TYPE" | sed 's,_,/,g')"
 
 get_purge_days () {
 	while read imagetype days; do
@@ -41,7 +42,7 @@ case $PROJECT in
 		;;
 esac
 
-cd "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE"
+cd "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR"
 
 for dir in *; do
 	# Directory?
@@ -60,9 +61,9 @@ for dir in *; do
 	fi
 
 	if [ "$DEBUG" ]; then
-		echo "Would purge $IMAGE_TYPE/$dir"
+		echo "Would purge $IMAGE_TYPE_DIR/$dir"
 	else
-		echo "Purging $IMAGE_TYPE/$dir"
+		echo "Purging $IMAGE_TYPE_DIR/$dir"
 		rm -rf "$dir"
 	fi
 done
