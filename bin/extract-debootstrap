@@ -6,13 +6,13 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/bin/functions.sh"
 
 DEBOOTSTRAP_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/debootstrap"
-MIRROR="$CDIMAGE_ROOT/ftp"
 
 mkemptydir "$DEBOOTSTRAP_OUT"
 for arch in $ARCHES; do
-	udeb="$(zcat "$MIRROR/dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" | grep-dctrl -nsFilename -PX debootstrap-udeb)"
-	if [ -f "$MIRROR/$udeb" ]; then
-		dpkg --fsys-tarfile "$MIRROR/$udeb" | \
+	mirror="$(find-mirror "$arch")"
+	udeb="$(zcat "$mirror/dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" | grep-dctrl -nsFilename -PX debootstrap-udeb)"
+	if [ -f "$mirror/$udeb" ]; then
+		dpkg --fsys-tarfile "$mirror/$udeb" | \
 			tar -xOf - "./usr/lib/debootstrap/scripts/$DIST" \
 			> "$DEBOOTSTRAP_OUT/$DIST-$arch"
 	else

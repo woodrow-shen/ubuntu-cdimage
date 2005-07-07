@@ -1,0 +1,26 @@
+#! /bin/sh
+set -e
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ]; then
+	echo 'Usage: find-mirror ARCH' >&2
+	exit 1
+fi
+ARCH="$1"
+
+case $ARCH in
+	amd64|i386|powerpc)
+		echo "$CDIMAGE_ROOT/ftp"
+		;;
+	hppa|ia64|sparc)
+		echo "$CDIMAGE_ROOT/ftp-ports"
+		;;
+	*)
+		echo "No mirror known for $ARCH" >&2
+		exit 1
+		;;
+esac
+
+exit 0
