@@ -15,6 +15,7 @@ case $1 in
 	tocd3)
 		export PROJECT=tocd3
 		export CAPPROJECT=TheOpenCDv3
+		;;
 	*)
 		cat <<EOF >&2
 Usage: for-project PROJECT [COMMAND ARGS...]
