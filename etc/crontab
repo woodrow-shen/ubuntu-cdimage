@@ -2,7 +2,7 @@ PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
 
 # CD image cron jobs, run out of cjwatson's crontab.
 21 8 * * *	cron.daily
-1 8 * * *	cron.daily-live
+31 7 * * *	cron.daily-live
 17 12 * * 2,6	cron.dvd
 14 5 * * *	cron.kubuntu-daily
 26 6 * * *	cron.kubuntu-daily-live
