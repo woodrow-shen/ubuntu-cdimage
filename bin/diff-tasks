@@ -4,9 +4,17 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+if [ -z "$1" ]; then
+	echo 'Usage: diff-tasks IMAGE_TYPE' >&2
+	exit 1
+fi
+IMAGE_TYPE="$1"
+
 SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
+PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/tasks-previous"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
 for seed in $(list-seeds all); do
-	diff -u "$TASKS/$DIST/$seed" "$SCRATCH/$DIST/$seed" || true
+	diff -u "$PREVIOUS/$IMAGE_TYPE/$DIST/$seed" \
+		"$SCRATCH/$IMAGE_TYPE/$DIST/$seed" || true
 done

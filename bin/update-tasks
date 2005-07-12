@@ -5,22 +5,27 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
+PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/tasks-previous"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
-if [ -z "$1" ]; then
-	echo 'Usage: update-tasks DATE' >&2
+if [ -z "$1" ] || [ -z "$2" ]; then
+	echo 'Usage: update-tasks DATE IMAGE_TYPE' >&2
 	exit 1
 fi
 
 DATE="$1"
+IMAGE_TYPE="$2"
 
 TASK_MAIL="$(cat "$CDIMAGE_ROOT/etc/task-mail" 2>/dev/null || true)"
 if [ "$TASK_MAIL" ]; then
-	diff-tasks | mail -e -s "Task changes for $CAPPROJECT $DIST on $DATE" \
-		$TASK_MAIL
+	diff-tasks "$IMAGE_TYPE" | \
+		mail -e -s "Task changes for $CAPPROJECT $IMAGE_TYPE/$DIST on $DATE" \
+			$TASK_MAIL
 fi
 
-diff-tasks
+diff-tasks "$IMAGE_TYPE"
 
 mkdir -p "$TASKS/$DIST"
-cp "$SCRATCH/$DIST"/* "$TASKS/$DIST/"
+cp "$SCRATCH/$IMAGE_TYPE/$DIST"/* "$TASKS/$DIST/"
+mkdir -p "$PREVIOUS/$IMAGE_TYPE/$DIST"
+cp "$SCRATCH/$IMAGE_TYPE/$DIST"/* "$PREVIOUS/$IMAGE_TYPE/$DIST/"

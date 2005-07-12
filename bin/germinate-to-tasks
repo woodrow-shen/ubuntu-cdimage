@@ -9,10 +9,16 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
 TASKS_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
 
-mkemptydir "$TASKS_OUT/$DIST"
+if [ -z "$1" ]; then
+	echo 'Usage: germinate-to-tasks IMAGE_TYPE' >&2
+	exit 1
+fi
+IMAGE_TYPE="$1"
+
+mkemptydir "$TASKS_OUT/$IMAGE_TYPE/$DIST"
 
 for seed in $(list-seeds all); do
-	exec >"$TASKS_OUT/$DIST/$seed"
+	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/$seed"
 	if [ "$seed" = supported ]; then
 		seedsource="$seed+build-depends"
 	else
@@ -30,16 +36,17 @@ done
 # udebs only exist to satisfy dependencies when building the
 # debian-installer package.
 for seed in $(list-seeds installer); do
-	grep -v ^kernel-image- "$TASKS_OUT/$DIST/$seed" \
-		> "$TASKS_OUT/$DIST/$seed.new"
-	mv "$TASKS_OUT/$DIST/$seed.new" "$TASKS_OUT/$DIST/$seed"
+	grep -v ^kernel-image- "$TASKS_OUT/$IMAGE_TYPE/$DIST/$seed" \
+		> "$TASKS_OUT/$IMAGE_TYPE/$DIST/$seed.new"
+	mv "$TASKS_OUT/$IMAGE_TYPE/$DIST/$seed.new" \
+		"$TASKS_OUT/$IMAGE_TYPE/$DIST/$seed"
 done
 
 # Help debian-cd to regenerate Task headers, to make sure that we don't
 # accidentally end up out of sync with the archive and break the
 # second-stage install.
 for arch in $ARCHES; do
-	exec >"$TASKS_OUT/$DIST/override.$arch"
+	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/override.$arch"
 	for seed in $(list-seeds tasks); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
@@ -51,7 +58,7 @@ done
 # so that debootstrap >= 0.3.1 can work out the correct set of packages
 # to install.
 for arch in $ARCHES; do
-	exec >"$TASKS_OUT/$DIST/important.$arch"
+	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/important.$arch"
 	for seed in $(list-seeds debootstrap); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \

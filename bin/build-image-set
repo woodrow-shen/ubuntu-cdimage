@@ -45,11 +45,11 @@ run-germinate
 
 echo "===== Generating new task lists ====="
 date
-germinate-to-tasks
+germinate-to-tasks "$IMAGE_TYPE"
 
 echo "===== Checking for other task changes ====="
 date
-update-tasks "$DATE"
+update-tasks "$DATE" "$IMAGE_TYPE"
 
 if [ "$CDIMAGE_LIVE" ]; then
 	echo "===== Downloading live filesystem images ====="
