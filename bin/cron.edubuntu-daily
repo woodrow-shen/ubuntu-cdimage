@@ -1,0 +1,14 @@
+#! /bin/sh
+set -e
+
+export PROJECT=edubuntu
+export CAPPROJECT=Edubuntu
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
+
+export CDIMAGE_INSTALL=1
+
+build-image-set daily
