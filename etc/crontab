@@ -8,3 +8,4 @@ PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
 26 6 * * *	for-project kubuntu cron.daily-live
 47 20 * * 1,5	for-project kubuntu cron.dvd
 32 2 * * *	for-project ubuntu cron.ports_daily
+44 0 * * *	for-project edubuntu cron.daily
