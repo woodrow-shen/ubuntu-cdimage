@@ -19,7 +19,7 @@ fi
 
 echo "===== Syncing $CAPPROJECT mirror ====="
 date
-ARCHES_COLONS="$(echo "$ARCHES" | sed 's/ /:/g')"
+ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
 case :$ARCHES_COLONS: in
 	*:amd64:*|*:i386:*|*:powerpc:*)
 		anonftpsync
