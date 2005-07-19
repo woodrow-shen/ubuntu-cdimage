@@ -8,8 +8,6 @@ IMAGE_TYPE="${1:-daily}"
 STAMP="$CDIMAGE_ROOT/etc/.next-build-suffix-$PROJECT-$IMAGE_TYPE"
 DATE="${DATE:-$(date +%Y%m%d)}"
 
-# TODO: race condition, need locking in cron.daily
-
 SUFFIX=
 if [ "$DATE_SUFFIX" ]; then
 	SUFFIX="$DATE_SUFFIX"

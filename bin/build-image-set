@@ -4,6 +4,12 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set"; then
+	echo "Another image set is already building!" >&2
+	exit 1
+fi
+trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set" EXIT HUP INT QUIT TERM
+
 IMAGE_TYPE="${1:-daily}"
 DATE="$(next-build-date "$IMAGE_TYPE")"
 
