@@ -32,6 +32,7 @@ else
 fi
 if [ "$DAYS" = 0 ]; then
 	echo "Not purging images for $PROJECT/$IMAGE_TYPE"
+	exit 0
 fi
 echo "Purging $PROJECT/$IMAGE_TYPE images older than $DAYS days ..."
 
