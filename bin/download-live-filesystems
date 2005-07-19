@@ -7,20 +7,31 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 LIVE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/live"
 
+fetch () {
+	case $1 in
+		/*)
+			ln "$1" "$2"
+			;;
+		*)
+			wget -nv "$1" -O "$2"
+			;;
+	esac
+}
+
 mkemptydir "$LIVE_OUT"
 for arch in $ARCHES; do
-	if ! wget -nv "$(find-live-filesystem "$arch" cloop)" \
-			-O "$LIVE_OUT/$arch.cloop"; then
+	if ! fetch "$(find-live-filesystem "$arch" cloop)" \
+			"$LIVE_OUT/$arch.cloop"; then
 		rm -f "$LIVE_OUT/$arch".*
 		continue
 	fi
-	wget -nv "$(find-live-filesystem "$arch" manifest)" \
-		-O "$LIVE_OUT/$arch.manifest" || true
+	fetch "$(find-live-filesystem "$arch" manifest)" \
+		"$LIVE_OUT/$arch.manifest" || true
 done
 
 # TheOpenCD goes on the amd64/i386 live CDs.
 for arch in $ARCHES; do
 	if winfoss="$(find-live-filesystem "$arch" winfoss)"; then
-		wget -nv "$winfoss" -O "$LIVE_OUT/$arch.winfoss.tgz"
+		fetch "$winfoss" "$LIVE_OUT/$arch.winfoss.tgz"
 	fi
 done

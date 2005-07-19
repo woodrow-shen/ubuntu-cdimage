@@ -35,7 +35,7 @@ case $ITEM in
 		case $PROJECT in
 			tocd3)
 				# cloop got auto-purged - reverting to plan B
-				echo file:///home/cjwatson/tocd3/livecd.tocd3.cloop
+				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
 				;;
 			*)
 				echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.cloop"
@@ -43,7 +43,15 @@ case $ITEM in
 		esac
 		;;
 	manifest)
-		echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
+		case $PROJECT in
+			tocd3)
+				# manifest got auto-purged - reverting to plan B
+				echo /home/cjwatson/tocd3/livecd.tocd3.manifest
+				;;
+			*)
+				echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.manifest"
+				;;
+		esac
 		;;
 	winfoss)
 		if [ "$DIST" = warty ]; then
