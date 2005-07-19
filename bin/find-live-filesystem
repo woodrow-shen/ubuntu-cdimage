@@ -35,7 +35,7 @@ case $ITEM in
 		case $PROJECT in
 			tocd3)
 				# cloop got auto-purged - reverting to plan B
-				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
+				echo file:///home/cjwatson/tocd3/livecd.tocd3.cloop
 				;;
 			*)
 				echo "$BUILDD/~buildd/livecd/$PROJECT/current/livecd.$PROJECT.cloop"
