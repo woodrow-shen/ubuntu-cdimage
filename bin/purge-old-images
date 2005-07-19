@@ -30,7 +30,10 @@ else
 		exit 0
 	}
 fi
-echo "Purging $IMAGE_TYPE images older than $DAYS days ..."
+if [ "$DAYS" = 0 ]; then
+	echo "Not purging images for $PROJECT/$IMAGE_TYPE"
+fi
+echo "Purging $PROJECT/$IMAGE_TYPE images older than $DAYS days ..."
 
 OLDEST="$(date -d "$DAYS days ago" +%Y%m%d)"
 
