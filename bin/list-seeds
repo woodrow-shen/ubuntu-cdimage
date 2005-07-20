@@ -20,7 +20,10 @@ case $1 in
 				;;
 		esac
 		if [ "$CDIMAGE_INSTALL" ]; then
-			echo 'ship installer'
+			echo 'ship'
+		fi
+		if [ "$CDIMAGE_INSTALL_BASE" ]; then
+			echo 'installer'
 		fi
 		if [ "$CDIMAGE_LIVE" ]; then
 			case $DIST in
@@ -45,7 +48,7 @@ case $1 in
 		fi
 		;;
 	installer)
-		if [ "$CDIMAGE_INSTALL" ]; then
+		if [ "$CDIMAGE_INSTALL_BASE" ]; then
 			echo 'installer'
 		fi
 		if [ "$CDIMAGE_LIVE" ]; then

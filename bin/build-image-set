@@ -15,6 +15,10 @@ DATE="$(next-build-date "$IMAGE_TYPE")"
 
 export PROJECT CAPPROJECT DIST ARCHES
 
+if [ "$CDIMAGE_INSTALL" ]; then
+	export CDIMAGE_INSTALL_BASE=1
+fi
+
 if [ -z "$DEBUG" ]; then
 	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
 	# Since we now know we aren't going to be spamming the terminal,
@@ -78,7 +82,7 @@ cd "$CDIMAGE_ROOT/debian-cd"
 chmod -R g+rwX "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
 
 # temporarily turned off for live builds
-if [ "$CDIMAGE_INSTALL" ]; then
+if [ "$CDIMAGE_INSTALL_BASE" ]; then
 	echo "===== Producing installability report ====="
 	date
 	check-installable
