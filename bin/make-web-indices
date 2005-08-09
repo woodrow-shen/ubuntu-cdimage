@@ -301,10 +301,10 @@ EOF
 		else
 			continue
 		fi
-		echo >> "$HEADER"
 
 		if [ "$cdtype" != src ]; then
 			cat <<EOF >> "$HEADER"
+
 <dd>$(archdesc "$arch")</dd>
 
 EOF
