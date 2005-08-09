@@ -235,6 +235,17 @@ for cdtype in install live dvd src; do
 		continue
 	fi
 
+	case $cdtype in
+		src)
+			# Perverse, but works.
+			arches="$(find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.iso" -printf '%P\n' | \
+				  sed "s/$CDPREFIX-$cdtype-\\(.*\\)\\.iso/\\1/")"
+			;;
+		*)
+			arches='i386 powerpc amd64 ia64'
+			;;
+	esac
+
 	cat <<EOF >> "$HEADER"
 <h3>$(cdtypestr "$cdtype" | titlecase)</h3>
 
@@ -242,7 +253,7 @@ for cdtype in install live dvd src; do
 EOF
 
 	archcount=0
-	for arch in i386 powerpc amd64 ia64; do
+	for arch in $arches; do
 		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.list" ]; then
 			archcount="$(($archcount + 1))"
 		fi
@@ -251,6 +262,10 @@ EOF
 	if [ "$archcount" -eq 1 ]; then
 		cat <<EOF >> "$HEADER"
 There is one image available:</p>
+EOF
+	elif [ "$cdtype" = src ]; then
+		cat <<EOF >> "$HEADER"
+There are $(count "$archcount") images available:</p>
 EOF
 	else
 		cat <<EOF >> "$HEADER"
@@ -263,31 +278,44 @@ EOF
 <dl>
 EOF
 
-	for arch in i386 powerpc amd64 ia64; do
+	for arch in $arches; do
+		case $cdtype in
+			src)
+				imagestr="$(cdtypestr "$cdtype" | titlecase) $arch"
+				htaccessimagestr="$imagestr"
+				;;
+			*)
+				imagestr="$(archstr "$arch") $(cdtypestr "$cdtype")"
+				htaccessimagestr="$(cdtypestr "$cdtype" | titlecase) for $(archstr "$arch") computers"
+				;;
+		esac
+
 		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso" ]; then
 			cat <<EOF >> "$HEADER"
-<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$(archstr "$arch") $(cdtypestr "$cdtype")</a>
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso">$imagestr</a>
 EOF
 		elif [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso.torrent" ]; then
 			cat <<EOF >> "$HEADER"
-<dt><a href="$CDPREFIX-$cdtype-$arch.iso.torrent">$(archstr "$arch") $(cdtypestr "$cdtype") (<a href="http://bittorrent.com/introduction.html">BitTorrent</a> only)</a>
+<dt><a href="$CDPREFIX-$cdtype-$arch.iso.torrent">$imagestr (<a href="http://bittorrent.com/introduction.html">BitTorrent</a> only)</a>
 EOF
 		else
 			continue
 		fi
+		echo >> "$HEADER"
 
-		cat <<EOF >> "$HEADER"
-
+		if [ "$cdtype" != src ]; then
+			cat <<EOF >> "$HEADER"
 <dd>$(archdesc "$arch")</dd>
 
 EOF
+		fi
 
 		for extension in iso.torrent iso jigdo list manifest template; do
 			if ! [ -e "$DIR/$CDPREFIX-$cdtype-$arch.$extension" ]; then
 				continue
 			fi
 
-			echo "AddDescription \"$(cdtypestr "$cdtype" | titlecase) for $(archstr "$arch") computers ($(extensionstr "$extension"))\" $CDPREFIX-$cdtype-$arch.$extension" >> "$HTACCESS"
+			echo "AddDescription \"$htaccessimagestr ($(extensionstr "$extension"))\" $CDPREFIX-$cdtype-$arch.$extension" >> "$HTACCESS"
 		done
 	done
 
