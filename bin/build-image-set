@@ -27,19 +27,21 @@ if [ -z "$DEBUG" ]; then
 	export VERBOSE=3
 fi
 
-echo "===== Syncing $CAPPROJECT mirror ====="
-date
-ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
-case :$ARCHES_COLONS: in
-	*:amd64:*|*:i386:*|*:powerpc:*)
-		anonftpsync
-		;;
-esac
-case :$ARCHES_COLONS: in
-	*:hppa:*|*:ia64:*|*:sparc:*)
-		ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
-		;;
-esac
+if [ -z "$CDIMAGE_NOSYNC" ]; then
+	echo "===== Syncing $CAPPROJECT mirror ====="
+	date
+	ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
+	case :$ARCHES_COLONS: in
+		*:amd64:*|*:i386:*|*:powerpc:*)
+			anonftpsync
+			;;
+	esac
+	case :$ARCHES_COLONS: in
+		*:hppa:*|*:ia64:*|*:sparc:*)
+			ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
+			;;
+	esac
+fi
 
 echo "===== Updating archive of local packages ====="
 date
