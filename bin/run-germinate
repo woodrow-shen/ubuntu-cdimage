@@ -60,4 +60,13 @@ for arch in $ARCHES; do
 		cp -a "$GERMINATE_HINTS" hints
 	fi
 	"$CDIMAGE_ROOT/germinate/germinate.py" ${LOCAL_SEEDS:+--seed-source "$LOCAL_SEEDS"} --mirror "file://$GERMINATE_OUT/" --seed-dist "$GERMINATE_SEED_DIST" --dist "$GERMINATE_DISTS" --arch "$arch" --no-rdepends
+
+	# Unfortunately, we now need a second germinate run to figure out
+	# the dependencies of language packs and the like.
+	echo "Re-germinating for $DIST/$arch language pack dependencies ..."
+	EXTRAS=
+	for pkg in $(< ship.seed tail -n +3 | head -n -2 | cut -d' ' -f1 | egrep '^(language-pack-[^-]+|language-pack-gnome-[^-]+|language-pack-kde-[^-]+|kde-i18n-.+|language-support-[^-]+)$'); do
+		EXTRAS="${EXTRAS:+$EXTRAS,}desktop/$pkg"
+	done
+	"$CDIMAGE_ROOT/germinate/germinate.py" ${LOCAL_SEEDS:+--seed-source "$LOCAL_SEEDS"} --mirror "file://$GERMINATE_OUT/" --seed-dist "$GERMINATE_SEED_DIST" --dist "$GERMINATE_DISTS" --arch "$arch" --no-rdepends ${EXTRAS:+--seed-packages "$EXTRAS"}
 done
