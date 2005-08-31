@@ -52,6 +52,13 @@ for arch in $ARCHES; do
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
 			sed "s/\$/  Task  $PROJECT-$seed/"
 	done
+	if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.tasks" ]; then
+		for task in $(< "$GERMINATE_OUT/$DIST-$arch/ship.tasks"); do
+			< "$GERMINATE_OUT/$DIST-$arch/$task" \
+				tail -n +3 | head -n -2 | cut -d' ' -f1 | \
+				sed "s/\$/  Task  $task/"
+		done
+	fi
 done
 
 # Help debian-cd to get priorities in sync with the current base system,

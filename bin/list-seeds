@@ -4,8 +4,6 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
-
 if [ -z "$1" ]; then
 	echo 'Usage: list-seeds all|tasks|installer' >&2
 	exit 1
@@ -47,11 +45,6 @@ case $1 in
 		esac
 		if [ "$CDIMAGE_INSTALL" ]; then
 			echo 'ship'
-			for arch in $ARCHES; do
-				if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.tasks" ]; then
-					cat "$GERMINATE_OUT/$DIST-$arch/ship.tasks"
-				fi
-			done | uniq -c
 		fi
 		;;
 	installer)
