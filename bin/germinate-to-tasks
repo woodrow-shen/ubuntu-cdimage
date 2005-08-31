@@ -46,19 +46,27 @@ done
 # accidentally end up out of sync with the archive and break the
 # second-stage install.
 for arch in $ARCHES; do
-	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/override.$arch"
+	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/tasks.$arch"
 	for seed in $(list-seeds tasks); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-			sed "s/\$/  Task  $PROJECT-$seed/"
+			sed "s/\$/ $PROJECT-$seed/"
 	done
 	if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.tasks" ]; then
 		for task in $(< "$GERMINATE_OUT/$DIST-$arch/ship.tasks"); do
 			< "$GERMINATE_OUT/$DIST-$arch/$task" \
 				tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-				sed "s/\$/  Task  $task/"
+				sed "s/\$/ $task/"
 		done
 	fi
+	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/override.$arch"
+	perl -alne '
+		push @{$tasks{$F[0]}}, $F[1];
+		END {
+			for my $pkg (sort keys %tasks) {
+				print "$pkg  Task  ", join(", ", @{$tasks{$pkg}});
+			}
+		}' "$TASKS_OUT/$IMAGE_TYPE/$DIST/tasks.$arch"
 done
 
 # Help debian-cd to get priorities in sync with the current base system,
