@@ -20,6 +20,11 @@ case $1 in
 				;;
 		esac
 		if [ "$CDIMAGE_INSTALL" ]; then
+			case $PROJECT in
+				edubuntu)
+					echo 'server'
+					;;
+			esac
 			echo 'ship'
 		fi
 		if [ "$CDIMAGE_INSTALL_BASE" ]; then
@@ -44,6 +49,11 @@ case $1 in
 				;;
 		esac
 		if [ "$CDIMAGE_INSTALL" ]; then
+			case $PROJECT in
+				edubuntu)
+					echo 'server'
+					;;
+			esac
 			echo 'ship'
 		fi
 		;;
