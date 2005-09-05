@@ -125,6 +125,12 @@ for arch in $ARCHES; do
 		echo "No daily for $DIST $arch on $DATE!" >&2
 		exit 1
 	fi
+
+	if [ -e "$DAILY/$DIST-$TYPE-$arch.OVERSIZED" ]; then
+		printf 'Daily for %s %s on %s is oversized! Continue?' \
+			"$DIST" "$arch" "$DATE"
+		confirm || exit 1
+	fi
 done
 
 if $PUBLISH_POOL; then
