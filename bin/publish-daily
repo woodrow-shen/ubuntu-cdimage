@@ -42,6 +42,24 @@ case $IMAGE_TYPE in
 		;;
 esac
 
+case $TYPE in
+	dvd)
+		# http://en.wikipedia.org/wiki/DVD_plus_RW
+		SIZELIMIT=4700372992
+		;;
+	*)
+		# http://en.wikipedia.org/wiki/CD-ROM
+		case $PROJECT in
+			edubuntu)
+				SIZELIMIT=737280000
+				;;
+			*)
+				SIZELIMIT=681984000
+				;;
+		esac
+		;;
+esac
+
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
 		echo "Publishing $arch ..."
@@ -65,6 +83,11 @@ for arch in $ARCHES; do
 			echo "Publishing $arch live manifest ..."
 			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest" \
 			   "$PUBLISH/$DIST-$TYPE-$arch.manifest"
+		fi
+
+		SIZE="$(stat -c %s "$PUBLISH/$DIST-$TYPE-$arch.iso")"
+		if [ "$SIZE" -gt "$SIZELIMIT" ]; then
+			touch "$PUBLISH/$DIST-$TYPE-$arch.OVERSIZED"
 		fi
 	else
 		echo "No CD for $arch!" >&2
