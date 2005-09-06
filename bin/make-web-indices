@@ -86,16 +86,16 @@ EOF
 archstr () {
 	case $1 in
 		amd64)
-			echo 'AMD64'
+			echo '64-bit PC (AMD64)'
 			;;
 		i386)
-			echo 'Intel x86'
+			echo 'PC (Intel x86)'
 			;;
 		ia64)
 			echo 'IA-64'
 			;;
 		powerpc)
-			echo 'PowerPC'
+			echo 'Mac (PowerPC)'
 			;;
 		*)
 			echo "Unknown architecture $1!" >&2
