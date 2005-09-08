@@ -6,7 +6,7 @@ mkemptydir () {
 }
 
 confirm () {
-	printf ' [yN]'
+	printf ' [yN] '
 	read yesno
 	yesno="$(printf %s "$yesno" | tr A-Z a-z)"
 	case $yesno in
