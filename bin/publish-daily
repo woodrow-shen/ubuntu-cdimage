@@ -121,7 +121,6 @@ if [ -d "$PUBLISH" ]; then
 	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/$IMAGE_TYPE_DIR/$DATE"
 	mkemptydir "$TORRENTS"
 	make-torrents "$PUBLISH" "$DIST-$TYPE" cdimage.ubuntu.com
-	make-torrents "$PUBLISH" "$DIST-src" cdimage.ubuntu.com
 	for arch in $ARCHES; do
 		if [ -e "$PUBLISH/$DIST-$TYPE-$arch.iso" ]; then
 			ln -f "$PUBLISH/$DIST-$TYPE-$arch.iso" \

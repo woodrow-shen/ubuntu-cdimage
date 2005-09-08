@@ -260,42 +260,44 @@ if $PUBLISH_DIST; then
 	done
 fi
 
-# Create and publish torrents.
-if $PUBLISH_DIST; then
-	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST/$TYPE"
-	mkemptydir "$TORRENTS"
-	make-torrents "$RELEASE_SIMPLE_DIST" \
-		"$CDPREFIX-${STATUS:+$STATUS-}$TYPE" releases.ubuntu.com
-fi
-if $PUBLISH_FULL; then
-	for dir in "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"/*; do
-		[ -d "$dir" ] || continue
-		if [ "${dir##*/}" != "${STATUS:-release}" ]; then
-			rm -rf "$dir"
-		fi
-	done
-	TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}/$TYPE"
-	mkemptydir "$TORRENTS"
-	make-torrents "$RELEASE_FULL" "$CDPREFIX-$TYPE" cdimage.ubuntu.com
-fi
-for arch in $ARCHES; do
+if [ "$TYPE" != src ]; then
+	# Create and publish torrents.
 	if $PUBLISH_DIST; then
-		basestatus="$CDPREFIX-${STATUS:+$STATUS-}$TYPE-$arch"
-		[ -e "$RELEASE_SIMPLE_POOL/$basestatus.iso" ] || continue
-		ln -f "$RELEASE_SIMPLE_POOL/$basestatus.iso" \
-		      "$TORRENTS/$basestatus.iso"
-		ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso.torrent" \
-		      "$TORRENTS/$basestatus.iso.torrent"
+		TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/simple/$DIST/$TYPE"
+		mkemptydir "$TORRENTS"
+		make-torrents "$RELEASE_SIMPLE_DIST" \
+			"$CDPREFIX-${STATUS:+$STATUS-}$TYPE" releases.ubuntu.com
 	fi
 	if $PUBLISH_FULL; then
-		baseplain="$CDPREFIX-$TYPE-$arch"
-		[ -e "$RELEASE_FULL/$baseplain.iso" ] || continue
-		ln -f "$RELEASE_FULL/$baseplain.iso" \
-		      "$TORRENTS/$baseplain.iso"
-		ln -f "$RELEASE_FULL/$baseplain.iso.torrent" \
-		      "$TORRENTS/$baseplain.iso.torrent"
+		for dir in "$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST"/*; do
+			[ -d "$dir" ] || continue
+			if [ "${dir##*/}" != "${STATUS:-release}" ]; then
+				rm -rf "$dir"
+			fi
+		done
+		TORRENTS="$CDIMAGE_ROOT/www/$TORRENT_TREE/releases/$DIST/${STATUS:-release}/$TYPE"
+		mkemptydir "$TORRENTS"
+		make-torrents "$RELEASE_FULL" "$CDPREFIX-$TYPE" cdimage.ubuntu.com
 	fi
-done
+	for arch in $ARCHES; do
+		if $PUBLISH_DIST; then
+			basestatus="$CDPREFIX-${STATUS:+$STATUS-}$TYPE-$arch"
+			[ -e "$RELEASE_SIMPLE_POOL/$basestatus.iso" ] || continue
+			ln -f "$RELEASE_SIMPLE_POOL/$basestatus.iso" \
+			      "$TORRENTS/$basestatus.iso"
+			ln -f "$RELEASE_SIMPLE_DIST/$basestatus.iso.torrent" \
+			      "$TORRENTS/$basestatus.iso.torrent"
+		fi
+		if $PUBLISH_FULL; then
+			baseplain="$CDPREFIX-$TYPE-$arch"
+			[ -e "$RELEASE_FULL/$baseplain.iso" ] || continue
+			ln -f "$RELEASE_FULL/$baseplain.iso" \
+			      "$TORRENTS/$baseplain.iso"
+			ln -f "$RELEASE_FULL/$baseplain.iso.torrent" \
+			      "$TORRENTS/$baseplain.iso.torrent"
+		fi
+	done
+fi
 
 md5sum_directory () {
 	echo "MD5summing $1 ..."
