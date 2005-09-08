@@ -235,6 +235,8 @@ if [ "$cdtypecount" -gt 1 ]; then
 EOF
 fi
 
+foundtorrent=0
+
 for cdtype in install live dvd src; do
 	if ! find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.list" | grep . >/dev/null; then
 		continue
@@ -307,6 +309,10 @@ EOF
 			continue
 		fi
 
+		if [ -e "$DIR/$CDPREFIX-$cdtype-$arch.iso.torrent" ]; then
+			foundtorrent=1
+		fi
+
 		if [ "$cdtype" != src ]; then
 			cat <<EOF >> "$HEADER"
 
@@ -330,12 +336,19 @@ EOF
 EOF
 done
 
-cat <<EOF >> "$HEADER"
+if [ "$foundtorrent" = 1 ]; then
+	cat <<EOF >> "$HEADER"
 <p>A full list of available files, including <a
 href="http://bittorrent.com/introduction.html">BitTorrent</a> files,
 can be found below.</p>
 
 EOF
+else
+	cat <<EOF >> "$HEADER"
+<p>A full list of available files can be found below.</p>
+
+EOF
+fi
 
 cat <<EOF > "$FOOTER"
 </div></body></html>
