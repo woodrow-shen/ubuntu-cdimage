@@ -102,6 +102,9 @@ archstr () {
 		powerpc)
 			echo 'Mac (PowerPC)'
 			;;
+		sparc)
+			echo 'SPARC'
+			;;
 		*)
 			echo "Unknown architecture $1!" >&2
 			;;
@@ -133,6 +136,11 @@ EOF
 			cat <<EOF
 For Apple Macintosh G3, G4, and G5 computers, including iBooks and
 PowerBooks.
+EOF
+			;;
+		sparc)
+			cat <<EOF
+For Sun SPARC computers.
 EOF
 			;;
 		*)
@@ -249,7 +257,7 @@ for cdtype in install live dvd src; do
 				  sed "s/$CDPREFIX-$cdtype-\\(.*\\)\\.iso/\\1/")"
 			;;
 		*)
-			arches='i386 powerpc amd64 ia64'
+			arches='i386 powerpc amd64 ia64 sparc'
 			;;
 	esac
 
