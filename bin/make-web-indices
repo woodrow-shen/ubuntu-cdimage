@@ -140,7 +140,7 @@ EOF
 			;;
 		sparc)
 			cat <<EOF
-For Sun SPARC computers.
+For Sun UltraSparc computers.
 EOF
 			;;
 		*)
