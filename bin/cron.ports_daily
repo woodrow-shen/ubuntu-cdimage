@@ -6,7 +6,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 
-export ARCHES="${ARCHES:-ia64}"
+export ARCHES="${ARCHES:-ia64 sparc}"
 export CDIMAGE_INSTALL=1
 
 build-image-set ports_daily
