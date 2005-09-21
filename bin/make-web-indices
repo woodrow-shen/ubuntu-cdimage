@@ -47,7 +47,14 @@ cdtypestr () {
 			echo 'live CD'
 			;;
 		dvd)
-			echo 'install/live DVD'
+			case $PROJECT in
+				edubuntu)
+					echo 'install DVD'
+					;;
+				*)
+					echo 'install/live DVD'
+					;;
+			esac
 			;;
 		src)
 			echo 'source CD'
@@ -71,11 +78,20 @@ The live CD allows you to try $CAPPROJECT without changing your computer at all.
 EOF
 			;;
 		dvd)
-			cat <<EOF
+			case $PROJECT in
+				edubuntu)
+					cat <<EOF
+The install DVD allows you to install $CAPPROJECT permanently on a computer.
+EOF
+					;;
+				*)
+					cat <<EOF
 The combined install/live DVD allows you either to install $CAPPROJECT
 permanently on a computer, or (by entering 'live' at the boot prompt) to try
 $CAPPROJECT without changing your computer at all.
 EOF
+					;;
+			esac
 			;;
 		src)
 			cat <<EOF
