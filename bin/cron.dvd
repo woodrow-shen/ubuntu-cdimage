@@ -7,7 +7,14 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 
 export CDIMAGE_INSTALL=1
-export CDIMAGE_LIVE=1
+case $PROJECT in
+	edubuntu)
+		# no live images for Edubuntu yet
+		;;
+	*)
+		export CDIMAGE_LIVE=1
+		;;
+esac
 export CDIMAGE_DVD=1
 
 build-image-set dvd
