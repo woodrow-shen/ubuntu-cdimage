@@ -4,7 +4,7 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-if [ -z "$1" ]; then
+if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: make-web-indices DIR CDPREFIX' >&2
 	exit 1
 fi
