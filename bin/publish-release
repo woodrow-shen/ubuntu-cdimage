@@ -4,9 +4,8 @@ set -e
 # Publishing a release is a bit more complicated than publishing a daily. We
 # have two trees: simple and full. The simple tree is intended for smaller
 # mirrors and for ease of use by naïve end users. It contains a pool of
-# images (hardlinks into the full tree) and a tree per release of symlinks
-# into that pool with filenames that include the status of the image (e.g.
-# preview, sounder9, release).
+# images and a tree per release of symlinks into that pool with filenames
+# that include the status of the image (e.g. preview, sounder-9, release).
 #
 # The full tree contains everything except the releases that are in the
 # simple tree (so in practice it contains alpha/beta releases), and has a
