@@ -15,6 +15,9 @@ case $ARCH in
 	amd64)
 		BUILDD=king.buildd
 		;;
+	hppa)
+		BUILDD=bld-3.mmjgroup.com
+		;;
 	i386)
 		BUILDD=terranova.buildd
 		;;
