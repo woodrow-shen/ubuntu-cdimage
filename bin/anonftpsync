@@ -113,6 +113,10 @@ rsync --recursive --copy-links --hard-links --times --verbose --stats \
 # Delete dangling symlinks.
 find $TO/ -type l -xtype l | xargs -r rm 
 
+# Make sure everything is group-writable etc. (the upstream mirror may have
+# too restrictive permissions, so umask doesn't help).
+chmod -R g+rwX "$TO" 2>/dev/null || true
+
 date -u > "${TO}/project/trace/${HOSTNAME}"
 
 # Note: if you don't have savelog, use any other log rotation facility, or
