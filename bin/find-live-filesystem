@@ -80,7 +80,7 @@ case $ITEM in
 					*)	exit 1 ;;
 				esac
 				;;
-			tocd3)
+			tocd3|tocd3.1)
 				case $ARCH in
 					i386)
 						echo http://maitri.ubuntu.com/theopencd/tocd3/fsm/TOCD3.tgz
