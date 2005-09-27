@@ -12,13 +12,13 @@ case $1 in
 		export PROJECT=kubuntu
 		export CAPPROJECT=Kubuntu
 		;;
-	tocd3)
-		export PROJECT=tocd3
-		export CAPPROJECT=TheOpenCDv3
-		;;
 	edubuntu)
 		export PROJECT=edubuntu
 		export CAPPROJECT=Edubuntu
+		;;
+	tocd3)
+		export PROJECT=tocd3
+		export CAPPROJECT=TheOpenCDv3
 		;;
 	*)
 		cat <<EOF >&2
@@ -26,8 +26,8 @@ Usage: for-project PROJECT [COMMAND ARGS...]
 Recognised projects:
   ubuntu
   kubuntu
-  tocd3
   edubuntu
+  tocd3
 EOF
 		exit 1
 		;;
