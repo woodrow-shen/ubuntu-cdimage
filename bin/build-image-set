@@ -30,12 +30,8 @@ fi
 if [ -z "$CDIMAGE_NOSYNC" ]; then
 	echo "===== Syncing $CAPPROJECT mirror ====="
 	date
+	anonftpsync
 	ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
-	case :$ARCHES_COLONS: in
-		*:amd64:*|*:i386:*|*:powerpc:*)
-			anonftpsync
-			;;
-	esac
 	case :$ARCHES_COLONS: in
 		*:hppa:*|*:ia64:*|*:sparc:*)
 			ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
