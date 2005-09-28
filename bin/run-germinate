@@ -66,7 +66,7 @@ for arch in $ARCHES; do
 	echo "Re-germinating for $DIST/$arch language pack dependencies ..."
 	> ship.acsets
 	EXTRAS=
-	for pkg in $(< ship.seed tail -n +3 | head -n -2 | cut -d' ' -f1 | egrep '^(language-pack-[^-]+|language-pack-gnome-[^-]+|language-pack-kde-[^-]+|kde-i18n-.+|language-support-[^-]+)$'); do
+	for pkg in $(< ship.seed tail -n +3 | head -n -2 | cut -d' ' -f1 | egrep '^(language-pack-[^-]+|language-pack-gnome-[^-]+|language-pack-kde-[^-]+|kde-i18n-.+|language-support-[^-]+|oem-config)$'); do
 		EXTRAS="${EXTRAS:+$EXTRAS,}desktop/$pkg"
 		echo "$pkg" >> ship.acsets
 	done
