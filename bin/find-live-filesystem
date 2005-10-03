@@ -50,7 +50,7 @@ case $ITEM in
 				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
 				;;
 			*)
-				echo "$BUILDD/~buildd/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
+				echo "http://$BUILDD/~buildd/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
 				;;
 		esac
 		;;
@@ -61,7 +61,7 @@ case $ITEM in
 				echo /home/cjwatson/tocd3/livecd.tocd3.manifest
 				;;
 			*)
-				echo "$BUILDD/~buildd/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
+				echo "http://$BUILDD/~buildd/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
 				;;
 		esac
 		;;
