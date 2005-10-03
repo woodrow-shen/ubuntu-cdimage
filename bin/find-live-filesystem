@@ -16,7 +16,7 @@ case $ARCH in
 		BUILDD=king.buildd
 		;;
 	hppa)
-		BUILDD=bld-3.mmjgroup.com
+		BUILDD=buildd.mmjgroup.com
 		;;
 	i386)
 		BUILDD=terranova.buildd
