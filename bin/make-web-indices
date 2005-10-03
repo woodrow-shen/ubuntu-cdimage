@@ -109,6 +109,9 @@ archstr () {
 		amd64)
 			echo '64-bit PC (AMD64)'
 			;;
+		hppa)
+			echo 'HP PA-RISC'
+			;;
 		i386)
 			echo 'PC (Intel x86)'
 			;;
@@ -134,6 +137,11 @@ archdesc () {
 For computers based on the AMD64 or EM64T architecture (e.g., Athlon64,
 Opteron, EM64T Xeon). It is not necessary for all (even most) processors
 made by AMD -- only their 64 bit chips.
+EOF
+			;;
+		hppa)
+			cat <<EOF
+For HP PA-RISC computers.
 EOF
 			;;
 		i386)
