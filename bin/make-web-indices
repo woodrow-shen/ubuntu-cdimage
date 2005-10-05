@@ -281,7 +281,7 @@ for cdtype in install live dvd src; do
 				  sed "s/$CDPREFIX-$cdtype-\\(.*\\)\\.iso/\\1/")"
 			;;
 		*)
-			arches='i386 powerpc amd64 ia64 sparc hppa'
+			arches='i386 powerpc amd64 hppa ia64 sparc'
 			;;
 	esac
 
