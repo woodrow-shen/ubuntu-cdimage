@@ -71,14 +71,30 @@ case $ITEM in
 		fi
 		case $PROJECT in
 			ubuntu)
-				case $ARCH in
-					i386)
-						echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+				case $DIST in
+					hoary)
+						case $ARCH in
+							i386)
+								echo http://maitri.ubuntu.com/theopencd/ubuntu/winfoss/latest/Hoary-WinFOSS.tgz
+								;;
+							amd64)
+								echo http://maitri.ubuntu.com/theopencd/ubuntu/amd64/latest/Hoary-WinFOSS-amd64.tgz
+								;;
+							*)	exit 1 ;;
+						esac
 						;;
-					amd64)
-						echo http://maitri.ubuntu.com/theopencd/ubuntu/amd64/latest/Hoary-WinFOSS-amd64.tgz
+					breezy)
+						case $ARCH in
+							i386)
+								echo http://www.theopencd.org/winfoss/ubuntu/current/Ubuntu-WinFOSS-5.10.tgz
+								;;
+							amd64)
+								# temporary
+								echo http://maitri.ubuntu.com/theopencd/ubuntu/amd64/latest/Hoary-WinFOSS-amd64.tgz
+								;;
+							*)	exit 1 ;;
+						esac
 						;;
-					*)	exit 1 ;;
 				esac
 				;;
 			kubuntu)
