@@ -148,7 +148,7 @@ fi
 echo "Constructing release trees ..."
 
 for arch in $ARCHES; do
-	echo "Copying $TYPE-$arch CD ..."
+	echo "Copying $TYPE-$arch image ..."
 
 	baseplain="$CDPREFIX-$TYPE-$arch"
 	basestatus="$CDPREFIX-${STATUS:+$STATUS-}$TYPE-$arch"
