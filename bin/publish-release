@@ -164,8 +164,8 @@ for arch in $ARCHES; do
 			      "$RELEASE_SIMPLE_POOL/$basestatus.$ext"
 		fi
 		if $PUBLISH_DIST; then
-			ln -s "$DIST_TO_POOL/$basestatus.$ext" \
-			      "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
+			ln -sf "$DIST_TO_POOL/$basestatus.$ext" \
+			       "$RELEASE_SIMPLE_DIST/$basestatus.$ext"
 		fi
 		if $PUBLISH_FULL; then
 			cp -a "$DAILY/$DIST-$TYPE-$arch.$ext" \
@@ -185,7 +185,7 @@ for arch in $ARCHES; do
 			fi
 			if $PUBLISH_DIST; then
 				for ext in template jigdo; do
-					ln -s "$DIST_TO_POOL/$basestatus.$ext" \
+					ln -sf "$DIST_TO_POOL/$basestatus.$ext" \
 						"$RELEASE_SIMPLE_DIST/$basestatus.$ext"
 				done
 			fi
@@ -217,8 +217,8 @@ for arch in $ARCHES; do
 			      "$RELEASE_SIMPLE_POOL/$basestatus.manifest"
 		fi
 		if $PUBLISH_DIST; then
-			ln -s "$DIST_TO_POOL/$basestatus.manifest" \
-			      "$RELEASE_SIMPLE_DIST/$basestatus.manifest"
+			ln -sf "$DIST_TO_POOL/$basestatus.manifest" \
+			       "$RELEASE_SIMPLE_DIST/$basestatus.manifest"
 		fi
 		if $PUBLISH_FULL; then
 			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest" \
