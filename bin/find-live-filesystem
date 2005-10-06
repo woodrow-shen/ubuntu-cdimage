@@ -98,11 +98,23 @@ case $ITEM in
 				esac
 				;;
 			kubuntu)
-				case $ARCH in
-					i386)
-						echo http://maitri.ubuntu.com/theopencd/kubuntu/winfoss/latest/Kubuntu-WinFOSS-i386.tgz
+				case $DIST in
+					hoary)
+						case $ARCH in
+							i386)
+								echo http://maitri.ubuntu.com/theopencd/kubuntu/winfoss/latest/Kubuntu-WinFOSS-i386.tgz
+								;;
+							*)	exit 1 ;;
+						esac
 						;;
-					*)	exit 1 ;;
+					breezy)
+						case $ARCH in
+							i386)
+								echo http://www.theopencd.org/winfoss/kubuntu/20051005/Kubuntu-WinFOSS-5.10.tgz
+								;;
+							*)	exit 1 ;;
+						esac
+						;;
 				esac
 				;;
 			tocd3)
