@@ -90,7 +90,7 @@ case $ITEM in
 								;;
 							amd64)
 								# temporary
-								echo http://maitri.ubuntu.com/theopencd/ubuntu/amd64/latest/Hoary-WinFOSS-amd64.tgz
+								echo http://www.theopencd.org/winfoss/ubuntu-AMD/current/Ubuntu-WinFOSS-5.10-AMD.tgz
 								;;
 							*)	exit 1 ;;
 						esac
@@ -110,7 +110,10 @@ case $ITEM in
 					breezy)
 						case $ARCH in
 							i386)
-								echo http://www.theopencd.org/winfoss/kubuntu/20051005/Kubuntu-WinFOSS-5.10.tgz
+								echo http://www.theopencd.org/winfoss/kubuntu/Kubuntu-WinFOSS-5.10.tgz
+								;;
+							amd64)
+								echo http://www.theopencd.org/winfoss/kubuntu-AMD/current/Kubuntu-WinFOSS-5.10-AMD.tgz
 								;;
 							*)	exit 1 ;;
 						esac
