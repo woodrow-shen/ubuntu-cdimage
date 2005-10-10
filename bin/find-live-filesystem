@@ -13,19 +13,19 @@ ITEM="$2"
 
 case $ARCH in
 	amd64)
-		BUILDD=king.buildd/~buildd
+		LIVECD=http://king.buildd/~buildd/livecd
 		;;
 	hppa)
-		BUILDD=people.ubuntu.com/~lamont
+		LIVECD=/home/cjwatson/hppa-livecd
 		;;
 	i386)
-		BUILDD=terranova.buildd/~buildd
+		LIVECD=http://terranova.buildd/~buildd/livecd
 		;;
 	ia64)
-		BUILDD=weddell.buildd/~buildd
+		LIVECD=http://weddell.buildd/~buildd/livecd
 		;;
 	powerpc)
-		BUILDD=royal.buildd/~buildd
+		LIVECD=http://royal.buildd/~buildd/livecd
 		;;
 	*)
 		echo "No live filesystem source known for $ARCH" >&2
@@ -50,7 +50,7 @@ case $ITEM in
 				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
 				;;
 			*)
-				echo "http://$BUILDD/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
+				echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
 				;;
 		esac
 		;;
@@ -61,7 +61,7 @@ case $ITEM in
 				echo /home/cjwatson/tocd3/livecd.tocd3.manifest
 				;;
 			*)
-				echo "http://$BUILDD/livecd/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
+				echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
 				;;
 		esac
 		;;
