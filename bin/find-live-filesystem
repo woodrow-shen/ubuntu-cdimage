@@ -89,7 +89,6 @@ case $ITEM in
 								echo http://www.theopencd.org/winfoss/ubuntu/current/Ubuntu-WinFOSS-5.10.tgz
 								;;
 							amd64)
-								# temporary
 								echo http://www.theopencd.org/winfoss/ubuntu-AMD/current/Ubuntu-WinFOSS-5.10-AMD.tgz
 								;;
 							*)	exit 1 ;;
