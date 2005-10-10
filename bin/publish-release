@@ -239,14 +239,7 @@ done
 # images for that release.
 if $PUBLISH_DIST; then
 	for dir in "$RELEASE_SIMPLE_DIST" "$RELEASE_SIMPLE_POOL"; do
-		for file in "$dir/$CDPREFIX"-*; do
-			base="${file##*/}"
-			base="${base%-*}" # remove architecture
-			base="${base%-*}" # remove type
-			if [ "$base" = "$CDPREFIX${STATUS:+-$STATUS}" ]; then
-				# Don't delete what we just published.
-				continue
-			fi
+		for file in $(find "$dir" -maxdepth 1 -name "$CDPREFIX-*" ! -regex ".*/$CDPREFIX${STATUS:+-$STATUS}-[^-]*-[^-]*"); do
 			echo "Purging $file"
 			rm -f "$file"
 			grep -v "  ${file##*/}\$" "$dir/MD5SUMS" \
