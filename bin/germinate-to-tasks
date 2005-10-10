@@ -52,7 +52,7 @@ for arch in $ARCHES; do
 	for seed in $(list-seeds tasks); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-			sed "s/\$/ $PROJECT-$seed/"
+			sed "s/\$/ ${PROJECT%%-*}-$seed/"
 	done
 	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/acsets.$arch"
 	if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.acsets" ]; then
