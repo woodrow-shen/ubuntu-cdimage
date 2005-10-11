@@ -109,7 +109,7 @@ case $ITEM in
 					breezy)
 						case $ARCH in
 							i386)
-								echo http://www.theopencd.org/winfoss/kubuntu/Kubuntu-WinFOSS-5.10.tgz
+								echo http://www.theopencd.org/winfoss/kubuntu/current/Kubuntu-WinFOSS-5.10.tgz
 								;;
 							amd64)
 								echo http://www.theopencd.org/winfoss/kubuntu-AMD/current/Kubuntu-WinFOSS-5.10-AMD.tgz
