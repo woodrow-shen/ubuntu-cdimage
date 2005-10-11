@@ -7,3 +7,4 @@ ports_daily-live 3
 ports_dvd 5
 # Only purge TheOpenCDv3 images manually.
 tocd3/daily-live 0
+livecd-base 2

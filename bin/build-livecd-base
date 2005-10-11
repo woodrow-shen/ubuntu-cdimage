@@ -1,0 +1,40 @@
+#! /bin/sh
+set -e
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
+
+# This is a special case; don't use for-project.
+export PROJECT=livecd-base
+
+if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set"; then
+	echo "Another image set is already building!" >&2
+	exit 1
+fi
+trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set" EXIT HUP INT QUIT TERM
+
+IMAGE_TYPE=livecd-base
+DATE="$(next-build-date "$IMAGE_TYPE")"
+
+echo "===== Downloading live filesystem images ====="
+date
+download-live-filesystems
+
+if [ -z "$DEBUG" ]; then
+	echo "===== Publishing ====="
+	date
+	publish-livecd-base "$DATE" "$IMAGE_TYPE"
+
+	echo "===== Purging old images ====="
+	date
+	purge-old-images "$IMAGE_TYPE"
+
+	echo "===== Triggering mirrors ====="
+	date
+	sync-mirrors
+fi
+
+echo "===== Finished ====="
+date

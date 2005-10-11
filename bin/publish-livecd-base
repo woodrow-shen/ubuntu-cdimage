@@ -1,0 +1,37 @@
+#! /bin/sh
+set -e
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+. "$CDIMAGE_ROOT/bin/functions.sh"
+
+LIVE="$CDIMAGE_ROOT/scratch/$PROJECT/live"
+
+if [ -z "$1" ]; then
+	echo 'Usage: publish-livecd-base DATE [IMAGE_TYPE]' >&2
+	exit 1
+fi
+
+DATE="$1"
+IMAGE_TYPE="${2:-livecd-base}"
+
+PUBLISH="$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/$DATE"
+
+for arch in $ARCHES; do
+	if [ -e "$LIVE/$arch.cloop" ]; then
+		echo "Publishing $arch ..."
+		mkdir -p "$PUBLISH"
+		cp -a "$LIVE/$arch.cloop" "$PUBLISH/$arch.cloop"
+		cp -a "$LIVE/$arch.manifest" "$PUBLISH/$arch.manifest"
+	else
+		echo "No cloop for $arch!" >&2
+	fi
+done
+
+if [ -d "$PUBLISH" ]; then
+	(cd "$PUBLISH" && md5sum *.cloop > MD5SUMS)
+	sign-cdimage "$PUBLISH/MD5SUMS"
+	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
+else
+	echo "No cloops produced!" >&2
+fi
