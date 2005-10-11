@@ -19,7 +19,7 @@ IMAGE_TYPE=livecd-base
 DATE="$(next-build-date "$IMAGE_TYPE")"
 
 if [ -z "$DEBUG" ]; then
-	exec >"$CDIMAGE_ROOT/log/$PROJECT-$DATE.log" 2>&1
+	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
 fi
 
 echo "===== Downloading live filesystem images ====="
