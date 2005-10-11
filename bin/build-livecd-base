@@ -18,6 +18,10 @@ trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set" EXIT HUP INT QUIT TERM
 IMAGE_TYPE=livecd-base
 DATE="$(next-build-date "$IMAGE_TYPE")"
 
+if [ -z "$DEBUG" ]; then
+	exec >"$CDIMAGE_ROOT/log/$PROJECT-$DATE.log" 2>&1
+fi
+
 echo "===== Downloading live filesystem images ====="
 date
 download-live-filesystems
