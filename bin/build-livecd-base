@@ -1,6 +1,8 @@
 #! /bin/sh
 set -e
 
+export ARCHES="${ARCHES:-amd64 hppa i386 ia64 powerpc}"
+
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
