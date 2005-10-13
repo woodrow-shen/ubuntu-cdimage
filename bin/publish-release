@@ -32,16 +32,26 @@ TYPE="$3"
 OFFICIAL="$4"
 STATUS="$5"
 
-case $PROJECT in
-	ubuntu)
-		SIMPLE_TREE=simple
-		FULL_TREE=full
-		TORRENT_TREE=torrent
+# Publish ports/daily to ports/releases/..., etc.
+case $SOURCE in
+	*/*)
+		TREE_SUFFIX="/${SOURCE%%/*}"
 		;;
 	*)
-		SIMPLE_TREE="simple/$PROJECT"
-		FULL_TREE="full/$PROJECT"
-		TORRENT_TREE="torrent/$PROJECT"
+		TREE_SUFFIX=
+		;;
+esac
+
+case $PROJECT in
+	ubuntu)
+		SIMPLE_TREE="simple$TREE_SUFFIX"
+		FULL_TREE="full$TREE_SUFFIX"
+		TORRENT_TREE="torrent$TREE_SUFFIX"
+		;;
+	*)
+		SIMPLE_TREE="simple$TREE_SUFFIX/$PROJECT"
+		FULL_TREE="full$TREE_SUFFIX/$PROJECT"
+		TORRENT_TREE="torrent$TREE_SUFFIX/$PROJECT"
 		;;
 esac
 
