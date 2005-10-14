@@ -67,6 +67,9 @@ case $DIST in
 	breezy)
 		VERSION=5.10
 		;;
+	dapper)
+		VERSION=6.04
+		;;
 	*)
 		echo "Unknown distribution: $DIST" >&2
 		exit 1

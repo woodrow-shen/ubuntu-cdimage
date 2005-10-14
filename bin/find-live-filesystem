@@ -86,7 +86,7 @@ case $ITEM in
 							*)	exit 1 ;;
 						esac
 						;;
-					breezy)
+					breezy|dapper)
 						case $ARCH in
 							i386|amd64)
 								echo http://www.theopencd.org/winfoss/ubuntu/current/Ubuntu-WinFOSS-5.10.tgz
@@ -106,7 +106,7 @@ case $ITEM in
 							*)	exit 1 ;;
 						esac
 						;;
-					breezy)
+					breezy|dapper)
 						case $ARCH in
 							i386)
 								echo http://www.theopencd.org/winfoss/kubuntu/current/Kubuntu-WinFOSS-5.10.tgz
