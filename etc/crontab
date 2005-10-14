@@ -12,3 +12,4 @@ PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
 44 0 * * *	for-project edubuntu cron.daily
 59 16 * * 3,7	for-project edubuntu cron.dvd
 29 10 * * *	for-project ubuntu-server cron.daily
+46 4 * * *	build-livecd-base
