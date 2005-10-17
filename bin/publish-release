@@ -225,7 +225,8 @@ for arch in $ARCHES; do
 		fi
 	fi
 
-	if [ "$TYPE" = live ] || [ "$TYPE" = dvd ]; then
+	if [ "$TYPE" = live ] || \
+	   ([ "$TYPE" = dvd ] && [ -e "$DAILY/$DIST-$TYPE-$arch.manifest" ]); then
 		# Copy, to make sure we have a canonical version of this.
 		if $PUBLISH_POOL; then
 			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest" \
