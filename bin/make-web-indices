@@ -394,6 +394,6 @@ cat <<EOF >> "$HTACCESS"
 
 HeaderName HEADER.html
 ReadmeName FOOTER.html
-IndexIgnore HEADER.html FOOTER.html
+IndexIgnore .htaccess HEADER.html FOOTER.html
 IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
 EOF
