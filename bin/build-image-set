@@ -18,7 +18,7 @@ if ! SEM_STATE="$(semaphore test-increment "$SEM")"; then
 fi
 
 IMAGE_TYPE="${1:-daily}"
-DATE="$(next-build-date "$IMAGE_TYPE")"
+export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
 
 export PROJECT CAPPROJECT DIST ARCHES
 
@@ -27,7 +27,7 @@ if [ "$CDIMAGE_INSTALL" ]; then
 fi
 
 if [ -z "$DEBUG" ]; then
-	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
+	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$CDIMAGE_DATE.log" 2>&1
 	# Since we now know we aren't going to be spamming the terminal,
 	# it's safe to crank up the verbosity so that the logs are most
 	# useful.
@@ -92,7 +92,7 @@ germinate-to-tasks "$IMAGE_TYPE"
 
 echo "===== Checking for other task changes ====="
 date
-update-tasks "$DATE" "$IMAGE_TYPE"
+update-tasks "$CDIMAGE_DATE" "$IMAGE_TYPE"
 
 if [ "$CDIMAGE_LIVE" ]; then
 	echo "===== Downloading live filesystem images ====="
@@ -126,7 +126,7 @@ fi
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date
-	publish-daily "$DATE" "$IMAGE_TYPE"
+	publish-daily "$CDIMAGE_DATE" "$IMAGE_TYPE"
 
 	echo "===== Purging old images ====="
 	date

@@ -18,10 +18,10 @@ fi
 trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT" EXIT HUP INT QUIT TERM
 
 IMAGE_TYPE=livecd-base
-DATE="$(next-build-date "$IMAGE_TYPE")"
+export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
 
 if [ -z "$DEBUG" ]; then
-	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$DATE.log" 2>&1
+	exec >"$CDIMAGE_ROOT/log/$PROJECT-$IMAGE_TYPE-$CDIMAGE_DATE.log" 2>&1
 fi
 
 echo "===== Downloading live filesystem images ====="
@@ -31,7 +31,7 @@ download-live-filesystems
 if [ -z "$DEBUG" ]; then
 	echo "===== Publishing ====="
 	date
-	publish-livecd-base "$DATE" "$IMAGE_TYPE"
+	publish-livecd-base "$CDIMAGE_DATE" "$IMAGE_TYPE"
 
 	echo "===== Purging old images ====="
 	date
