@@ -9,10 +9,10 @@ GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
 
 case $DIST in
 	warty)
-		GERMINATE_DISTS="$DIST,$DIST-security"
+		GERMINATE_DISTS="${GERMINATE_DISTS:-$DIST,$DIST-security}"
 		;;
 	*)
-		GERMINATE_DISTS="$DIST"
+		GERMINATE_DISTS="${GERMINATE_DISTS:-$DIST}"
 		;;
 esac
 
