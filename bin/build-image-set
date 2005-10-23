@@ -4,11 +4,39 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+# Yes, this is a very crude cleanup stack mechanism. I don't feel like
+# doing better in POSIX sh.
+
+CLEANUP=:
+
+push_cleanup () {
+	CLEANUP="$CLEANUP; $1"
+}
+
+pop_cleanup () {
+	case $CLEANUP in
+		:)	;;
+		*)
+			CLEANUP_COMMAND="${CLEANUP##*; }"
+			eval "$CLEANUP_COMMAND"
+			CLEANUP="${CLEANUP%; *}"
+			;;
+	esac
+}
+
+cleanup () {
+	while [ "$CLEANUP" != : ]; do
+		pop_cleanup
+	done
+}
+
+trap cleanup EXIT HUP INT QUIT TERM
+
 if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT"; then
 	echo "Another image set is already building!" >&2
 	exit 1
 fi
-trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT" EXIT HUP INT QUIT TERM
+push_cleanup "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT"
 
 SEM="$CDIMAGE_ROOT/etc/.sem-build-image-set"
 # Set up a counting semaphore for parallel builds.
@@ -16,6 +44,7 @@ if ! SEM_STATE="$(semaphore test-increment "$SEM")"; then
 	# semaphore failed, something went badly wrong
 	exit 1
 fi
+push_cleanup "semaphore decrement-test $SEM"
 
 IMAGE_TYPE="${1:-daily}"
 export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
@@ -45,25 +74,15 @@ if [ -z "$CDIMAGE_NOSYNC" ]; then
 			echo "Couldn't acquire archive sync lock!" >&2
 			exit 1
 		fi
-		# A trap is already in place, so ensure lock removal by hand.
-		# TODO: very ugly - refactor?
-		set +e
-		CODE=0
-		anonftpsync || CODE="$?"
-		if [ "$CODE" ]; then
-			rm -f "$SYNC_LOCK"
-			exit "$CODE"
-		fi
+		push_cleanup "rm -f $SYNC_LOCK"
+		anonftpsync
 		ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
 		case :$ARCHES_COLONS: in
 			*:hppa:*|*:ia64:*|*:sparc:*)
-				ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync || CODE="$?"
-				if [ "$CODE" ]; then
-					rm -f "$SYNC_LOCK"
-					exit "$CODE"
-				fi
+				ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
 				;;
 		esac
+		pop_cleanup
 	else
 		echo "===== Parallel build; waiting for $CAPPROJECT mirror to sync ====="
 		if ! lockfile -8 -r 450 "$SYNC_LOCK"; then
@@ -138,5 +157,4 @@ if [ -z "$DEBUG" ]; then
 fi
 
 echo "===== Finished ====="
-semaphore decrement-test "$SEM"
 date
