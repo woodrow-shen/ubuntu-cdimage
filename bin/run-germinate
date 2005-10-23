@@ -45,15 +45,24 @@ mkindex () {
 
 for arch in $ARCHES; do
 	echo "Germinating for $DIST/$arch ..."
-	mkindex "dists/$DIST/main/binary-$arch/Packages.gz" \
-		"dists/$DIST/restricted/binary-$arch/Packages.gz" \
-		${LOCAL:+$LOCALDEBS/dists/$DIST/local/binary-$arch/Packages.gz}
-	mkindex "dists/$DIST/main/source/Sources.gz" \
-		"dists/$DIST/restricted/source/Sources.gz" \
-		${LOCAL:+$LOCALDEBS/dists/$DIST/local/binary-$arch/Sources.gz}
-	mkindex "dists/$DIST/main/debian-installer/binary-$arch/Packages.gz" \
-		"dists/$DIST/restricted/debian-installer/binary-$arch/Packages.gz" \
-		${LOCAL:+$LOCALDEBS/dists/$DIST/local/debian-installer/binary-$arch/Packages.gz}
+
+	IFS_SAVE="$IFS"
+	IFS=,
+	for germinate_dist in $GERMINATE_DISTS; do
+		IFS="$IFS_SAVE"
+		mkindex "dists/$germinate_dist/main/binary-$arch/Packages.gz" \
+			"dists/$germinate_dist/restricted/binary-$arch/Packages.gz" \
+			${LOCAL:+$LOCALDEBS/dists/$germinate_dist/local/binary-$arch/Packages.gz}
+		mkindex "dists/$germinate_dist/main/source/Sources.gz" \
+			"dists/$germinate_dist/restricted/source/Sources.gz" \
+			${LOCAL:+$LOCALDEBS/dists/$germinate_dist/local/binary-$arch/Sources.gz}
+		mkindex "dists/$germinate_dist/main/debian-installer/binary-$arch/Packages.gz" \
+			"dists/$germinate_dist/restricted/debian-installer/binary-$arch/Packages.gz" \
+			${LOCAL:+$LOCALDEBS/dists/$germinate_dist/local/debian-installer/binary-$arch/Packages.gz}
+		IFS=,
+	done
+	IFS="$IFS_SAVE"
+
 	mkemptydir "$GERMINATE_OUT/$DIST-$arch"
 	cd "$GERMINATE_OUT/$DIST-$arch"
 	if [ "$GERMINATE_HINTS" ] && [ -f "$GERMINATE_HINTS" ]; then
