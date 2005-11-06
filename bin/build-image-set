@@ -133,7 +133,7 @@ cd "$CDIMAGE_ROOT/debian-cd"
 ./build_all.sh || true
 
 # Kludge to work around permission-handling problems elsewhere.
-chmod -R g+rwX "$CDIMAGE_ROOT/scratch" 2>/dev/null || true
+chmod -R g+rwX "$CDIMAGE_ROOT/scratch/$PROJECT" 2>/dev/null || true
 
 # temporarily turned off for live builds
 if [ "$CDIMAGE_INSTALL_BASE" ]; then
