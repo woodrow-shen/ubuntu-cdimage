@@ -44,7 +44,7 @@ if ! SEM_STATE="$(semaphore test-increment "$SEM")"; then
 	# semaphore failed, something went badly wrong
 	exit 1
 fi
-push_cleanup "semaphore decrement-test $SEM"
+push_cleanup "semaphore decrement-test $SEM >/dev/null"
 
 IMAGE_TYPE="${1:-daily}"
 export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
