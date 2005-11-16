@@ -50,7 +50,7 @@ case $TYPE in
 	*)
 		# http://en.wikipedia.org/wiki/CD-ROM
 		case $PROJECT in
-			edubuntu)
+			edubuntu|tocd*)
 				SIZELIMIT=737280000
 				;;
 			*)
