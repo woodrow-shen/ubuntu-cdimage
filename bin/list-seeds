@@ -15,8 +15,11 @@ case $1 in
 			warty|hoary)
 				echo 'base'
 				;;
-			breezy|dapper)
+			breezy)
 				echo 'minimal standard'
+				;;
+			dapper)
+				echo 'boot minimal standard'
 				;;
 		esac
 		case $PROJECT in
