@@ -52,10 +52,6 @@ case $ITEM in
 				# cloop got auto-purged - reverting to plan B
 				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
 				;;
-			tocd3.1)
-				# cloop got auto-purged - reverting to plan B
-				echo /home/cjwatson/tocd3.1/livecd.tocd3.1.cloop
-				;;
 			ubuntu)
 				case $DIST in
 					breezy)
@@ -77,10 +73,6 @@ case $ITEM in
 			tocd3)
 				# manifest got auto-purged - reverting to plan B
 				echo /home/cjwatson/tocd3/livecd.tocd3.manifest
-				;;
-			tocd3.1)
-				# manifest got auto-purged - reverting to plan B
-				echo /home/cjwatson/tocd3.1/livecd.tocd3.1.manifest
 				;;
 			ubuntu)
 				case $DIST in
