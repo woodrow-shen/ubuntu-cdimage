@@ -152,10 +152,9 @@ if [ -d "$PUBLISH" ]; then
 		fi
 	done
 
+	rm -f "$PUBLISH/report.html"
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
-	else
-		rm -f "$PUBLISH/report.html"
 	fi
 	rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
