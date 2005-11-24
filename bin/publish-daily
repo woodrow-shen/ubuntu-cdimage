@@ -60,6 +60,10 @@ case $TYPE in
 		;;
 esac
 
+# Start with copy of previous published tree so that single-architecture
+# rebuilds can carry over other architectures from previous builds.
+cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" "$PUBLISH"
+
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
 		echo "Publishing $arch ..."
@@ -76,6 +80,9 @@ for arch in $ARCHES; do
 			   "$PUBLISH/$DIST-$TYPE-$arch.jigdo"
 			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.template" \
 			   "$PUBLISH/$DIST-$TYPE-$arch.template"
+		else
+			rm -f "$PUBLISH/$DIST-$TYPE-$arch.jigdo" \
+			      "$PUBLISH/$DIST-$TYPE-$arch.template"
 		fi
 
 		# Live filesystem manifests
@@ -83,14 +90,19 @@ for arch in $ARCHES; do
 			echo "Publishing $arch live manifest ..."
 			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest" \
 			   "$PUBLISH/$DIST-$TYPE-$arch.manifest"
+		else
+			rm -f "$PUBLISH/$DIST-$TYPE-$arch.manifest"
 		fi
 
 		SIZE="$(stat -c %s "$PUBLISH/$DIST-$TYPE-$arch.iso")"
 		if [ "$SIZE" -gt "$SIZELIMIT" ]; then
 			touch "$PUBLISH/$DIST-$TYPE-$arch.OVERSIZED"
+		else
+			rm -f "$PUBLISH/$DIST-$TYPE-$arch.OVERSIZED"
 		fi
 	else
 		echo "No CD for $arch!" >&2
+		rm -f "$PUBLISH/$DIST-$TYPE-$arch".*
 	fi
 done
 
@@ -110,10 +122,20 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 		   "$PUBLISH/source/$DIST-src-$i.template"
 	else
 		echo "No jigdo for source $i!" >&2
+		rm -f "$PUBLISH/source/$DIST-src-$i.jigdo" \
+		      "$PUBLISH/source/$DIST-src-$i.template"
 	fi
 
 	i="$(($i + 1))"
 done
+# If the number of source CDs has decreased since the last build, make sure
+# to remove the carried-over versions.
+if [ "$i" != 1 ]; then
+	while [ -e "$PUBLISH/source/$DIST-src-$i.iso" ]; do
+		rm -f "$PUBLISH/source/$DIST-src-$i".*
+		i="$(($i + 1))"
+	done
+fi
 
 if [ -d "$PUBLISH" ]; then
 	# Create and publish torrents.
@@ -132,10 +154,14 @@ if [ -d "$PUBLISH" ]; then
 
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
+	else
+		rm -f "$PUBLISH/report.html"
 	fi
+	rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
 	sign-cdimage "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
+		rm -f "$PUBLISH/source/MD5SUMS" "$PUBLISH/source/MD5SUMS.gpg"
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi

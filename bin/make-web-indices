@@ -199,6 +199,8 @@ extensionstr () {
 	esac
 }
 
+rm -f "$HTACCESS" "$HEADER" "$FOOTER"
+
 > "$HTACCESS"
 
 case $DIST in

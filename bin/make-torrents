@@ -24,6 +24,7 @@ fi
 for image in "$DIRECTORY/$CDPREFIX"*.iso; do
 	[ -f "$image" ] || continue
 	echo "Creating torrent for $image ..."
+	rm -f "$image.torrent"
 	btmakemetafile "$TRACKER" --comment "$CAPPROJECT CD $TARGET_HOSTNAME" \
 		"$image" >/dev/null
 done
