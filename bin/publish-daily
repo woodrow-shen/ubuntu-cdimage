@@ -62,7 +62,10 @@ esac
 
 # Start with copy of previous published tree so that single-architecture
 # rebuilds can carry over other architectures from previous builds.
-cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" "$PUBLISH"
+if [ -d "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current/" ]; then
+	cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" \
+	        "$PUBLISH"
+fi
 
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
