@@ -126,6 +126,13 @@ if [ -z "$SPLASHRLE" ]; then
 		export SPLASHRLE="$CDIMAGE_ROOT/debian-cd/data/$DIST/splash.rle"
 	fi
 fi
+if [ -z "$GFXSPLASH" ]; then
+	if [ -e "$CDIMAGE_ROOT/debian-cd/data/$DIST/$PROJECT.pcx" ]; then
+		export GFXSPLASH="$CDIMAGE_ROOT/debian-cd/data/$DIST/$PROJECT.pcx"
+	else
+		export GFXSPLASH="$CDIMAGE_ROOT/debian-cd/data/$DIST/splash.pcx"
+	fi
+fi
 
 echo "===== Building $CAPPROJECT daily CDs ====="
 date
