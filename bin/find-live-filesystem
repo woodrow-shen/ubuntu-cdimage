@@ -13,19 +13,19 @@ ITEM="$2"
 
 case $ARCH in
 	amd64)
-		LIVECD=http://king.buildd/~buildd/livecd
+		LIVECD=http://king.buildd/~buildd/LiveCD
 		;;
 	hppa)
 		LIVECD=/home/cjwatson/hppa-livecd
 		;;
 	i386)
-		LIVECD=http://terranova.buildd/~buildd/livecd
+		LIVECD=http://terranova.buildd/~buildd/LiveCD
 		;;
 	ia64)
-		LIVECD=http://weddell.buildd/~buildd/livecd
+		LIVECD=http://weddell.buildd/~buildd/LiveCD
 		;;
 	powerpc)
-		LIVECD=http://royal.buildd/~buildd/livecd
+		LIVECD=http://royal.buildd/~buildd/LiveCD
 		;;
 	*)
 		echo "No live filesystem source known for $ARCH" >&2
@@ -50,7 +50,7 @@ case $ITEM in
 		case $PROJECT in
 			tocd3)
 				# cloop got auto-purged - reverting to plan B
-				echo /home/cjwatson/tocd3/livecd.tocd3.cloop
+				echo "/home/cjwatson/tocd3/livecd.tocd3.cloop"
 				;;
 			ubuntu)
 				case $DIST in
@@ -59,12 +59,12 @@ case $ITEM in
 						echo "/home/cjwatson/breezy-live/ubuntu/livecd.$ARCH.cloop"
 						;;
 					*)
-						echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
+						echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
 						;;
 				esac
 				;;
 			*)
-				echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
+				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
 				;;
 		esac
 		;;
@@ -72,7 +72,7 @@ case $ITEM in
 		case $PROJECT in
 			tocd3)
 				# manifest got auto-purged - reverting to plan B
-				echo /home/cjwatson/tocd3/livecd.tocd3.manifest
+				echo "/home/cjwatson/tocd3/livecd.tocd3.manifest"
 				;;
 			ubuntu)
 				case $DIST in
@@ -81,12 +81,12 @@ case $ITEM in
 						echo "/home/cjwatson/breezy-live/ubuntu/livecd.$ARCH.manifest"
 						;;
 					*)
-						echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
+						echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
 						;;
 				esac
 				;;
 			*)
-				echo "$LIVECD/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
+				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
 				;;
 		esac
 		;;
