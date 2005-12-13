@@ -6,7 +6,7 @@ PATH=/srv/cdimage.no-name-yet.com/bin:/usr/bin:/bin
 14 5 * * *	for-project kubuntu cron.daily; for-project kubuntu cron.daily-live
 47 20 * * 1,5	for-project kubuntu cron.dvd
 32 2 * * *	for-project ubuntu cron.ports_daily; for-project ubuntu cron.ports_daily-live
-44 0 * * *	for-project edubuntu cron.daily
+44 0 * * *	for-project edubuntu cron.daily; for-project edubuntu cron.daily-live
 59 16 * * 3,7	for-project edubuntu cron.dvd
 29 10 * * *	for-project ubuntu-server cron.daily
 46 4 * * *	build-livecd-base

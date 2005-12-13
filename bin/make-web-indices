@@ -47,14 +47,7 @@ cdtypestr () {
 			echo 'live CD'
 			;;
 		dvd)
-			case $PROJECT in
-				edubuntu)
-					echo 'install DVD'
-					;;
-				*)
-					echo 'install/live DVD'
-					;;
-			esac
+			echo 'install/live DVD'
 			;;
 		src)
 			echo 'source CD'
