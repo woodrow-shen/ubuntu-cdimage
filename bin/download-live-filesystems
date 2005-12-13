@@ -25,6 +25,17 @@ for arch in $ARCHES; do
 		rm -f "$LIVE_OUT/$arch".*
 		continue
 	fi
+	case $DIST in
+		warty|hoary|breezy)
+			;;
+		*)
+			if ! fetch "$(find-live-filesystem "$arch" initrd)" \
+					"$LIVE_OUT/$arch.initrd"; then
+				rm -f "$LIVE_OUT/$arch".*
+				continue
+			fi
+			;;
+	esac
 	fetch "$(find-live-filesystem "$arch" manifest)" \
 		"$LIVE_OUT/$arch.manifest" || true
 done
