@@ -29,11 +29,13 @@ for arch in $ARCHES; do
 		warty|hoary|breezy)
 			;;
 		*)
-			if ! fetch "$(find-live-filesystem "$arch" initrd)" \
-					"$LIVE_OUT/$arch.initrd"; then
-				rm -f "$LIVE_OUT/$arch".*
-				continue
-			fi
+			for initrd in $(find-live-filesystem "$arch" initrd); do
+				subarch="${item#*.*.*-}"
+				if ! fetch "$initrd" "$LIVE_OUT/$arch.initrd-$subarch"; then
+					rm -f "$LIVE_OUT/$arch".*
+					continue 2
+				fi
+			done
 			;;
 	esac
 	fetch "$(find-live-filesystem "$arch" manifest)" \

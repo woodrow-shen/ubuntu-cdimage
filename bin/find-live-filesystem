@@ -14,18 +14,23 @@ ITEM="$2"
 case $ARCH in
 	amd64)
 		LIVECD=http://king.buildd/~buildd/LiveCD
+		SUBARCHES=amd64-generic
 		;;
 	hppa)
 		LIVECD=/home/cjwatson/hppa-livecd
+		SUBARCHES='hppa32 hppa64'
 		;;
 	i386)
 		LIVECD=http://terranova.buildd/~buildd/LiveCD
+		SUBARCHES=386
 		;;
 	ia64)
 		LIVECD=http://weddell.buildd/~buildd/LiveCD
+		SUBARCHES='itanium-smp mckinley-smp'
 		;;
 	powerpc)
 		LIVECD=http://royal.buildd/~buildd/LiveCD
+		SUBARCHES='powerpc powerpc64-smp'
 		;;
 	*)
 		echo "No live filesystem source known for $ARCH" >&2
@@ -46,7 +51,7 @@ case $PROJECT in
 esac
 
 case $ITEM in
-	cloop|initrd|manifest)
+	cloop|manifest)
 		case $PROJECT in
 			tocd3)
 				# auto-purged - reverting to plan B
@@ -67,6 +72,11 @@ case $ITEM in
 				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.$ITEM"
 				;;
 		esac
+		;;
+	initrd)
+		for subarch in $SUBARCHES; do
+			echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.$ITEM-$subarch"
+		done
 		;;
 	winfoss)
 		if [ "$DIST" = warty ]; then
