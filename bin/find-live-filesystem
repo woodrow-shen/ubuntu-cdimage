@@ -46,47 +46,25 @@ case $PROJECT in
 esac
 
 case $ITEM in
-	cloop)
+	cloop|manifest)
 		case $PROJECT in
 			tocd3)
-				# cloop got auto-purged - reverting to plan B
-				echo "/home/cjwatson/tocd3/livecd.tocd3.cloop"
+				# auto-purged - reverting to plan B
+				echo "/home/cjwatson/tocd3/livecd.tocd3.$ITEM"
 				;;
 			ubuntu)
 				case $DIST in
 					breezy)
-						# cloop got auto-purged - reverting to plan B
-						echo "/home/cjwatson/breezy-live/ubuntu/livecd.$ARCH.cloop"
+						# auto-purged - reverting to plan B
+						echo "/home/cjwatson/breezy-live/ubuntu/livecd.$ARCH.$ITEM"
 						;;
 					*)
-						echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
+						echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.$ITEM"
 						;;
 				esac
 				;;
 			*)
-				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.cloop"
-				;;
-		esac
-		;;
-	manifest)
-		case $PROJECT in
-			tocd3)
-				# manifest got auto-purged - reverting to plan B
-				echo "/home/cjwatson/tocd3/livecd.tocd3.manifest"
-				;;
-			ubuntu)
-				case $DIST in
-					breezy)
-						# manifest got auto-purged - reverting to plan B
-						echo "/home/cjwatson/breezy-live/ubuntu/livecd.$ARCH.manifest"
-						;;
-					*)
-						echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
-						;;
-				esac
-				;;
-			*)
-				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.manifest"
+				echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.$ITEM"
 				;;
 		esac
 		;;
