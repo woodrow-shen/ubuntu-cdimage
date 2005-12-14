@@ -160,10 +160,12 @@ if [ -d "$PUBLISH" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
 	rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
+	echo "MD5summing binary images ..."
 	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
 	sign-cdimage "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
 		rm -f "$PUBLISH/source/MD5SUMS" "$PUBLISH/source/MD5SUMS.gpg"
+		echo "MD5summing source images ..."
 		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
