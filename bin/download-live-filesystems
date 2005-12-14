@@ -30,7 +30,8 @@ for arch in $ARCHES; do
 			;;
 		*)
 			for initrd in $(find-live-filesystem "$arch" initrd); do
-				subarch="${item#*.*.*-}"
+				subarch="${initrd##*/}"
+				subarch="${subarch#*.*.*-}"
 				if ! fetch "$initrd" "$LIVE_OUT/$arch.initrd-$subarch"; then
 					rm -f "$LIVE_OUT/$arch".*
 					continue 2
