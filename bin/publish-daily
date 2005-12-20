@@ -84,7 +84,7 @@ for arch in $ARCHES; do
 			echo "$md5sum  $DIST-$TYPE-$arch.iso" \
 				>> "$PUBLISH/MD5SUMS"
 		else
-			(cd "$PUBLISH" && md5sum "$DIST-$TYPE-$arch.iso" 
+			(cd "$PUBLISH" && md5sum "$DIST-$TYPE-$arch.iso" \
 				> MD5SUMS)
 		fi
 
