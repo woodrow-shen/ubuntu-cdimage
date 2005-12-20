@@ -85,7 +85,7 @@ for arch in $ARCHES; do
 				>> "$PUBLISH/MD5SUMS"
 		else
 			(cd "$PUBLISH" && md5sum "$DIST-$TYPE-$arch.iso" \
-				> MD5SUMS)
+				>> MD5SUMS)
 		fi
 
 		# Jigdo integration
@@ -130,9 +130,9 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 	md5sum="$(grep -qs " $DIST-src-$i\.raw\$" "$CDOUT/src/MD5SUMS" \
 			| cut -d' ' -f1)" || true
 	if [ "$md5sum" ]; then
-		echo "$md5sum  $DIST-src-$i.iso" > "$PUBLISH/source/MD5SUMS"
+		echo "$md5sum  $DIST-src-$i.iso" >> "$PUBLISH/source/MD5SUMS"
 	else
-		(cd "$PUBLISH/source" && md5sum "$DIST-src-$i.iso" > MD5SUMS)
+		(cd "$PUBLISH/source" && md5sum "$DIST-src-$i.iso" >> MD5SUMS)
 	fi
 
 	# Jigdo integration
