@@ -66,6 +66,8 @@ if [ -d "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current/" ]; then
 	cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" \
 	        "$PUBLISH"
 fi
+> "$PUBLISH/MD5SUMS"
+[ ! -d "$PUBLISH/source" ] || > "$PUBLISH/source/MD5SUMS"
 
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
@@ -75,6 +77,16 @@ for arch in $ARCHES; do
 		   "$PUBLISH/$DIST-$TYPE-$arch.iso"
 		mv "$CDOUT/$arch/$DIST-$TYPE-$arch.list" \
 		   "$PUBLISH/$DIST-$TYPE-$arch.list"
+		md5sum="$(grep -qs " $DIST-$TYPE-$arch\.raw\$" \
+				   "$CDOUT/$arch/MD5SUMS" | cut -d' ' -f1)" \
+			|| true
+		if [ "$md5sum" ]; then
+			echo "$md5sum  $DIST-$TYPE-$arch.iso" \
+				>> "$PUBLISH/MD5SUMS"
+		else
+			(cd "$PUBLISH" && md5sum "$DIST-$TYPE-$arch.iso" 
+				> MD5SUMS)
+		fi
 
 		# Jigdo integration
 		if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.jigdo" ]; then
@@ -115,6 +127,13 @@ while [ -e "$CDOUT/src/$DIST-src-$i.raw" ]; do
 	mkdir -p "$PUBLISH/source"
 	mv "$CDOUT/src/$DIST-src-$i.raw" "$PUBLISH/source/$DIST-src-$i.iso"
 	mv "$CDOUT/src/$DIST-src-$i.list" "$PUBLISH/source/$DIST-src-$i.list"
+	md5sum="$(grep -qs " $DIST-src-$i\.raw\$" "$CDOUT/src/MD5SUMS" \
+			| cut -d' ' -f1)" || true
+	if [ "$md5sum" ]; then
+		echo "$md5sum  $DIST-src-$i.iso" > "$PUBLISH/source/MD5SUMS"
+	else
+		(cd "$PUBLISH/source" && md5sum "$DIST-src-$i.iso" > MD5SUMS)
+	fi
 
 	# Jigdo integration
 	if [ -e "$CDOUT/src/$DIST-src-$i.jigdo" ]; then
@@ -159,32 +178,8 @@ if [ -d "$PUBLISH" ]; then
 	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
-	rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
-	echo "MD5summing binary images ..."
-	(cd "$PUBLISH"
-	 for image in "$DIST"-*.iso; do
-		[ -f "$image" ] || continue
-		if grep -qs "${image%.iso}.raw\$" "$CDOUT/MD5SUMS"; then
-			grep -q "${image%.iso}.raw\$" "$CDOUT/MD5SUMS" | \
-				sed 's/\.raw$/.iso/'
-		else
-			md5sum "$image"
-		fi
-	 done) > "$PUBLISH/MD5SUMS"
 	sign-cdimage "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
-		rm -f "$PUBLISH/source/MD5SUMS" "$PUBLISH/source/MD5SUMS.gpg"
-		echo "MD5summing source images ..."
-		(cd "$PUBLISH/source"
-		 for image in "$DIST"-*.iso; do
-			[ -f "$image" ] || continue
-			if grep -qs "${image%.iso}.raw\$" "$CDOUT/MD5SUMS"; then
-				grep -q "${image%.iso}.raw\$" "$CDOUT/MD5SUMS" | \
-					sed 's/\.raw$/.iso/'
-			else
-				md5sum "$image"
-			fi
-		 done) > "$PUBLISH/source/MD5SUMS"
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
 	make-web-indices "$PUBLISH" "$DIST"
