@@ -161,12 +161,30 @@ if [ -d "$PUBLISH" ]; then
 	fi
 	rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
 	echo "MD5summing binary images ..."
-	(cd "$PUBLISH" && md5sum "$DIST"-*.iso > MD5SUMS)
+	(cd "$PUBLISH"
+	 for image in "$DIST"-*.iso; do
+		[ -f "$image" ] || continue
+		if grep -qs "${image%.iso}.raw\$" "$CDOUT/MD5SUMS"; then
+			grep -q "${image%.iso}.raw\$" "$CDOUT/MD5SUMS" | \
+				sed 's/\.raw$/.iso/'
+		else
+			md5sum "$image"
+		fi
+	 done) > "$PUBLISH/MD5SUMS"
 	sign-cdimage "$PUBLISH/MD5SUMS"
 	if [ -d "$PUBLISH/source" ]; then
 		rm -f "$PUBLISH/source/MD5SUMS" "$PUBLISH/source/MD5SUMS.gpg"
 		echo "MD5summing source images ..."
-		(cd "$PUBLISH/source" && md5sum "$DIST"-*.iso > MD5SUMS)
+		(cd "$PUBLISH/source"
+		 for image in "$DIST"-*.iso; do
+			[ -f "$image" ] || continue
+			if grep -qs "${image%.iso}.raw\$" "$CDOUT/MD5SUMS"; then
+				grep -q "${image%.iso}.raw\$" "$CDOUT/MD5SUMS" | \
+					sed 's/\.raw$/.iso/'
+			else
+				md5sum "$image"
+			fi
+		 done) > "$PUBLISH/source/MD5SUMS"
 		sign-cdimage "$PUBLISH/source/MD5SUMS"
 	fi
 	make-web-indices "$PUBLISH" "$DIST"
