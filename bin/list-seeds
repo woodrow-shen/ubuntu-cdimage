@@ -43,7 +43,7 @@ case $1 in
 		fi
 		if [ "$CDIMAGE_LIVE" ]; then
 			case $DIST in
-				hoary|breezy|dapper)
+				hoary|breezy)
 					echo 'casper'
 					;;
 			esac
@@ -82,7 +82,7 @@ case $1 in
 		fi
 		if [ "$CDIMAGE_LIVE" ]; then
 			case $DIST in
-				hoary|breezy|dapper)
+				hoary|breezy)
 					echo 'casper'
 					;;
 			esac
