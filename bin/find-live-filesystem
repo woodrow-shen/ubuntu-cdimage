@@ -5,7 +5,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-	echo 'Usage: find-live-filesystem ARCH cloop|initrd|manifest|winfoss' >&2
+	echo 'Usage: find-live-filesystem ARCH cloop|kernel|initrd|manifest|winfoss' >&2
 	exit 1
 fi
 ARCH="$1"
@@ -73,7 +73,7 @@ case $ITEM in
 				;;
 		esac
 		;;
-	initrd)
+	kernel|initrd)
 		for subarch in $SUBARCHES; do
 			echo "$LIVECD/$DIST/$LIVEPROJECT/current/livecd.$LIVEPROJECT.$ITEM-$subarch"
 		done

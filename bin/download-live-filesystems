@@ -29,13 +29,15 @@ for arch in $ARCHES; do
 		warty|hoary|breezy)
 			;;
 		*)
-			for initrd in $(find-live-filesystem "$arch" initrd); do
-				subarch="${initrd##*/}"
-				subarch="${subarch#*.*.*-}"
-				if ! fetch "$initrd" "$LIVE_OUT/$arch.initrd-$subarch"; then
-					rm -f "$LIVE_OUT/$arch".*
-					continue 2
-				fi
+			for item in kernel initrd; do
+				for url in $(find-live-filesystem "$arch" "$item"); do
+					subarch="${url##*/}"
+					subarch="${subarch#*.*.*-}"
+					if ! fetch "$url" "$LIVE_OUT/$arch.$item-$subarch"; then
+						rm -f "$LIVE_OUT/$arch".*
+						continue 2
+					fi
+				done
 			done
 			;;
 	esac

@@ -22,6 +22,9 @@ for arch in $ARCHES; do
 		echo "Publishing $arch ..."
 		mkdir -p "$PUBLISH"
 		cp -a "$LIVE/$arch.cloop" "$PUBLISH/$arch.cloop"
+		if [ -e "$LIVE/$arch.kernel" ]; then
+			cp -a "$LIVE/$arch.kernel" "$PUBLISH/$arch.kernel"
+		fi
 		if [ -e "$LIVE/$arch.initrd" ]; then
 			cp -a "$LIVE/$arch.initrd" "$PUBLISH/$arch.initrd"
 		fi
