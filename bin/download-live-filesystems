@@ -20,8 +20,13 @@ fetch () {
 
 mkemptydir "$LIVE_OUT"
 for arch in $ARCHES; do
-	if ! fetch "$(find-live-filesystem "$arch" cloop)" \
+	if fetch "$(find-live-filesystem "$arch" cloop)" \
 			"$LIVE_OUT/$arch.cloop"; then
+		:
+	elif fetch "$(find-live-filesystem "$arch" squashfs)" \
+			"$LIVE_OUT/$arch.squashfs"; then
+		:
+	else
 		rm -f "$LIVE_OUT/$arch".*
 		continue
 	fi

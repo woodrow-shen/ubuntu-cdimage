@@ -19,9 +19,16 @@ PUBLISH="$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/$DATE"
 
 for arch in $ARCHES; do
 	if [ -e "$LIVE/$arch.cloop" ]; then
-		echo "Publishing $arch ..."
+		fs=cloop
+	elif [ -e "$LIVE/$arch.squashfs" ]; then
+		fs=squashfs
+	else
+		fs=
+	fi
+	if [ "$fs" ]; then
+		echo "Publishing $arch ($fs) ..."
 		mkdir -p "$PUBLISH"
-		cp -a "$LIVE/$arch.cloop" "$PUBLISH/$arch.cloop"
+		cp -a "$LIVE/$arch.$fs" "$PUBLISH/$arch.$fs"
 		if [ -e "$LIVE/$arch.kernel" ]; then
 			cp -a "$LIVE/$arch.kernel" "$PUBLISH/$arch.kernel"
 		fi
@@ -30,12 +37,14 @@ for arch in $ARCHES; do
 		fi
 		cp -a "$LIVE/$arch.manifest" "$PUBLISH/$arch.manifest"
 	else
-		echo "No cloop for $arch!" >&2
+		echo "No filesystem for $arch!" >&2
 	fi
 done
 
 if [ -d "$PUBLISH" ]; then
-	(cd "$PUBLISH" && md5sum *.cloop > MD5SUMS)
+	(cd "$PUBLISH" && \
+		find \( -name \*.cloop -o -name \*.squashfs \) \
+		     -printf '%P\n' | xargs md5sum > MD5SUMS)
 	sign-cdimage "$PUBLISH/MD5SUMS"
 	ln -nsf "$DATE" "$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/current"
 else
