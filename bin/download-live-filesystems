@@ -13,7 +13,12 @@ fetch () {
 			ln "$1" "$2"
 			;;
 		*)
-			wget -nv "$1" -O "$2"
+			ret=0
+			wget -nv "$1" -O "$2" || ret=$?
+			if [ "$ret" -ne 0 ]; then
+				rm -f "$2"
+			fi
+			return $ret
 			;;
 	esac
 }
