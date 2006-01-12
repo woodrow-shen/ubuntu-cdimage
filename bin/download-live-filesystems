@@ -32,7 +32,6 @@ for arch in $ARCHES; do
 			"$LIVE_OUT/$arch.squashfs"; then
 		:
 	else
-		rm -f "$LIVE_OUT/$arch".*
 		continue
 	fi
 	case $DIST in
@@ -43,10 +42,7 @@ for arch in $ARCHES; do
 				for url in $(find-live-filesystem "$arch" "$item"); do
 					subarch="${url##*/}"
 					subarch="${subarch#*.*.*-}"
-					if ! fetch "$url" "$LIVE_OUT/$arch.$item-$subarch"; then
-						rm -f "$LIVE_OUT/$arch".*
-						continue 2
-					fi
+					fetch "$url" "$LIVE_OUT/$arch.$item-$subarch" || true
 				done
 			done
 			;;
