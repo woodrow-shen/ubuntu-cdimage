@@ -175,7 +175,7 @@ if [ -d "$PUBLISH" ]; then
 	done
 
 	rm -f "$PUBLISH/report.html"
-	if [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
+	if [ "$CDIMAGE_INSTALL_BASE" ] && [ -e "$BRITNEY_REPORT/${DIST}_probs.html" ]; then
 		cp -a "$BRITNEY_REPORT/${DIST}_probs.html" "$PUBLISH/report.html"
 	fi
 	sign-cdimage "$PUBLISH/MD5SUMS"
