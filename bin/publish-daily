@@ -66,8 +66,8 @@ if [ -d "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current/" ]; then
 	cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" \
 	        "$PUBLISH"
 fi
-> "$PUBLISH/MD5SUMS"
-[ ! -d "$PUBLISH/source" ] || > "$PUBLISH/source/MD5SUMS"
+rm -f "$PUBLISH/MD5SUMS"
+[ ! -d "$PUBLISH/source" ] || rm -f "$PUBLISH/source/MD5SUMS"
 
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
