@@ -66,8 +66,15 @@ if [ -d "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current/" ]; then
 	cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" \
 	        "$PUBLISH"
 fi
+
+# TODO: emptying the file should be unnecessary; we need to carry over
+# md5sums from previous builds if we carried over the images.
 rm -f "$PUBLISH/MD5SUMS"
-[ ! -d "$PUBLISH/source" ] || rm -f "$PUBLISH/source/MD5SUMS"
+> "$PUBLISH/MD5SUMS"
+if [ -d "$PUBLISH/source" ]; then
+	rm -f "$PUBLISH/source/MD5SUMS"
+	> "$PUBLISH/source/MD5SUMS"
+fi
 
 for arch in $ARCHES; do
 	if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.raw" ]; then
