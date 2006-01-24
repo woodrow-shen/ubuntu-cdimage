@@ -54,13 +54,15 @@ for arch in $ARCHES; do
 			tail -n +3 | head -n -2 | cut -d' ' -f1 | \
 			sed "s/\$/ ${PROJECT%%-*}-$seed/"
 	done
-	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/acsets.$arch"
-	if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.acsets" ]; then
-		for acset in $(< "$GERMINATE_OUT/$DIST-$arch/ship.acsets"); do
-			< "$GERMINATE_OUT/$DIST-$arch/$acset" \
-				tail -n +3 | head -n -2 | cut -d' ' -f1 | \
-				sed "s/\$/ $acset/"
-		done
+	if [ "$DIST" = breezy ]; then
+		exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/acsets.$arch"
+		if [ -e "$GERMINATE_OUT/$DIST-$arch/ship.acsets" ]; then
+			for acset in $(< "$GERMINATE_OUT/$DIST-$arch/ship.acsets"); do
+				< "$GERMINATE_OUT/$DIST-$arch/$acset" \
+					tail -n +3 | head -n -2 | cut -d' ' -f1 | \
+					sed "s/\$/ $acset/"
+			done
+		fi
 	fi
 	exec >"$TASKS_OUT/$IMAGE_TYPE/$DIST/override.$arch"
 	perl -alne '
@@ -70,13 +72,15 @@ for arch in $ARCHES; do
 				print "$pkg  Task  ", join(", ", @{$tasks{$pkg}});
 			}
 		}' "$TASKS_OUT/$IMAGE_TYPE/$DIST/tasks.$arch"
-	perl -alne '
-		push @{$acsets{$F[0]}}, $F[1];
-		END {
-			for my $pkg (sort keys %acsets) {
-				print "$pkg  Archive-Copier-Set  ", join(", ", @{$acsets{$pkg}});
-			}
-		}' "$TASKS_OUT/$IMAGE_TYPE/$DIST/acsets.$arch"
+	if [ "$DIST" = breezy ]; then
+		perl -alne '
+			push @{$acsets{$F[0]}}, $F[1];
+			END {
+				for my $pkg (sort keys %acsets) {
+					print "$pkg  Archive-Copier-Set  ", join(", ", @{$acsets{$pkg}});
+				}
+			}' "$TASKS_OUT/$IMAGE_TYPE/$DIST/acsets.$arch"
+	fi
 done
 
 # Help debian-cd to get priorities in sync with the current base system,
