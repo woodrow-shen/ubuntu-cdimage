@@ -46,7 +46,7 @@ if ! SEM_STATE="$(semaphore test-increment "$SEM")"; then
 fi
 push_cleanup "semaphore decrement-test $SEM >/dev/null"
 
-IMAGE_TYPE="${1:-daily}"
+export IMAGE_TYPE="${1:-daily}"
 export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
 
 export PROJECT CAPPROJECT DIST ARCHES
@@ -140,7 +140,7 @@ cd "$CDIMAGE_ROOT/debian-cd"
 ./build_all.sh || true
 
 # Kludge to work around permission-handling problems elsewhere.
-chmod -R g+rwX "$CDIMAGE_ROOT/scratch/$PROJECT" 2>/dev/null || true
+chmod -R g+rwX "$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE" 2>/dev/null || true
 
 # temporarily turned off for live builds
 if [ "$CDIMAGE_INSTALL_BASE" ]; then

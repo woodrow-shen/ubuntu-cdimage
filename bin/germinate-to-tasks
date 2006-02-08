@@ -1,13 +1,14 @@
 #! /bin/sh
 
-# Outputs debian-cd task lists to $CDIMAGE_ROOT/scratch/$PROJECT/tasks/.
+# Outputs debian-cd task lists to
+# $CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks/.
 
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 . "$CDIMAGE_ROOT/bin/functions.sh"
 
-GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/germinate"
-TASKS_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
+GERMINATE_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/germinate"
+TASKS_OUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks"
 
 if [ -z "$1" ]; then
 	echo 'Usage: germinate-to-tasks IMAGE_TYPE' >&2

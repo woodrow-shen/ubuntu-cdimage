@@ -4,8 +4,8 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
-SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
-PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/tasks-previous"
+SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks"
+PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks-previous"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
 if [ -z "$1" ] || [ -z "$2" ]; then

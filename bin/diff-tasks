@@ -10,8 +10,8 @@ if [ -z "$1" ]; then
 fi
 IMAGE_TYPE="$1"
 
-SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/tasks"
-PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/tasks-previous"
+SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks"
+PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks-previous"
 TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
 
 for seed in $(list-seeds all); do

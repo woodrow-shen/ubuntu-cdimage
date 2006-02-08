@@ -5,7 +5,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 . "$CDIMAGE_ROOT/bin/functions.sh"
 
-CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/debian-cd"
+CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debian-cd"
 BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT"
 
 if [ -z "$1" ]; then

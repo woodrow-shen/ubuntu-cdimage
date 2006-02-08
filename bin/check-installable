@@ -7,7 +7,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 BRITNEY="$CDIMAGE_ROOT/britney"
 
-IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/$PROJECT/tmp}"
+IMAGETOP="${IMAGETOP:-$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tmp}"
 
 mkemptydir "$BRITNEY/data/$PROJECT/$DIST"
 for arch in $ARCHES; do
