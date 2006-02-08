@@ -32,11 +32,11 @@ cleanup () {
 
 trap cleanup EXIT HUP INT QUIT TERM
 
-if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT"; then
+if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT-$IMAGE_TYPE"; then
 	echo "Another image set is already building!" >&2
 	exit 1
 fi
-push_cleanup "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT"
+push_cleanup "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT-$IMAGE_TYPE"
 
 SEM="$CDIMAGE_ROOT/etc/.sem-build-image-set"
 # Set up a counting semaphore for parallel builds.

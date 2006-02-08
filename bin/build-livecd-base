@@ -11,11 +11,11 @@ PATH="$CDIMAGE_ROOT/bin:${PATH:+:$PATH}"
 # This is a special case; don't use for-project.
 export PROJECT=livecd-base
 
-if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT"; then
+if ! lockfile -l 7200 -r 0 "$CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT-$IMAGE_TYPE"; then
 	echo "Another image set is already building!" >&2
 	exit 1
 fi
-trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT" EXIT HUP INT QUIT TERM
+trap "rm -f $CDIMAGE_ROOT/etc/.lock-build-image-set-$PROJECT-$IMAGE_TYPE" EXIT HUP INT QUIT TERM
 
 IMAGE_TYPE=livecd-base
 export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
