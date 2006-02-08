@@ -99,7 +99,7 @@ case $ITEM in
 					breezy|dapper)
 						case $ARCH in
 							i386|amd64)
-								echo http://www.theopencd.org/winfoss/ubuntu/current/Ubuntu-WinFOSS-5.10.tgz
+								echo http://maitri.ubuntu.com/theopencd/winfoss/ubuntu/current/Ubuntu-WinFOSS-5.10.tgz
 								;;
 							*)	exit 1 ;;
 						esac
@@ -119,10 +119,10 @@ case $ITEM in
 					breezy|dapper)
 						case $ARCH in
 							i386)
-								echo http://www.theopencd.org/winfoss/kubuntu/current/Kubuntu-WinFOSS-5.10.tgz
+								echo http://maitri.ubuntu.com/theopencd/winfoss/kubuntu/current/Kubuntu-WinFOSS-5.10.tgz
 								;;
 							amd64)
-								echo http://www.theopencd.org/winfoss/kubuntu-AMD/current/Kubuntu-WinFOSS-5.10-AMD.tgz
+								echo http://maitri.ubuntu.com/theopencd/winfoss/kubuntu-AMD/current/Kubuntu-WinFOSS-5.10-AMD.tgz
 								;;
 							*)	exit 1 ;;
 						esac
@@ -140,7 +140,7 @@ case $ITEM in
 			tocd3.1)
 				case $ARCH in
 					i386)
-						echo http://www.theopencd.org/winfoss/tocd3.1/current/TOCD-31.tgz
+						echo http://maitri.ubuntu.com/theopencd/winfoss/tocd3.1/current/TOCD-31.tgz
 						;;
 					*)	exit 1 ;;
 				esac
