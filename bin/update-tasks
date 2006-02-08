@@ -6,7 +6,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 SCRATCH="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks"
 PREVIOUS="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tasks-previous"
-TASKS="$CDIMAGE_ROOT/debian-cd/tasks/$PROJECT"
+TASKS="$CDIMAGE_ROOT/debian-cd/tasks/auto/$IMAGE_TYPE"
 
 if [ -z "$1" ] || [ -z "$2" ]; then
 	echo 'Usage: update-tasks DATE IMAGE_TYPE' >&2
@@ -25,7 +25,7 @@ fi
 
 diff-tasks "$IMAGE_TYPE"
 
-mkdir -p "$TASKS/$DIST"
-cp "$SCRATCH/$IMAGE_TYPE/$DIST"/* "$TASKS/$DIST/"
+mkdir -p "$TASKS/$PROJECT/$DIST"
+cp "$SCRATCH/$IMAGE_TYPE/$DIST"/* "$TASKS/$PROJECT/$DIST/"
 mkdir -p "$PREVIOUS/$IMAGE_TYPE/$DIST"
 cp "$SCRATCH/$IMAGE_TYPE/$DIST"/* "$PREVIOUS/$IMAGE_TYPE/$DIST/"
