@@ -6,7 +6,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/bin/functions.sh"
 
 CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debian-cd"
-BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT"
+BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT/$IMAGE_TYPE"
 
 if [ -z "$1" ]; then
 	echo 'Usage: publish-daily DATE [IMAGE_TYPE]' >&2
