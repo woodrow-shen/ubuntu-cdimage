@@ -4,6 +4,8 @@ set -e
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+export IMAGE_TYPE="${1:-daily}"
+
 # Yes, this is a very crude cleanup stack mechanism. I don't feel like
 # doing better in POSIX sh.
 
@@ -46,7 +48,6 @@ if ! SEM_STATE="$(semaphore test-increment "$SEM")"; then
 fi
 push_cleanup "semaphore decrement-test $SEM >/dev/null"
 
-export IMAGE_TYPE="${1:-daily}"
 export CDIMAGE_DATE="$(next-build-date "$IMAGE_TYPE")"
 
 export PROJECT CAPPROJECT DIST ARCHES
