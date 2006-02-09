@@ -86,6 +86,7 @@ if [ -z "$CDIMAGE_NOSYNC" ]; then
 		pop_cleanup
 	else
 		echo "===== Parallel build; waiting for $CAPPROJECT mirror to sync ====="
+		date
 		if ! lockfile -8 -r 450 "$SYNC_LOCK"; then
 			echo "Timed out waiting for archive sync lock!" >&2
 			exit 1
