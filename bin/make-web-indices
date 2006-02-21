@@ -381,6 +381,12 @@ else
 EOF
 fi
 
+cat <<EOF >> "$HEADER"
+<p>If you need help burning these images to disk, see
+<a href="http://wiki.ubuntu.com/BurningIsoHowto">this guide</a>.</p>
+
+EOF
+
 cat <<EOF > "$FOOTER"
 </div></body></html>
 EOF
