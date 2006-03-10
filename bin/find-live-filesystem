@@ -5,7 +5,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-	echo 'Usage: find-live-filesystem ARCH cloop|squashfs|kernel|initrd|manifest|winfoss' >&2
+	echo 'Usage: find-live-filesystem ARCH cloop|squashfs|kernel|initrd|manifest|manifest-desktop|winfoss' >&2
 	exit 1
 fi
 ARCH="$1"
@@ -51,7 +51,7 @@ case $PROJECT in
 esac
 
 case $ITEM in
-	cloop|squashfs|manifest)
+	cloop|squashfs|manifest|manifest-desktop)
 		case $PROJECT in
 			tocd3)
 				# auto-purged - reverting to plan B

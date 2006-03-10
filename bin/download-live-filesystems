@@ -49,6 +49,8 @@ for arch in $ARCHES; do
 	esac
 	fetch "$(find-live-filesystem "$arch" manifest)" \
 		"$LIVE_OUT/$arch.manifest" || true
+	fetch "$(find-live-filesystem "$arch" manifest-desktop)" \
+		"$LIVE_OUT/$arch.manifest-desktop" || true
 done
 
 # TheOpenCD goes on the amd64/i386 live CDs.
