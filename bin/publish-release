@@ -241,21 +241,6 @@ for arch in $ARCHES; do
 			      "$RELEASE_FULL/$baseplain.manifest"
 		fi
 	fi
-	if [ -e "$DAILY/$DIST-$TYPE-$arch.manifest-desktop" ]; then
-		# Copy, to make sure we have a canonical version of this.
-		if $PUBLISH_POOL; then
-			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest-desktop" \
-			      "$RELEASE_SIMPLE_POOL/$basestatus.manifest-desktop"
-		fi
-		if $PUBLISH_DIST; then
-			ln -sf "$DIST_TO_POOL/$basestatus.manifest-desktop" \
-			       "$RELEASE_SIMPLE_DIST/$basestatus.manifest-desktop"
-		fi
-		if $PUBLISH_FULL; then
-			cp -a "$DAILY/$DIST-$TYPE-$arch.manifest-desktop" \
-			      "$RELEASE_FULL/$baseplain.manifest-desktop"
-		fi
-	fi
 
 	if $PUBLISH_DIST; then
 		make-web-indices "$RELEASE_SIMPLE_DIST" "$CDPREFIX${STATUS:+-$STATUS}"

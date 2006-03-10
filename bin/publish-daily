@@ -110,13 +110,6 @@ for arch in $ARCHES; do
 		else
 			rm -f "$PUBLISH/$DIST-$TYPE-$arch.manifest"
 		fi
-		if [ -e "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest-desktop" ]; then
-			echo "Publishing $arch live desktop manifest ..."
-			mv "$CDOUT/$arch/$DIST-$TYPE-$arch.manifest-desktop" \
-			   "$PUBLISH/$DIST-$TYPE-$arch.manifest-desktop"
-		else
-			rm -f "$PUBLISH/$DIST-$TYPE-$arch.manifest-desktop"
-		fi
 
 		SIZE="$(stat -c %s "$PUBLISH/$DIST-$TYPE-$arch.iso")"
 		if [ "$SIZE" -gt "$SIZELIMIT" ]; then
