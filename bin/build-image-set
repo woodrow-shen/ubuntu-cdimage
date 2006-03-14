@@ -142,6 +142,7 @@ cd "$CDIMAGE_ROOT/debian-cd"
 ./build_all.sh || true
 
 # Kludge to work around permission-handling problems elsewhere.
+find "$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE" -type d -print0 | xargs -0r chmod g+s 2>/dev/null || true
 chmod -R g+rwX "$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE" 2>/dev/null || true
 
 # temporarily turned off for live builds
