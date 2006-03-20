@@ -213,7 +213,7 @@ case $DIST in
 		distfullname='Breezy Badger'
 		;;
 	dapper)
-		distversion=6.04
+		distversion=6.06
 		distfullname='Dapper Drake'
 		;;
 esac
