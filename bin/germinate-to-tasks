@@ -25,7 +25,7 @@ for seed in $(list-seeds all); do
 	else
 		seedsource="$seed"
 	fi
-	for arch in $ARCHES; do
+	for arch in $CPUARCHES; do
 		echo "#ifdef ARCH_$arch"
 		< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
 			tail -n +3 | head -n -2 | cut -d' ' -f1
@@ -47,7 +47,7 @@ done
 # second-stage install. Also generate Archive-Copier-Set headers for sets of
 # packages that archive-copier needs to know to copy but that shouldn't
 # appear as tasks in aptitude et al.
-for arch in $ARCHES; do
+for arch in $CPUARCHES; do
 	exec >"$TASKS_OUT/$DIST/tasks.$arch"
 	for seed in $(list-seeds tasks); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \
@@ -86,7 +86,7 @@ done
 # Help debian-cd to get priorities in sync with the current base system,
 # so that debootstrap >= 0.3.1 can work out the correct set of packages
 # to install.
-for arch in $ARCHES; do
+for arch in $CPUARCHES; do
 	exec >"$TASKS_OUT/$DIST/important.$arch"
 	for seed in $(list-seeds debootstrap); do
 		< "$GERMINATE_OUT/$DIST-$arch/$seed" \

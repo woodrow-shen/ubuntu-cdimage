@@ -5,7 +5,7 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 
 cd "$CDIMAGE_ROOT/local/packages"
 mkdir -p ../database/dists ../database/indices
-for arch in $ARCHES; do
+for arch in $CPUARCHES; do
 	> "../database/dists/${DIST}_local_binary-$arch.list"
 	> "../database/dists/${DIST}_local_debian-installer_binary-$arch.list"
 	> "../database/indices/override.$DIST.local.$arch"

@@ -77,7 +77,7 @@ if [ -z "$CDIMAGE_NOSYNC" ]; then
 		fi
 		push_cleanup "rm -f $SYNC_LOCK"
 		anonftpsync
-		ARCHES_COLONS="$(echo "$ARCHES" | tr ' ' ':')"
+		ARCHES_COLONS="$(echo "$CPUARCHES" | tr ' ' ':')"
 		case :$ARCHES_COLONS: in
 			*:hppa:*|*:ia64:*|*:sparc:*)
 				ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync

@@ -10,7 +10,7 @@ if [ -z "$1" ]; then
 fi
 ARCH="$1"
 
-case $ARCH in
+case ${ARCH%%+*} in
 	amd64|i386|powerpc)
 		echo "$CDIMAGE_ROOT/ftp"
 		;;

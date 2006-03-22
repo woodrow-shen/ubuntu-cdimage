@@ -17,7 +17,7 @@ IMAGE_TYPE="${2:-livecd-base}"
 
 PUBLISH="$CDIMAGE_ROOT/www/full/$IMAGE_TYPE/$DATE"
 
-for arch in $ARCHES; do
+for arch in $CPUARCHES; do
 	if [ -e "$LIVE/$arch.cloop" ]; then
 		fs=cloop
 	elif [ -e "$LIVE/$arch.squashfs" ]; then

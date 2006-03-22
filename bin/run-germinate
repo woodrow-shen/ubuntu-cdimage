@@ -43,7 +43,7 @@ mkindex () {
 	done | gzip -c > "$GERMINATE_OUT/$target"
 }
 
-for arch in $ARCHES; do
+for arch in $CPUARCHES; do
 	echo "Germinating for $DIST/$arch ..."
 
 	IFS_SAVE="$IFS"
