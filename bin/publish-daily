@@ -5,9 +5,6 @@ export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 . "$CDIMAGE_ROOT/bin/functions.sh"
 
-CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debian-cd"
-BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT/$IMAGE_TYPE"
-
 if [ -z "$1" ]; then
 	echo 'Usage: publish-daily DATE [IMAGE_TYPE]' >&2
 	exit 1
@@ -16,6 +13,9 @@ fi
 DATE="$1"
 IMAGE_TYPE="${2:-daily}"
 IMAGE_TYPE_DIR="$(echo "$IMAGE_TYPE" | sed 's,_,/,g')"
+
+CDOUT="$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debian-cd"
+BRITNEY_REPORT="$CDIMAGE_ROOT/britney/report/$PROJECT/$IMAGE_TYPE"
 
 case $PROJECT in
 	ubuntu)
