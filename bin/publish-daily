@@ -60,6 +60,8 @@ esac
 if [ -d "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current/" ]; then
 	cp -alL "$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/current" \
 	        "$PUBLISH"
+else
+	mkdir -p "$PUBLISH"
 fi
 
 # TODO: emptying the file should be unnecessary; we need to carry over
