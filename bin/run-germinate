@@ -21,6 +21,13 @@ case $PROJECT in
 		# for legacy purposes
 		GERMINATE_SEED_DIST="$DIST"
 		;;
+	ubuntu-server)
+		if [ "$DIST" = breezy ]; then
+			GERMINATE_SEED_DIST="$PROJECT-$DIST"
+		else
+			GERMINATE_SEED_DIST="$DIST"
+		fi
+		;;
 	*)
 		GERMINATE_SEED_DIST="$PROJECT-$DIST"
 		;;
