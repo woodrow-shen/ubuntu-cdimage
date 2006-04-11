@@ -36,7 +36,9 @@ case $1 in
 					echo 'server'
 					;;
 			esac
-			echo 'ship'
+			if [ "$PROJECT" != ubuntu-server ] || [ "$DIST" = breezy ]; then
+				echo 'ship'
+			fi
 		fi
 		if [ "$CDIMAGE_INSTALL_BASE" ]; then
 			echo 'installer'
@@ -73,7 +75,9 @@ case $1 in
 					echo 'server'
 					;;
 			esac
-			echo 'ship'
+			if [ "$PROJECT" != ubuntu-server ] || [ "$DIST" = breezy ]; then
+				echo 'ship'
+			fi
 		fi
 		;;
 	installer)
