@@ -3,6 +3,8 @@
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
+[ -d "$CDIMAGE_ROOT/local/packages" ] || exit 0
+
 cd "$CDIMAGE_ROOT/local/packages"
 mkdir -p ../database/dists ../database/indices
 for arch in $CPUARCHES; do
