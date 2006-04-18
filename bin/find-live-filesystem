@@ -32,6 +32,10 @@ case $ARCH in
 		LIVECD=http://royal.buildd/~buildd/LiveCD
 		SUBARCHES='powerpc powerpc64-smp'
 		;;
+	sparc)
+		LIVECD=http://vivies.buildd/~buildd/LiveCD
+		SUBARCHES=sparc64
+		;;
 	*)
 		echo "No live filesystem source known for $ARCH" >&2
 		exit 1
