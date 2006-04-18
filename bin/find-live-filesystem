@@ -17,7 +17,7 @@ case $ARCH in
 		SUBARCHES=amd64-generic
 		;;
 	hppa)
-		LIVECD=/home/cjwatson/hppa-livecd
+		LIVECD=http://castilla.buildd/~buildd/LiveCD
 		SUBARCHES='hppa32 hppa64'
 		;;
 	i386)
