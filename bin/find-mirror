@@ -11,10 +11,10 @@ fi
 ARCH="$1"
 
 case ${ARCH%%+*} in
-	amd64|i386|powerpc)
+	amd64|i386|powerpc|sparc)
 		echo "$CDIMAGE_ROOT/ftp"
 		;;
-	hppa|ia64|sparc)
+	hppa|ia64)
 		echo "$CDIMAGE_ROOT/ftp-ports"
 		;;
 	*)

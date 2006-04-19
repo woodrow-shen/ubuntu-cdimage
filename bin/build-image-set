@@ -79,7 +79,7 @@ if [ -z "$CDIMAGE_NOSYNC" ]; then
 		anonftpsync
 		ARCHES_COLONS="$(echo "$CPUARCHES" | tr ' ' ':')"
 		case :$ARCHES_COLONS: in
-			*:hppa:*|*:ia64:*|*:sparc:*)
+			*:hppa:*|*:ia64:*)
 				ANONFTPSYNC_CONF="$CDIMAGE_ROOT/etc/anonftpsync.ports" anonftpsync
 				;;
 		esac
