@@ -67,7 +67,8 @@ EOF
 			;;
 		live)
 			cat <<EOF
-The live CD allows you to try $CAPPROJECT without changing your computer at all.
+The live CD allows you to try $CAPPROJECT without changing your computer at all,
+and at your option to install it permanently later.
 EOF
 			;;
 		dvd)
