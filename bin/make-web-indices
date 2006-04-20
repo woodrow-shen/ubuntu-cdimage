@@ -41,10 +41,10 @@ titlecase () {
 cdtypestr () {
 	case $1 in
 		live)
-			echo 'live CD'
+			echo 'desktop CD'
 			;;
 		install)
-			echo 'install CD'
+			echo 'text-mode install CD'
 			;;
 		dvd)
 			echo 'install/live DVD'
@@ -62,13 +62,16 @@ cdtypedesc () {
 	case $1 in
 		live)
 			cat <<EOF
-The live CD allows you to try $CAPPROJECT without changing your computer at all,
-and at your option to install it permanently later.
+The desktop CD allows you to try $CAPPROJECT without changing your computer
+at all, and at your option to install it permanently later. This type of CD
+is what most people will want to use.
 EOF
 			;;
 		install)
 			cat <<EOF
-The install CD allows you to install $CAPPROJECT permanently on a computer.
+The text-mode install CD allows you to perform certain specialist
+installations of $CAPPROJECT. This type of CD is intended for cases such as
+creating pre-configured OEM systems or setting up automated deployments.
 EOF
 			;;
 		dvd)
