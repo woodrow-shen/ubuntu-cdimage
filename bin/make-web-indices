@@ -219,6 +219,11 @@ case $DIST in
 	dapper)
 		distversion=6.06
 		distfullname='Dapper Drake'
+		case $PROJECT in
+			ubuntu|kubuntu|edubuntu|ubuntu-server)
+				distversion="$distversion LTS"
+				;;
+		esac
 		;;
 esac
 
