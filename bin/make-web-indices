@@ -71,7 +71,8 @@ EOF
 			cat <<EOF
 The text-mode install CD allows you to perform certain specialist
 installations of $CAPPROJECT. This type of CD is intended for cases such as
-creating pre-configured OEM systems or setting up automated deployments.
+creating pre-configured OEM systems or setting up automated deployments; it
+can also be used as a package source for upgrading older installations.
 EOF
 			;;
 		dvd)
