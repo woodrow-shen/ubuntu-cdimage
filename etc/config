@@ -8,7 +8,7 @@ case $DIST in
 		ARCHES="${ARCHES:-amd64 i386 powerpc}"
 		;;
 esac
-CPUARCHES="$(echo "$ARCHES" | xargs -n1 | sed 's/+.*//' | sort -u)"
+CPUARCHES="$(echo "$ARCHES" | xargs -n1 | sed 's/+.*//' | sort -u | xargs)"
 
 GNUPG_DIR="$CDIMAGE_ROOT/secret/dot-gnupg"
 SIGNING_KEYID=FBB75451
