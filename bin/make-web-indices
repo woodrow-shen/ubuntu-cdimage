@@ -235,6 +235,9 @@ case $CDPREFIX in
 	*-beta)
 		distextra=' Beta'
 		;;
+	*-beta?*)
+		distextra=" Beta $(echo "$CDPREFIX" | sed 's/.*-beta//')"
+		;;
 	*-rc)
 		distextra=' Release Candidate'
 		;;
