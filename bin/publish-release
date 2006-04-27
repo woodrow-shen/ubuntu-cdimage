@@ -257,7 +257,7 @@ done
 # There can only be one set of images per release in the per-release tree,
 # so if we're publishing there then we can now safely clean up previous
 # images for that release.
-if $PUBLISH_DIST; then
+if $PUBLISH_DIST && [ -z "$CDIMAGE_NO_PURGE" ]; then
 	for dir in "$RELEASE_SIMPLE_DIST" "$RELEASE_SIMPLE_POOL"; do
 		find "$dir" -maxdepth 1 -name "$CDPREFIX-*" ! -regex ".*/$CDPREFIX${FILESTATUS:+-$FILESTATUS}-[^-]*-[^-]*" | while read file; do
 			echo "Purging $file"
