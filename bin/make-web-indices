@@ -416,4 +416,9 @@ HeaderName HEADER.html
 ReadmeName FOOTER.html
 IndexIgnore .htaccess HEADER.html FOOTER.html
 IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
+AddIcon /cdicons/folder.png ^^DIRECTORY^^
+AddIcon /cdicons/iso.png .iso
+AddIcon /cdicons/jigdo.png .jigdo .template
+AddIcon /cdicons/list.png .list .manifest .html MD5SUMS MD5SUMS.gpg
+AddIcon /cdicons/torrent.png .torrent
 EOF
