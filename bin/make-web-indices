@@ -415,7 +415,7 @@ cat <<EOF >> "$HTACCESS"
 HeaderName HEADER.html
 ReadmeName FOOTER.html
 IndexIgnore .htaccess HEADER.html FOOTER.html
-IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing
+IndexOptions NameWidth=* DescriptionWidth=* SuppressHTMLPreamble FancyIndexing IconHeight=22 IconWidth=22
 AddIcon /cdicons/folder.png ^^DIRECTORY^^
 AddIcon /cdicons/iso.png .iso
 AddIcon /cdicons/jigdo.png .jigdo .template
