@@ -332,4 +332,9 @@ if $PUBLISH_FULL; then
 	md5sum_directory 'full tree' "$RELEASE_FULL" "$CDPREFIX-$TYPE"
 fi
 
+if $PUBLISH_DIST; then
+	site-manifest "$CDIMAGE_ROOT/www/simple" \
+		> "$CDIMAGE_ROOT/www/simple/.manifest"
+fi
+
 echo "Done! Remember to sync-mirrors after checking that everything is OK."

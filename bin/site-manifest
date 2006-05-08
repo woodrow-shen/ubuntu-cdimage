@@ -1,0 +1,34 @@
+#! /bin/sh
+set -e
+
+# Build a manifest of the simple release tree.
+
+export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
+. "$CDIMAGE_ROOT/etc/config"
+
+if [ -z "$1" ]; then
+	echo 'Usage: build-manifest DIRECTORY' >&2
+	exit 1
+fi
+
+cd "$1"
+
+find -name .pool -prune -o \( -type f -o -type l \) -name \*.iso \
+	-printf '%P\n' | \
+while read file; do
+	case $file in
+		kubuntu/*|edubuntu/*|xubuntu/*|ubuntu-server/*)
+			project="${file%%/*}"
+			cdr="${file#*/}"
+			;;
+		*)
+			project='ubuntu'
+			cdr="$file"
+			;;
+	esac
+	dist="${cdr%%/*}"
+	size="$(stat -c %s -L "$file")"
+	printf '%s\t%s\t%s\t%d\n' "$project" "$dist" "/$file" "$size"
+done | sort
+
+exit 0
