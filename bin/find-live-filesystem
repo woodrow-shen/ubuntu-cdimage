@@ -128,13 +128,21 @@ case $ITEM in
 							*)	exit 1 ;;
 						esac
 						;;
-					breezy|dapper)
+					breezy)
 						case $ARCH in
 							i386)
 								echo http://maitri.ubuntu.com/theopencd/winfoss/kubuntu/current/Kubuntu-WinFOSS-5.10.tgz
 								;;
 							amd64)
 								echo http://maitri.ubuntu.com/theopencd/winfoss/kubuntu-AMD/current/Kubuntu-WinFOSS-5.10-AMD.tgz
+								;;
+							*)	exit 1 ;;
+						esac
+						;;
+					dapper)
+						case $ARCH in
+							i386|amd64)
+								echo http://people.ubuntu.com/~henrik/winfoss/dapper/kubuntu/current/kubuntu-winfoss-6.06.tar.gz
 								;;
 							*)	exit 1 ;;
 						esac
