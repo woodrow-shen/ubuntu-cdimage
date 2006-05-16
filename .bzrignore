@@ -1,0 +1,4 @@
+etc/.lock*
+etc/.next-build-suffix*
+etc/anonftpsync
+etc/task-mail
