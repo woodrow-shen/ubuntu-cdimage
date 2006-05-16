@@ -1,3 +1,12 @@
+./britney
+./debian-cd
+./ftp*
+./germinate
+./local
+./log
+./scratch
+./secret
+./www
 etc/.lock*
 etc/.next-build-suffix*
 etc/anonftpsync
