@@ -1,9 +1,9 @@
-daily 3
-daily-live 3
+daily 2
+daily-live 2
 # Purge images older than 5 days => keep the two most recent builds.
 dvd 5
-ports_daily 3
-ports_daily-live 3
+ports_daily 2
+ports_daily-live 2
 ports_dvd 5
 # Only purge TheOpenCDv3 images manually.
 tocd3/daily-live 0
