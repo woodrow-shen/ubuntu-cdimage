@@ -27,8 +27,10 @@ for seed in $(list-seeds all); do
 	fi
 	for arch in $CPUARCHES; do
 		echo "#ifdef ARCH_$arch"
-		< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
-			tail -n +3 | head -n -2 | cut -d' ' -f1
+		if [ -e "$GERMINATE_OUT/$DIST-$arch/$seedsource" ]; then
+			< "$GERMINATE_OUT/$DIST-$arch/$seedsource" \
+				tail -n +3 | head -n -2 | cut -d' ' -f1
+		fi
 		echo "#endif /* ARCH_$arch */"
 	done
 done

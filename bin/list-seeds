@@ -48,6 +48,9 @@ case $1 in
 				hoary|breezy)
 					echo 'casper'
 					;;
+				dapper)
+					echo 'ship-live'
+					;;
 			esac
 		fi
 		echo 'supported'
