@@ -313,6 +313,7 @@ for cdtype in live desktop install alternate dvd src; do
 <h3>$(cdtypestr "$cdtype" | titlecase)</h3>
 
 $(cdtypedesc "$cdtype")
+
 EOF
 
 	archcount=0
