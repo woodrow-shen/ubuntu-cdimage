@@ -40,11 +40,11 @@ titlecase () {
 
 cdtypestr () {
 	case $1 in
-		live)
+		live|desktop)
 			echo 'desktop CD'
 			;;
-		install)
-			echo 'text-mode install CD'
+		install|alternate)
+			echo 'alternate install CD'
 			;;
 		dvd)
 			echo 'install/live DVD'
@@ -60,19 +60,25 @@ cdtypestr () {
 
 cdtypedesc () {
 	case $1 in
-		live)
+		live|desktop)
 			cat <<EOF
-The desktop CD allows you to try $CAPPROJECT without changing your computer
-at all, and at your option to install it permanently later. This type of CD
-is what most people will want to use.
+<p>The desktop CD allows you to try $CAPPROJECT without changing your
+computer at all, and at your option to install it permanently later. This
+type of CD is what most people will want to use.</p>
 EOF
 			;;
-		install)
+		install|alternate)
 			cat <<EOF
-The text-mode install CD allows you to perform certain specialist
-installations of $CAPPROJECT. This type of CD is intended for cases such as
-creating pre-configured OEM systems or setting up automated deployments; it
-can also be used as a package source for upgrading older installations.
+<p>The alternate install CD allows you to perform certain specialist
+installations of $CAPPROJECT. It provides for the following situations:</p>
+
+<ul>
+<li>creating pre-configured OEM systems;
+<li>setting up automated deployments;
+<li>upgrading from older installations without network access;
+<li>LVM and/or RAID partitioning;
+<li>installs on systems with less than about 192MB of RAM.
+</ul>
 EOF
 			;;
 		dvd)
@@ -272,7 +278,7 @@ cat <<EOF > "$HEADER"
 EOF
 
 cdtypecount=0
-for cdtype in live install dvd src; do
+for cdtype in live desktop install alternate dvd src; do
 	if find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.list" | grep . >/dev/null; then
 		cdtypecount="$(($cdtypecount + 1))"
 	fi
@@ -287,7 +293,7 @@ fi
 
 foundtorrent=0
 
-for cdtype in live install dvd src; do
+for cdtype in live desktop install alternate dvd src; do
 	if ! find "$DIR/" -follow -maxdepth 1 -type f -name "$CDPREFIX-$cdtype-*.list" | grep . >/dev/null; then
 		continue
 	fi
@@ -306,7 +312,7 @@ for cdtype in live install dvd src; do
 	cat <<EOF >> "$HEADER"
 <h3>$(cdtypestr "$cdtype" | titlecase)</h3>
 
-<p>$(cdtypedesc "$cdtype")
+$(cdtypedesc "$cdtype")
 EOF
 
 	archcount=0
@@ -318,15 +324,15 @@ EOF
 
 	if [ "$archcount" -eq 1 ]; then
 		cat <<EOF >> "$HEADER"
-There is one image available:</p>
+<p>There is one image available:</p>
 EOF
 	elif [ "$cdtype" = src ]; then
 		cat <<EOF >> "$HEADER"
-There are $(count "$archcount") images available:</p>
+<p>There are $(count "$archcount") images available:</p>
 EOF
 	else
 		cat <<EOF >> "$HEADER"
-There are $(count "$archcount") images available, each for a different type of computer:</p>
+<p>There are $(count "$archcount") images available, each for a different type of computer:</p>
 EOF
 	fi
 

@@ -32,13 +32,27 @@ PUBLISH="$CDIMAGE_ROOT/www/$FULL_TREE/$IMAGE_TYPE_DIR/$DATE"
 
 case $IMAGE_TYPE in
 	*-live)
-		TYPE=live
+		case $DIST in
+			warty|hoary|breezy)
+				TYPE=live
+				;;
+			*)
+				TYPE=desktop
+				;;
+		esac
 		;;
 	*_dvd|dvd)
 		TYPE=dvd
 		;;
 	*)
-		TYPE=install
+		case $DIST in
+			warty|hoary|breezy)
+				TYPE=install
+				;;
+			*)
+				TYPE=alternate
+				;;
+		esac
 		;;
 esac
 

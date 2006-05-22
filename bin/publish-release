@@ -192,7 +192,8 @@ for arch in $ARCHES; do
 		fi
 	done
 
-	if [ "$TYPE" = install ] || [ "$TYPE" = src ]; then
+	if [ "$TYPE" = install ] || [ "$TYPE" = alternate ] || \
+	   [ "$TYPE" = src ]; then
 		if [ -e "$DAILY/$DIST-$TYPE-$arch.jigdo" ] && \
 		   [ -e "$DAILY/$DIST-$TYPE-$arch.template" ]; then
 			if $PUBLISH_POOL; then
@@ -229,7 +230,7 @@ for arch in $ARCHES; do
 		fi
 	fi
 
-	if [ "$TYPE" = live ] || \
+	if [ "$TYPE" = live ] || [ "$TYPE" = desktop ] || \
 	   ([ "$TYPE" = dvd ] && [ -e "$DAILY/$DIST-$TYPE-$arch.manifest" ]); then
 		# Copy, to make sure we have a canonical version of this.
 		if $PUBLISH_POOL; then
