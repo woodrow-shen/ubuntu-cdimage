@@ -53,8 +53,18 @@ case $IMAGE_TYPE in
 		;;
 	*)
 		case $PROJECT in
-			edubuntu|ubuntu-server)
+			edubuntu)
 				TYPE=install
+				;;
+			ubuntu-server)
+				case $DIST in
+					warty|hoary|breezy)
+						TYPE=install
+						;;
+					*)
+						TYPE=server
+						;;
+				esac
 				;;
 			*)
 				case $DIST in
