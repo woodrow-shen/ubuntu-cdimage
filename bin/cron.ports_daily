@@ -1,7 +1,14 @@
 #! /bin/sh
 set -e
 
-export ARCHES="${ARCHES:-hppa ia64 sparc}"
+case $PROJECT in
+	ubuntu-server)
+		export ARCHES="${ARCHES:-hppa ia64}"
+		;;
+	*)
+		export ARCHES="${ARCHES:-hppa ia64 sparc}"
+		;;
+esac
 
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
