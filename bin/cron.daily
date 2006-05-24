@@ -1,6 +1,12 @@
 #! /bin/sh
 set -e
 
+case $PROJECT in
+	ubuntu-server)
+		export ARCHES="${ARCHES:-amd64 i386 powerpc sparc}"
+		;;
+esac
+
 export CDIMAGE_ROOT=/srv/cdimage.no-name-yet.com
 . "$CDIMAGE_ROOT/etc/config"
 
