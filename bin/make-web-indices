@@ -76,7 +76,8 @@ cdtypedesc () {
 			cat <<EOF
 <p>The desktop CD allows you to try $CAPPROJECT without changing your
 computer at all, and at your option to install it permanently later. This
-type of CD is what most people will want to use.</p>
+type of CD is what most people will want to use. You will need at least
+${DESKTOP_RAM}MB of RAM to install from this CD.</p>
 EOF
 			;;
 		install)
