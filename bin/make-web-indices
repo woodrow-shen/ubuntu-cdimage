@@ -62,6 +62,15 @@ cdtypestr () {
 }
 
 cdtypedesc () {
+	case $PROJECT in
+		xubuntu)
+			DESKTOP_RAM=128
+			;;
+		*)
+			DESKTOP_RAM=192
+			;;
+	esac
+
 	case $1 in
 		live|desktop)
 			cat <<EOF
@@ -86,7 +95,7 @@ installations of $CAPPROJECT. It provides for the following situations:</p>
 <li>setting up automated deployments;
 <li>upgrading from older installations without network access;
 <li>LVM and/or RAID partitioning;
-<li>installs on systems with less than about 192MB of RAM.
+<li>installs on systems with less than about ${DESKTOP_RAM}MB of RAM.
 </ul>
 EOF
 			;;
