@@ -104,10 +104,10 @@ fi
 
 # TODO: emptying the file should be unnecessary; we need to carry over
 # md5sums from previous builds if we carried over the images.
-rm -f "$PUBLISH/MD5SUMS"
+rm -f "$PUBLISH/MD5SUMS" "$PUBLISH/MD5SUMS.gpg"
 > "$PUBLISH/MD5SUMS"
 if [ -d "$PUBLISH/source" ]; then
-	rm -f "$PUBLISH/source/MD5SUMS"
+	rm -f "$PUBLISH/source/MD5SUMS" "$PUBLISH/source/MD5SUMS.gpg"
 	> "$PUBLISH/source/MD5SUMS"
 fi
 
