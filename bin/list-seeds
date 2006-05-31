@@ -43,7 +43,7 @@ case $1 in
 		if [ "$CDIMAGE_INSTALL_BASE" ]; then
 			echo 'installer'
 		fi
-		if [ "$CDIMAGE_LIVE" ]; then
+		if [ "$CDIMAGE_LIVE" ] || [ "$CDIMAGE_DVD" ]; then
 			case $DIST in
 				hoary|breezy)
 					echo 'casper'
@@ -52,6 +52,9 @@ case $1 in
 					echo 'ship-live'
 					;;
 			esac
+		fi
+		if [ "$CDIMAGE_DVD" ]; then
+			echo 'live'
 		fi
 		echo 'supported'
 		;;
