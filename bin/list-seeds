@@ -54,6 +54,7 @@ case $1 in
 			esac
 		fi
 		if [ "$CDIMAGE_DVD" ]; then
+			echo 'server'
 			echo 'live'
 		fi
 		echo 'supported'
