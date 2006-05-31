@@ -43,7 +43,10 @@ cdtypestr () {
 		live|desktop)
 			echo 'desktop CD'
 			;;
-		install|alternate)
+		install)
+			echo 'install CD'
+			;;
+		alternate)
 			echo 'alternate install CD'
 			;;
 		server)
