@@ -54,7 +54,14 @@ case $1 in
 			esac
 		fi
 		if [ "$CDIMAGE_DVD" ]; then
-			echo 'server'
+			case $PROJECT in
+				edubuntu|ubuntu-server)
+					# already included above
+					;;
+				*)
+					echo 'server'
+					;;
+			esac
 			echo 'live'
 		fi
 		echo 'supported'
