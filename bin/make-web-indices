@@ -262,6 +262,10 @@ case $DIST in
 				;;
 		esac
 		;;
+	edgy)
+		distversion=6.10
+		distfullname='Edgy Eft'
+		;;
 esac
 
 case $CDPREFIX in

@@ -18,7 +18,7 @@ case $1 in
 			breezy)
 				echo 'minimal standard'
 				;;
-			dapper)
+			*)
 				echo 'boot minimal standard'
 				;;
 		esac
@@ -45,10 +45,12 @@ case $1 in
 		fi
 		if [ "$CDIMAGE_LIVE" ] || [ "$CDIMAGE_DVD" ]; then
 			case $DIST in
+				warty)
+					;;
 				hoary|breezy)
 					echo 'casper'
 					;;
-				dapper)
+				*)
 					echo 'ship-live'
 					;;
 			esac
@@ -71,7 +73,7 @@ case $1 in
 			warty|hoary)
 				echo 'base'
 				;;
-			breezy|dapper)
+			*)
 				echo 'minimal standard'
 				;;
 		esac
@@ -111,7 +113,7 @@ case $1 in
 			warty|hoary)
 				echo 'base'
 				;;
-			breezy|dapper)
+			*)
 				echo 'minimal'
 				;;
 		esac

@@ -70,6 +70,9 @@ case $DIST in
 	dapper)
 		VERSION=6.06
 		;;
+	edgy)
+		VERSION=6.10
+		;;
 	*)
 		echo "Unknown distribution: $DIST" >&2
 		exit 1
