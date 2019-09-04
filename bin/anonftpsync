@@ -29,8 +29,12 @@ def main():
     from cdimage.config import Config
 
     parser = OptionParser("%prog")
-    parser.parse_args()
+    parser.add_option(
+        "--packagelist", default="",
+        help="given path of package list", dest="pkg_path")
+    options, _ = parser.parse_args()
     config = Config()
+    config["RSYNC_PKGLIST_PATH"] = options.pkg_path
     anonftpsync(config)
 
 

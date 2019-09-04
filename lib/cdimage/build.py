@@ -156,6 +156,7 @@ def _anonftpsync_options(config):
     if path:
         whitelisted_keys = [
             "RSYNC_EXCLUDE",
+            "RSYNC_INCLUDE",
             "RSYNC_ICONV",
             "RSYNC_PASSWORD",
             "RSYNC_PROXY",
@@ -181,6 +182,7 @@ def anonftpsync(config):
     fqdn = socket.getfqdn()
     lock_base = "Archive-Update-in-Progress-%s" % fqdn
     lock = os.path.join(target, lock_base)
+    pkglist = "--include-from=" + config["RSYNC_PKGLIST_PATH"]
     if subprocess.call(
             ["lockfile", "-!", "-l", "43200", "-r", "0", lock]) == 0:
         raise Exception(
@@ -192,10 +194,12 @@ def anonftpsync(config):
             command_base = [
                 "rsync", "--recursive", "--links", "--hard-links", "--times",
                 "--verbose", "--stats", "--chmod=Dg+s,g+rwX",
+                pkglist,
                 "--exclude", lock_base,
                 "--exclude", "project/trace/%s" % fqdn,
             ]
             exclude = env.get("RSYNC_EXCLUDE", "").split()
+            include = env.get("RSYNC_INCLUDE", "").split()
             source_target = ["%s/" % env["RSYNC_SRC"], "%s/" % target]
 
             subprocess.call(
@@ -203,14 +207,14 @@ def anonftpsync(config):
                     "--exclude", "Packages*", "--exclude", "Sources*",
                     "--exclude", "Release*", "--exclude", "InRelease",
                     "--include", "i18n/by-hash/**", "--exclude", "i18n/*",
-                ] + exclude + source_target,
+                ] + include + exclude + source_target,
                 stdout=log, stderr=subprocess.STDOUT, env=env)
 
             # Second pass to update metadata and clean up old files.
             subprocess.call(
                 command_base + [
                     "--delay-updates", "--delete", "--delete-after",
-                ] + exclude + source_target,
+                ] + include + exclude + source_target,
                 stdout=log, stderr=subprocess.STDOUT, env=env)
 
         # Delete dangling symlinks.

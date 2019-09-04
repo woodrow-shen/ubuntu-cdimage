@@ -26,6 +26,8 @@ import re
 import subprocess
 from textwrap import dedent
 import time
+import shutil
+import errno
 try:
     from urllib.error import URLError
     from urllib.parse import unquote
@@ -332,6 +334,7 @@ def live_lp_info(config, arch):
 
 
 def get_lp_livefs(config, arch):
+    return None, None
     try:
         lp_info = live_lp_info(config, arch)
     except UnknownLaunchpadLiveFS:
@@ -667,6 +670,14 @@ def download_live_items(config, arch, item):
                 found = True
             except osextras.FetchError:
                 pass
+            try:
+                shutil.copy2(url, target)
+                found = True
+            except shutil.Error:
+                pass
+            except IOError as e:
+                if e.errno == errno.ENOENT:
+                    pass
     elif item in (
         "boot-%s+%s.img" % (target.ubuntu_arch, target.subarch)
             for target in Touch.list_targets_by_ubuntu_arch(arch)
@@ -744,6 +755,16 @@ def download_live_items(config, arch, item):
                 found = True
             except osextras.FetchError:
                 pass
+            try:
+                shutil.copy2(url, target)
+                if target.endswith("squashfs"):
+                    sign.sign_cdimage(config, target)
+                found = True
+            except shutil.Error:
+                pass
+            except IOError as e:
+                if e.errno == errno.ENOENT:
+                    pass
     return found
 
 
